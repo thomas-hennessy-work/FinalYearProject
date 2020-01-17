@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="tom.sros.logIn.userManagmentController">
+  <tabs>
+    <Tab text="Create user">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="userIDInput" layoutX="14.0" layoutY="111.0" promptText="Enter user ID" />
+                  <TextField fx:id="userNameInput" layoutX="14.0" layoutY="177.0" promptText="Enter user name" />
+                  <Button layoutX="14.0" layoutY="234.0" mnemonicParsing="false" text="Submit" />
+                  <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Text layoutX="14.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID" />
+                  <Text layoutX="14.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User name" />
+                  <Text layoutX="274.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+                  <Text layoutX="229.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create User">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="passWordInput" layoutX="274.0" layoutY="111.0" promptText="Enter password" />
+                  <RadioButton fx:id="radioManager" layoutX="274.0" layoutY="181.0" mnemonicParsing="false" text="Is the user a manager?" />
+                  <Button layoutX="470.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#home" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Remove user">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="deleteButton" layoutX="190.0" layoutY="161.0" mnemonicParsing="false" text="Delete user" />
+                  <Button fx:id="logOutButton2" layoutX="529.0" layoutY="14.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Text layoutX="220.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove users">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <TextField layoutX="14.0" layoutY="161.0" promptText="Enter user ID" />
+                  <Text layoutX="14.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID" />
+                  <Button layoutX="463.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#home" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
