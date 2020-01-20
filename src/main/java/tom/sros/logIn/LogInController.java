@@ -8,6 +8,7 @@ import tom.sros.App;
 
 public class LogInController {
     
+    String dataBaseName = ("SROSData.db");
     @FXML
     private TextField userNameText;
     @FXML
@@ -21,7 +22,7 @@ public class LogInController {
         
         //Check if they match any on record accounts
         System.out.println("Check if credentials are valid");
-        if (LogInDatabase.logInCheck(userNameIn, passWordIn)){
+        if (UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn)){
             App.setRoot("/tom/sros/home/homeScreen");
         }
     }

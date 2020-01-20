@@ -48,6 +48,7 @@
             <displayName>JavaFX Run</displayName>
             <goals>
                 <goal>clean</goal>
+                <goal>test</goal>
                 <goal>javafx:run</goal>
             </goals>
         </action>

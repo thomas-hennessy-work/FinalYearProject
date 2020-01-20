@@ -7,13 +7,13 @@ import java.sql.Statement;
 
 public class ItemDatabase {
     
-    public static void main(){
+    public static void main(String dataBaseName){
         Connection c = null;
         Statement stmt = null;
         
         try{
             //Connect to database
-            c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
             
             //Create tables if they do not exist
@@ -59,14 +59,14 @@ public class ItemDatabase {
         }
     }
     
-    public void addBox(String ID, String name, String contents, float width, float length, float height, String notes){
+    public void addBox(String dataBaseName, String ID, String name, String contents, float width, float length, float height, String notes){
             
             Statement stmt = null;
             Connection c = null;
             
             try{
                 //connect to database
-                c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 System.out.println("Connected to database");
                 
                 //Insert into boxtype a new box
@@ -89,13 +89,39 @@ public class ItemDatabase {
             }
         }
     
-    public String IDCheck(String ID){
+    public void removeBox(String dataBaseName, String boxID){
+            Statement stmt = null;
+            Connection c = null;
+            
+            try{
+                //connect to database
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+                System.out.println("Connected to database");
+                
+                //Insert into boxtype a new box
+                stmt = c.createStatement();
+                String sql = "DELETE FROM boxType WHERE box_ID = " + boxID;
+                stmt.executeUpdate(sql);
+                System.out.println("Box removed from database");
+                
+                stmt.close();
+                c.close();
+                System.out.println("Database connection closed");
+            }
+            catch (Exception e) {
+                //Exception catching
+                System.err.println( e.getClass().getName() + ": " + e.getMessage());
+                System.exit(0);
+            }
+    }
+    
+    public String IDCheck(String dataBaseName, String ID){
         Statement stmt = null;
         Connection c = null;
         
         try{
             //Connect to database
-            c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
             stmt = c.createStatement();
             

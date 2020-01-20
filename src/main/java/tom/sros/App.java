@@ -1,7 +1,7 @@
 package tom.sros;
 
 import tom.sros.item.ItemDatabase;
-import tom.sros.logIn.LogInDatabase;
+import tom.sros.logIn.UserDatabase;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +17,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    String dataBaseName = ("SROSData.db");
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,8 +26,8 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         
-        LogInDatabase.main();
-        ItemDatabase.main();
+        UserDatabase.main(dataBaseName);
+        ItemDatabase.main(dataBaseName);
     }
 
     public static void setRoot(String fxml) throws IOException {

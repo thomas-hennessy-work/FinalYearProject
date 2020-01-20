@@ -7,13 +7,13 @@ import java.sql.Statement;
 
 public class BinData {
     
-    public int givePosition(String box_ID){
+    public int givePosition(String dataBaseName, String box_ID){
         Statement stmt = null;
         Connection c = null;
         
         try{
             //Connect to database
-            c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
 
             //Gather location data of that item

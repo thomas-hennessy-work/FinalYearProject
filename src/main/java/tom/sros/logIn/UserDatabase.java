@@ -2,15 +2,15 @@ package tom.sros.logIn;
 
 import java.sql.*;
 
-public class LogInDatabase {
+public class UserDatabase {
     
-        public static void main(){
+        public static void main(String dataBaseName){
             Connection c = null;
             Statement stmt = null;
             
             try{
                 //Conect to the database
-                c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 System.out.println("Connected to database");
                 
                 //Creates user table. If it already exists, it will not run
@@ -45,13 +45,13 @@ public class LogInDatabase {
             }
         }
         
-        public void populate(String user_ID, String user_name, Boolean is_manager, String password){
+        public void populate(String dataBaseName, String user_ID, String user_name, Boolean is_manager, String password){
             Connection c = null;
             Statement stmt = null;
             
             try{
                 //connecting to database
-                c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 System.out.println("Connected to database");
                 
                 //Insert a new user in to the user database
@@ -73,13 +73,13 @@ public class LogInDatabase {
             }
         }
         
-        public static boolean logInCheck(String userName, String passWord){
+        public static boolean logInCheck(String dataBaseName, String userName, String passWord){
             Connection c = null;
             Statement stmt = null;
             
             try{
                 //Connecting to database
-                c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 System.out.println("Connected to database");
                 
                 //Gather user information from

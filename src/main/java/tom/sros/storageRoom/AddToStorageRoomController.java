@@ -8,6 +8,7 @@ import tom.sros.item.ItemDatabase;
 
 public class AddToStorageRoomController {
     
+    String dataBaseName = ("SROSData.db");
     @FXML
     private TextField IDText;
     
@@ -21,8 +22,8 @@ public class AddToStorageRoomController {
         
         //If the ID exists in the database, add it to the storage room
         System.out.println("Adding item to storage room");
-        if(IDB.IDCheck(ID) != "missing"){
-            SRDB.addToStorageRoom(ID);
+        if(IDB.IDCheck(dataBaseName,ID) != "missing"){
+            SRDB.addToStorageRoom(dataBaseName, ID);
         }
     }
     

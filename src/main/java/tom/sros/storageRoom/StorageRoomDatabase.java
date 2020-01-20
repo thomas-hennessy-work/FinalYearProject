@@ -7,14 +7,14 @@ import java.sql.Statement;
 
 public class StorageRoomDatabase {
     
-    public static void addToStorageRoom(String storedBoxID){
+    public static void addToStorageRoom(String dataBaseName, String storedBoxID){
         
         Connection c = null;
         Statement stmt = null;
         
         try{
             //Connect to database
-            c = DriverManager.getConnection("jdbc:sqlite:SROSData.db");
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
             stmt = c.createStatement();
             
@@ -24,7 +24,7 @@ public class StorageRoomDatabase {
             System.out.println("Gathered informaton about box");
             
             BinData BD = new BinData();
-            int height = BD.givePosition(storedBoxID);
+            int height = BD.givePosition(dataBaseName, storedBoxID);
             
             //Insert the box in to the storage room
             String sql = "INSERT INTO boxLocation (box_ID,bin_number,corner_vertical_pos,corner_horizontal_pos,corner_depth_pos)"

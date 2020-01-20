@@ -8,6 +8,8 @@ import tom.sros.App;
 
 public class AddItemToDataBaseController {
     
+    String dataBaseName = ("SROSData.db");
+    
     @FXML
     private TextField boxName;
     @FXML
@@ -59,7 +61,7 @@ public class AddItemToDataBaseController {
         float floatBoxHeight = Float.parseFloat(inBoxHeight);
         ItemDatabase ITDB = new ItemDatabase();
         System.out.println("Add box to database");
-        ITDB.addBox(inBoxID,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);
+        ITDB.addBox(dataBaseName,inBoxID,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);
     }
     
     //Home and log out buttons
