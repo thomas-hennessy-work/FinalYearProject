@@ -22,7 +22,7 @@ public class AddToStorageRoomController {
         
         //If the ID exists in the database, add it to the storage room
         System.out.println("Adding item to storage room");
-        if(IDB.IDCheck(dataBaseName,ID) != "missing"){
+        if(IDB.IDCheck(dataBaseName,ID) != false){
             SRDB.addToStorageRoom(dataBaseName, ID);
         }
     }

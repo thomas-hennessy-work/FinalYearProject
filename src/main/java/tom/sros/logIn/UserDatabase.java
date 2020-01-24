@@ -29,7 +29,7 @@ public class UserDatabase {
                 if (rs.next() == false){
                     try (Statement stmt1 = c.createStatement()) {
                         sql = "INSERT INTO user (user_ID,user_name,is_manager,password) " +
-                                "VALUES ('1', 'Default', True, 'password' );";
+                                "VALUES ('1', 'Default', 'true', 'password' );";
                         System.out.println("Default user created");
                         stmt1.executeUpdate(sql);
                     }

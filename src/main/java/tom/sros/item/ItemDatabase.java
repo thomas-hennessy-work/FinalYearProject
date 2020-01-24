@@ -115,7 +115,7 @@ public class ItemDatabase {
             }
     }
     
-    public String IDCheck(String dataBaseName, String ID){
+    public boolean IDCheck(String dataBaseName, String ID){
         Statement stmt = null;
         Connection c = null;
         
@@ -137,7 +137,7 @@ public class ItemDatabase {
                         stmt.close();
                         c.close();
                         System.out.println("IDCheck succesfull + Database connection closed");
-                        return IDCheck;
+                        return true;
                     }
                 }
             stmt.close();
@@ -151,6 +151,6 @@ public class ItemDatabase {
         }  
         //If ID's dont match, return missing
         System.out.println("ID check failed");
-        return "missing";   
+        return false;   
     }
 }
