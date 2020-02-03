@@ -1,9 +1,16 @@
 package tom.sros.storageRoom;
 
+import com.github.skjolber.packing.Box;
+import com.github.skjolber.packing.BoxItem;
+import com.github.skjolber.packing.Container;
+import com.github.skjolber.packing.LargestAreaFitFirstPackager;
+import com.github.skjolber.packing.Packager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StorageRoomDatabase {
     
@@ -20,7 +27,7 @@ public class StorageRoomDatabase {
             
             //Gather the information from the database about the given box
             ResultSet rs = stmt.executeQuery("SELECT * FROM boxType WHERE box_ID = " + storedBoxID + ";");
-            String boxID= rs.getString(1);
+            String boxID = rs.getString(1);
             System.out.println("Gathered informaton about box");
             
             BinData BD = new BinData();
