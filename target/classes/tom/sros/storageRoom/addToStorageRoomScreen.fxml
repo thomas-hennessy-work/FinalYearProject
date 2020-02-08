@@ -15,12 +15,18 @@
             <Font size="26.0" />
          </font>
       </Text>
-      <ListView layoutX="14.0" layoutY="106.0" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="IDList" layoutX="14.0" layoutY="106.0" prefHeight="200.0" prefWidth="200.0" />
       <Text layoutX="14.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Items list" />
       <Text layoutX="261.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Item ID" />
-      <Button layoutX="261.0" layoutY="137.0" mnemonicParsing="false" text="Submit" onAction="#submit" />
+      <Button layoutX="261.0" layoutY="137.0" mnemonicParsing="false" text="Submit" onAction="#addToList"/>
       <TextField fx:id="IDText" layoutX="261.0" layoutY="105.0" promptText="Enter item ID" />
       <Button layoutX="534.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
       <Button layoutX="463.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home" />
+      <Button layoutX="14.0" layoutY="315.0" mnemonicParsing="false" text="Sort" onAction="#sort" />
+      <TextField fx:id="IDAmount" layoutX="413.0" layoutY="105.0" prefHeight="25.0" prefWidth="66.0" promptText="Amount" />
+      <Text layoutX="413.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
+      <Button layoutX="61.0" layoutY="315.0" mnemonicParsing="false" text="Remove" />
+      <ListView fx:id="AmountList" layoutX="161.0" layoutY="106.0" prefHeight="200.0" prefWidth="66.0" />
+      <Text layoutX="161.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
    </children>
 </Pane>

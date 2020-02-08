@@ -1,9 +1,6 @@
 package tom.sros.storageRoom;
 
-import com.github.skjolber.packing.Box;
-import com.github.skjolber.packing.BoxItem;
 import com.github.skjolber.packing.Container;
-import com.github.skjolber.packing.LargestAreaFitFirstPackager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,8 +8,53 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinData {
+public class BinDataBase {
     
+    public static void main(String dataBaseName){
+        Connection c = null;
+        Statement stmt = null;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            
+            //Create tables if they do not exist
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS binType" + 
+                            "(type_ID   STRING   PRIMARY KEY   NOT NULL, " +
+                            "quantity INT  NOT NULL," +
+                            "width   FLOAT   NOT NULL, " +
+                            "length   FLOAT   NOT NULL, " +
+                            "height   FLOAT   NOT NULL)";
+            stmt.executeUpdate(sql);
+            
+             sql = "CREATE TABLE IF NOT EXISTS binIndividual" +
+                    "(bin_ID   STRING   PRIMARY KEY   NOT NULL, " +
+                    "type_ID   STRING   NOT NULL, " +
+                    "FOREIGN KEY(type_ID)   REFERENCES binType(type_ID))";
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (Exception e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    //move this to item database
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public int givePosition(String dataBaseName, String box_ID){
         Statement stmt = null;
         Connection c = null;
@@ -55,30 +97,37 @@ public class BinData {
         return 0;
     }
     
-//    public List<Container> givePosition3dbp(String dataBaseName, List<String> box_IDs){
-//        
-//        //The section that defines the containers in the algorithm.
-//        //ADD A WAY OF MODIFYING THIS
-//        List<Container> containers = new ArrayList<>();
-//        
-//    }
-    
-    
-    public static void test3DBP(){
-        System.out.println("Testing the 3D Bin Packing library");
-        
+    //Unfinished, need to obtain data about bins from the database
+    public static List<Container> getBinData(String dataBaseName){
         List<Container> containers = new ArrayList<>();
-        containers.add(new Container(10, 10, 3, 0));
-        LargestAreaFitFirstPackager packager = new LargestAreaFitFirstPackager(containers, true, true, true);
-
-        List<BoxItem> products = new ArrayList<>();	
-        products.add(new BoxItem(new Box("Foot", 6, 10, 2, 0), 2));
-        products.add(new BoxItem(new Box("Leg", 4, 10, 1, 0), 2)); 
-        products.add(new BoxItem(new Box("Arm", 4 , 10, 2, 0), 1));
+        Statement stmt = null;
+        Connection c = null;
         
-        //when you don't care about the number of bins you need, use Integer.MAX_VALUE
-        List<Container> fits = packager.packList(products, 2, Long.MAX_VALUE);
-        System.out.println(fits);
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            
+            //Gather the available bin types and their quantity
+            ResultSet rs = stmt.executeQuery("SELECT type_ID, quantity FROM binType;");
+            
+            for(int i = 0; i < rs.getFetchSize(); i++ ){
+                rs.next();
+                rs.getString(i);
+                int quantity = rs.getInt(i);
+                for(int f = 0; f < quantity ; f++ ){
+                    //containers.add(new Container())
+                }
+            }
+            
+        }
+        catch (Exception e) {
+                System.err.println( e.getClass().getName() + ": " + e.getMessage());
+                System.exit(0);
+        }
+        return containers;
     }
+    
+    
+    
     
 }

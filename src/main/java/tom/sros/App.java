@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import tom.sros.storageRoom.BinData;
+import tom.sros.storageRoom.BinDataBase;
 import tom.sros.storageRoom.StorageRoomDatabase;
 
 
@@ -30,7 +30,7 @@ public class App extends Application {
         
         UserDatabase.main(dataBaseName);
         ItemDatabase.main(dataBaseName);
-        BinData.test3DBP();
+        BinDataBase.main(dataBaseName);
     }
 
     public static void setRoot(String fxml) throws IOException {

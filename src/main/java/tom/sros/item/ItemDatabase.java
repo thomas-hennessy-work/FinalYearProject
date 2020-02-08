@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 public class ItemDatabase {
     
@@ -152,5 +153,9 @@ public class ItemDatabase {
         //If ID's dont match, return missing
         System.out.println("ID check failed");
         return false;   
+    }
+
+    public boolean IDCheck(String dataBaseName, List<String> ID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
