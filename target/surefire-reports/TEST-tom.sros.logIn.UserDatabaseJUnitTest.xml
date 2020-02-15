@@ -15,7 +15,7 @@
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-13.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire9944504506752024327\surefirebooter17351326905506693291.jar C:\Users\thoma\AppData\Local\Temp\surefire9944504506752024327 2020-02-08T16-08-40_992-jvmRun1 surefire7785975422769218891tmp surefire_015708724293009663517tmp"/>
+    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire4551543924766930760\surefirebooter1350712841731275627.jar C:\Users\thoma\AppData\Local\Temp\surefire4551543924766930760 2020-02-15T16-52-19_869-jvmRun1 surefire14702774942157612544tmp surefire_03073206365070178799tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\test-classes;C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\classes;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13-win.jar;C:\Users\thoma\.m2\repository\org\xerial\sqlite-jdbc\3.28.0\sqlite-jdbc-3.28.0.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\thoma\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\thoma\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\thoma\.m2\repository\com\github\skjolber\3d-bin-container-packing\core\1.2.10\core-1.2.10.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire9944504506752024327\surefirebooter17351326905506693291.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire4551543924766930760\surefirebooter1350712841731275627.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13.0.1+9"/>
@@ -57,8 +57,8 @@
     <property name="java.class.version" value="57.0"/>
   </properties>
   <testcase name="userTableExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
-  <testcase name="defaultUserExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testPopulate" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.019"/>
-  <testcase name="logInCheckTestMatch" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
-  <testcase name="logInCheckTestMiss" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
+  <testcase name="defaultUserExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testPopulate" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.017"/>
+  <testcase name="logInCheckTestMatch" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
+  <testcase name="logInCheckTestMiss" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
 </testsuite>

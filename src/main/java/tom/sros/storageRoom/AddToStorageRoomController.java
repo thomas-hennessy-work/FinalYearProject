@@ -37,6 +37,8 @@ public class AddToStorageRoomController {
         
         //Clearing the stored list of items
         IDs = null;
+        IDList.getItems().clear();
+        AmountList.getItems().clear();
     }
     
     @FXML
@@ -51,6 +53,7 @@ public class AddToStorageRoomController {
         //If they do, pass them as a pair to a list in the backend to be temporeraly stored.
         if(IDB.IDCheck(dataBaseName,inputID) != false){
             IDList.getItems().add(inputID);
+            AmountList.getItems().add(inputAmount);
             IDs.add(new Pair(inputID,inputAmount));
             
             IDText.setText("");

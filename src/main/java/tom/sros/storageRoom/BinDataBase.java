@@ -7,10 +7,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 
 public class BinDataBase {
     
-    public static void main(String dataBaseName){
+    public static void main(){
+        //BinDataBAse bin = new BinDataBse();
+    }
+    
+    public static void createDatabase(String dataBaseName){
         Connection c = null;
         Statement stmt = null;
         
@@ -24,9 +29,9 @@ public class BinDataBase {
             String sql = "CREATE TABLE IF NOT EXISTS binType" + 
                             "(type_ID   STRING   PRIMARY KEY   NOT NULL, " +
                             "quantity INT  NOT NULL," +
-                            "width   FLOAT   NOT NULL, " +
-                            "length   FLOAT   NOT NULL, " +
-                            "height   FLOAT   NOT NULL)";
+                            "width   INT   NOT NULL, " +
+                            "length   INT   NOT NULL, " +
+                            "height   INT   NOT NULL)";
             stmt.executeUpdate(sql);
             
              sql = "CREATE TABLE IF NOT EXISTS binIndividual" +
@@ -44,6 +49,39 @@ public class BinDataBase {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    
+    public static List<Pair> getAllBinInfo(String dataBaseName){
+        System.out.println("Starting getAllBinInfo");
+        Connection c = null;
+        Statement stmt = null;
+        
+        List<Pair> binSpecifications = new ArrayList<>();
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            
+            //Gather the bin ID's and their quantity
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("Select type_ID, quantity FROM binType");
+            
+            //Using the resultset containing the bin information, link the ID and their
+            //ammount to a pair and add the pair to a list
+            while(rs.next()){
+                Pair bin = new Pair(rs.getString("type_ID"),rs.getInt("quantity"));
+                System.out.println(bin.toString());
+                binSpecifications.add(bin);
+            }
+            return binSpecifications;
+        }
+        catch (Exception e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return binSpecifications;
     }
     
     //move this to item database

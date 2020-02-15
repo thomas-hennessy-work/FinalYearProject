@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import tom.sros.storageRoom.BinDataBase;
-import tom.sros.storageRoom.StorageRoomDatabase;
 
 
 /**
@@ -30,7 +29,7 @@ public class App extends Application {
         
         UserDatabase.main(dataBaseName);
         ItemDatabase.main(dataBaseName);
-        BinDataBase.main(dataBaseName);
+        BinDataBase.createDatabase(dataBaseName);
     }
 
     public static void setRoot(String fxml) throws IOException {
