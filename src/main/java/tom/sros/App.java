@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import tom.sros.storageRoom.BinDataBase;
+import tom.sros.storageRoom.StorageRoomDatabase;
 
 
 /**
