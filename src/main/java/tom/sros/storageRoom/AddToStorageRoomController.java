@@ -1,6 +1,5 @@
 package tom.sros.storageRoom;
 
-import com.github.skjolber.packing.BoxItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class AddToStorageRoomController {
         StorageRoomDatabase SRDB = new StorageRoomDatabase();
         
         System.out.println("Adding item to storage room");
-        SRDB.reDone3DBP(dataBaseName, IDs);
+        SRDB.test3dbp(dataBaseName);//, IDs);
         
         //Clearing the stored list of items
         IDs = null;

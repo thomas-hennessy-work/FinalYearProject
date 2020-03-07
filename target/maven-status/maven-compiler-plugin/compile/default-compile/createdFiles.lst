@@ -9,4 +9,5 @@ tom\sros\storageRoom\AddToStorageRoomController.class
 tom\sros\logIn\userManagmentController.class
 tom\sros\storageRoom\StorageRoomDatabase.class
 tom\sros\item\LocateItemController.class
+tom\sros\storageRoom\StorageRoomDatabase$1.class
 tom\sros\storageRoom\StorageRoomManagmentController.class

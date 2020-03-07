@@ -41,11 +41,12 @@ public class ItemDatabase {
             sql = "CREATE TABLE IF NOT EXISTS boxLocation" +
                     "(individual_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, " +
                     "box_ID   STRING   NOT NULL, " +
-                    "bin_number   INT   NOT NULL, " +
+                    "bin_ID  STRING   NOT NULL, " +
                     "corner_vertical_pos   INT   NOT NULL, " +
                     "corner_horizontal_pos   INT   NOT NULL, " +
                     "corner_depth_pos   INT   NOT NULL, " + 
-                    "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID))";
+                    "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID)" +
+                    "FOREIGN KEY(bin_ID)   REFERENCES binIndividual(bin_ID))";
             stmt.executeUpdate(sql);
             System.out.println("Tables created if not alredy");
             
