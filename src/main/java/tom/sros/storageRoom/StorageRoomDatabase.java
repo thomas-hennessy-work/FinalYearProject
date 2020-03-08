@@ -25,7 +25,7 @@ public class StorageRoomDatabase {
         Statement stmt = null;
         
         List<BoxItem> products = new ArrayList<BoxItem>();
-        //products.add(new BoxItem(new Box("item 1", 99, 99, 99, 0), 1));
+        products.add(new BoxItem(new Box("item 1", 99, 99, 99, 0), 1));
         
         Space testSpace = new Space();
         testSpace.setDepth(99);
