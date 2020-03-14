@@ -1,10 +1,10 @@
 package tom.sros.storageRoom;
 
 import java.util.List;
-import tom.sros.storageRoom.box;
+import tom.sros.storageRoom.Box;
 
 
-public class bin {
+public class Bin {
     //bin name
     String Name;
     
@@ -14,14 +14,20 @@ public class bin {
     float Height;
     
     //stored bins
-    List<box> storedBoxes;
+    List<Box> storedBoxes;
     
     //Constructors
-    public bin(String name, float width, float length, float height){
+    public Bin(String name, float width, float length, float height){
         Name= name;
         Width = width;
         Length = length;
         Height = height;
+    }
+    
+    public Bin(){
+        Width = 0;
+        Length = 0;
+        Height = 0;
     }
     
     //Get methods
@@ -39,7 +45,7 @@ public class bin {
         return Width;
     }
     
-    public List<box> getBoxes(){
+    public List<Box> getBoxes(){
         return storedBoxes;
     }
     
@@ -59,10 +65,10 @@ public class bin {
     }
     
     //Box methods
-    public void addBox(box item){
+    public void addBox(Box item){
         storedBoxes.add(item);
     }
-    public void addBoxes(List<box> items){
+    public void addBoxes(List<Box> items){
         items.forEach((boxes) -> {
             storedBoxes.add(boxes);
         });
@@ -75,5 +81,10 @@ public class bin {
                 storedBoxes.remove(item);
             }
         });
+    }
+    
+    //gets floor space
+    public float getArea(){
+        return Width*Length;
     }
 }

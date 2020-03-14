@@ -32,7 +32,7 @@ public class AddToStorageRoomController {
         StorageRoomDatabase SRDB = new StorageRoomDatabase();
         
         System.out.println("Adding item to storage room");
-        SRDB.test3dbp(dataBaseName);//, IDs);
+        SRDB.sortAndAddToStorageRoom(dataBaseName, IDs);
         
         //Clearing the stored list of items
         IDs = null;

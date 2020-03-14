@@ -1,18 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tom.sros.storageRoom;
 
-import static java.util.Collections.list;
-import java.util.List;
-
-/**
- *
- * @author thoma
- */
-public class box {
+public class Box {
     //Box name
     String Name;
     
@@ -26,8 +14,10 @@ public class box {
     float Y;
     float Z;
     
+    Bin Location;
+    
     //Constructors
-    public box(String name, float width, float length, float height){
+    public Box(String name, float width, float length, float height){
         Name = name;
         Width = width;
         Length = length;
@@ -82,6 +72,15 @@ public class box {
     }
     public void setZ(float z){
         Z = z;
+    }
+    
+    //geting calculations
+    public float getVolume(){
+        return Width*Length*Height;
+    }
+    
+    public Space getArea(){
+        return new Space(Width, Length);
     }
 }
 
