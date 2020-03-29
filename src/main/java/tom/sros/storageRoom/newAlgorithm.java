@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javafx.scene.Node;
 import javafx.util.Pair;
+import tom.sros.sorter.binaryTree;
 
 public class newAlgorithm {
     
@@ -75,22 +75,41 @@ public class newAlgorithm {
         }
     }
     
-    public static List<Box> sorter(List<Box> unsortedBoxes, List<Bin> binsAvailable){
+    public List<Box> sorter(List<Box> unsortedBoxes, List<Bin> binsAvailable){
         
-        while(unsortedBoxes.size() > 1 && binsAvailable.size() > 1){
-
-            List<Bin> tallestBins = new ArrayList<Bin>();
+        List<Box> allBoxes = unsortedBoxes;
+        List<Box> boxList = null;
+        List<Box> freshSortBoxes = null;
+        binaryTree BT = new binaryTree();
+        
+        while(!allBoxes.isEmpty() && !binsAvailable.isEmpty()){
+            List<Bin> tallestBins = new ArrayList<>();
             //obtaining a list of the tallest bins available
-            for (Bin currentBin: binsAvailable){
-                if (tallestBins.get(0).getHeight() <= currentBin.getHeight()){
+            binsAvailable.forEach((currentBin) -> {
+                if (tallestBins.isEmpty()){
+                    tallestBins.add(currentBin);
+                }
+                else if (tallestBins.get(0).getHeight() < currentBin.getHeight()){
                     tallestBins.clear();
                     tallestBins.add(currentBin);
                 }
                 else if(tallestBins.get(0).getHeight() == currentBin.getHeight())
-                    tallestBins.add(currentBin);     
+                    tallestBins.add(currentBin);
+            });
+            
+            //Sort the boxes available in to the curent talest bin
+            for (Bin currentBin: tallestBins){
+                freshSortBoxes = BT.sort2DBP(currentBin.getArea(), allBoxes);
+                System.out.println("Size of fresSortBoxes = " + freshSortBoxes.size());
+                for(Box currentBox: freshSortBoxes){
+                    //Remove any boxes that have been sorted from the unsorted list
+                    //System.out.println("Name: " + currentBox.getName() + "/nX: " + currentBox.getX() + "/nY: " + currentBox.getY() + "/nArea: " + currentBox.getArea().toString());
+                    allBoxes.remove(currentBox);
+                    boxList.add(currentBox);
+                }
+                binsAvailable.remove(currentBin);
             }
         }
-        //Error blocking
-        return unsortedBoxes;
+        return boxList;
     }
 }

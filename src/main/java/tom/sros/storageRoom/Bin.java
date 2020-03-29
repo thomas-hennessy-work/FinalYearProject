@@ -84,7 +84,7 @@ public class Bin {
     }
     
     //gets floor space
-    public float getArea(){
-        return Width*Length;
+    public Space getArea(){
+        return new Space(Width, Length);
     }
 }

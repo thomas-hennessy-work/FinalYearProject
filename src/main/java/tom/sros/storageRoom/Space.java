@@ -11,6 +11,10 @@ public class Space {
         Length = length;
     }
     
+    @Override
+    public String toString(){
+        return("Width: " + Width + ", Length: " + Length);
+    }
     public float getLength(){
         return Length;
     }

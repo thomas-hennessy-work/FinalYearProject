@@ -29,10 +29,20 @@ public class AddToStorageRoomController {
     @FXML
     private void sort() throws IOException{
         //Sorting the list of items given to the system
-        StorageRoomDatabase SRDB = new StorageRoomDatabase();
+        newAlgorithm NA = new newAlgorithm();
         
         System.out.println("Adding item to storage room");
-        SRDB.sortAndAddToStorageRoom(dataBaseName, IDs);
+        //Testing sorter
+        Bin testBin = new Bin("test bin", 10, 10, 0);
+        Box box1 = new Box("box 1", 10, 5, 0);
+        Box box2 = new Box("box 2", 10, 5, 0);
+        List<Bin> binList = new ArrayList<>();
+        List<Box> boxList = new ArrayList<>();
+        binList.add(testBin);
+        boxList.add(box1);
+        boxList.add(box2);
+        
+        NA.sorter(boxList, binList);
         
         //Clearing the stored list of items
         IDs = null;
