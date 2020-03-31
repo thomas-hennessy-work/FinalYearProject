@@ -1,6 +1,5 @@
 package tom.sros.storageRoom;
 
-import com.github.skjolber.packing.Container;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -78,8 +77,8 @@ public class newAlgorithm {
     public List<Box> sorter(List<Box> unsortedBoxes, List<Bin> binsAvailable){
         
         List<Box> allBoxes = unsortedBoxes;
-        List<Box> boxList = null;
-        List<Box> freshSortBoxes = null;
+        List<Box> boxList = new ArrayList<>();
+        List<Box> freshSortBoxes;
         binaryTree BT = new binaryTree();
         
         while(!allBoxes.isEmpty() && !binsAvailable.isEmpty()){
@@ -99,8 +98,8 @@ public class newAlgorithm {
             
             //Sort the boxes available in to the curent talest bin
             for (Bin currentBin: tallestBins){
-                freshSortBoxes = BT.sort2DBP(currentBin.getArea(), allBoxes);
-                System.out.println("Size of fresSortBoxes = " + freshSortBoxes.size());
+                freshSortBoxes = binaryTree.sort2DBP(currentBin.getArea(), allBoxes);
+                System.out.println("Size of freshSortBoxes = " + freshSortBoxes.size());
                 for(Box currentBox: freshSortBoxes){
                     //Remove any boxes that have been sorted from the unsorted list
                     //System.out.println("Name: " + currentBox.getName() + "/nX: " + currentBox.getX() + "/nY: " + currentBox.getY() + "/nArea: " + currentBox.getArea().toString());
@@ -110,6 +109,7 @@ public class newAlgorithm {
                 binsAvailable.remove(currentBin);
             }
         }
-        return boxList;
+        System.out.println(boxList.toString());
+        return Collections.reverse(boxList);
     }
 }

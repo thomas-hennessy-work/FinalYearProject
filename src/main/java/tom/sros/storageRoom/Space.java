@@ -22,6 +22,7 @@ public class Space {
         return Width;
     }
     
+    //Checked area = the area this space object is trying to be fit in to
     public boolean canFit(Space checkedArea){
         if(checkedArea.getWidth() > Width || checkedArea.getLength() > Length)
             return false;
