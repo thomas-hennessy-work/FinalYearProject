@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.logIn.UserDatabaseJUnitTest" time="0.015" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.logIn.UserDatabaseJUnitTest" time="0.017" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-13.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire4235980562918562825\surefirebooter13528168114155052279.jar C:\Users\thoma\AppData\Local\Temp\surefire4235980562918562825 2020-03-31T18-58-19_160-jvmRun1 surefire17496192064862460710tmp surefire_010298016904306955669tmp"/>
+    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire12795177788980366610\surefirebooter5872239263359911064.jar C:\Users\thoma\AppData\Local\Temp\surefire12795177788980366610 2020-04-01T13-38-10_831-jvmRun1 surefire4309505502996258016tmp surefire_06374705623257007474tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\test-classes;C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\classes;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13-win.jar;C:\Users\thoma\.m2\repository\org\xerial\sqlite-jdbc\3.28.0\sqlite-jdbc-3.28.0.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\thoma\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\thoma\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\thoma\.m2\repository\com\github\skjolber\3d-bin-container-packing\core\1.2.10\core-1.2.10.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire4235980562918562825\surefirebooter13528168114155052279.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire12795177788980366610\surefirebooter5872239263359911064.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13.0.1+9"/>
@@ -56,9 +56,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="userTableExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0"/>
-  <testcase name="defaultUserExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
+  <testcase name="userTableExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
+  <testcase name="defaultUserExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
   <testcase name="testPopulate" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.009"/>
-  <testcase name="logInCheckTestMatch" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
-  <testcase name="logInCheckTestMiss" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.001"/>
+  <testcase name="logInCheckTestMatch" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
+  <testcase name="logInCheckTestMiss" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002"/>
 </testsuite>

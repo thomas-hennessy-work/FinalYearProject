@@ -85,6 +85,6 @@ public class Box {
     
     @Override
     public String toString(){
-        return("Name: " + Name + " Width: " + Width + " Length: " + Length + " Height: " + Height + " X position: " + X + " Y position: " + Y + " Z position: " + Z);
+        return("Name:" + Name + " Width:" + Width + " Length:" + Length + " Height:" + Height + " X position:" + X + " Y position:" + Y + " Z position:" + Z);
     }
 }

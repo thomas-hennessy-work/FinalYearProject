@@ -79,7 +79,6 @@ public class newAlgorithm {
         List<Box> allBoxes = unsortedBoxes;
         List<Box> boxList = new ArrayList<>();
         List<Box> freshSortBoxes;
-        binaryTree BT = new binaryTree();
         
         while(!allBoxes.isEmpty() && !binsAvailable.isEmpty()){
             List<Bin> tallestBins = new ArrayList<>();
@@ -110,6 +109,6 @@ public class newAlgorithm {
             }
         }
         System.out.println(boxList.toString());
-        return Collections.reverse(boxList);
+        return boxList;
     }
 }

@@ -24,24 +24,24 @@ public class Space {
     
     //Checked area = the area this space object is trying to be fit in to
     public boolean canFit(Space checkedArea){
-        if(checkedArea.getWidth() > Width || checkedArea.getLength() > Length)
-            return false;
-        else
-            return true;
+        System.out.println("\nChecked area width: " + checkedArea.getWidth() + " box width: " + Width);
+        System.out.println("Checked area length: " + checkedArea.getLength() + " box length: " + Length);  
+        System.out.println("canFit returns: " + (checkedArea.getWidth() >= Width && checkedArea.getLength() >= Length));
+        return (checkedArea.getWidth() >= Width && checkedArea.getLength() >= Length);
     }
     
     
     //Methods relating to bin calculations
     public Space areaBellow(Space binArea, Space boxArea){
         float bellowWidth = binArea.getWidth();
-        float bellowLength = (binArea.getLength() - boxArea.getLength());
+        float bellowLength = ((binArea.getLength()) - (boxArea.getLength()));
         
         Space bellowArea = new Space(bellowWidth, bellowLength);
         return bellowArea;
     }
     
     public Space areaRight(Space binArea, Space boxArea){
-        float rightWidth = (binArea.getWidth() - binArea.getWidth());
+        float rightWidth = ((binArea.getWidth()) - (boxArea.getWidth()));
         float rightLength = (boxArea.getLength());
         
         Space rightArea = new Space(rightWidth, rightLength);

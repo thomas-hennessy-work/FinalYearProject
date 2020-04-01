@@ -37,12 +37,14 @@ public class AddToStorageRoomController {
         Box box1 = new Box("box 1", 5, 5, 0);
         Box box2 = new Box("box 2", 5, 5, 0);
         Box box3 = new Box("box 3", 5, 5, 0);
+        Box box4 = new Box("box 4", 5, 5, 0);
         List<Bin> binList = new ArrayList<>();
         List<Box> boxList = new ArrayList<>();
         binList.add(testBin);
         boxList.add(box1);
         boxList.add(box2);
         boxList.add(box3);
+        boxList.add(box4);
         
         NA.sorter(boxList, binList);
         

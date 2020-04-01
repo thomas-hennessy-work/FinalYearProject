@@ -72,7 +72,6 @@ public class binaryTree {
     }
     
         private void add(Box item, Space binSpace){
-        System.out.println("Testing root value: " + root);
         root = addBoxRecursive(root, item, binSpace);
     }
     
@@ -84,32 +83,16 @@ public class binaryTree {
         //is due to the space constantly becoming smaller as boxes are added. If it is unable
         //to fit in the space that is already taken, it will not fit in a smaller space. This
         //eliminates unnececery recursion
-        
-//        System.out.println("value of current node: " + currentNode);
-//        System.out.println(currentNode);
-//        currentNode.addBinArea(binSpace);
-        
-        //If there is no box in the current node AND the box fits, place it here
-//        System.out.println("Node can fit in this area is " + item.getArea().canFit(currentNode.getBinArea()));//currentNode.getBinArea().canFit(item.getArea()));
-//        System.out.println("box stored in this location is: " + currentNode.getPlacedBox());
-        
+        //If the current node is null
         if (currentNode == null){
-            System.out.println("Current node is null");
+            System.out.println("Current node is null, box being placed");
             return new Node(binSpace, item);
         }
-//        else if (currentNode.getPlacedBox() == null && item.getArea().canFit(currentNode.getBinArea())){
-//            //placing box in current node
-//            System.out.println("node not null, box can fit in it");
-//            //System.out.println("Name: " + currentNode.getPlacedBox().getName() + "\nX: " + currentNode.getPlacedBox().getX() + "\nY: " + currentNode.getPlacedBox().getY() + "\nArea: " + currentNode.getPlacedBox().getArea().toString());
-//            return new Node(binSpace, item);
-//        }
-//        
         //If the box can fit in the node to the right, but there is no node right, move to the node right
         else if (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))){
             System.out.println("Going right");
             //itterativly adding to the position of the item
             item.setX(item.getX() + currentNode.getPlacedBox().getWidth());
-            System.out.println(item.getX());
             //continuing recursion
             currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
         }
@@ -118,12 +101,9 @@ public class binaryTree {
             System.out.println("Going bellow");
             //itterativly adding to the position of the item
             item.setY(item.getY() + currentNode.getPlacedBox().getLength());
-            System.out.println(item.getY());
             //continuing recursion
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
         }
-        System.out.println("Sorter returning null");
-        currentNode.unsortable();
         return currentNode;
     }
     
@@ -131,7 +111,7 @@ public class binaryTree {
     private List<Node> traversePreOrder(Node node){
         List<Node> nodeList = new ArrayList<>();
         
-        if (node != null && node.isSortable()){
+        if (node != null){
             System.out.println("Found box in node: " + node.getPlacedBox().getName());
             nodeList.addAll(traversePreOrder(node.below));
             nodeList.addAll(traversePreOrder(node.right));
@@ -144,23 +124,17 @@ public class binaryTree {
         binaryTree binTree = new binaryTree();
         List<Box> boxList = new ArrayList<>();
         
-        System.out.println("Initial value of root: " + binTree.root);
-        
         boxes.forEach((curentBox) -> {
             System.out.println("Adding box: " + curentBox.getName());
             binTree.add(curentBox, binSpace);
         });
         
         List<Node> nodeList = binTree.traversePreOrder(binTree.root);
-        System.out.println("Value of root: " + binTree.root);
-        System.out.println("Node list size: " + nodeList.size());
         
         nodeList.forEach((currentNode) -> {
-            System.out.println("current Node: " + currentNode.getPlacedBox().getName());
             boxList.add(currentNode.getPlacedBox());
         });
         
         return boxList;
-        
     }
 }
