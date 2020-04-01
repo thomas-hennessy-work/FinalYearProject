@@ -49,6 +49,10 @@ public class Box {
         return Z;
     }
     
+    public Bin getBin(){
+        return Location;
+    }
+    
     //Set methods
     public void setName(String name){
         Name = name;
@@ -72,6 +76,10 @@ public class Box {
     }
     public void setZ(float z){
         Z = z;
+    }
+    
+    public void setBin(Bin location){
+        Location = location;
     }
     
     //geting calculations

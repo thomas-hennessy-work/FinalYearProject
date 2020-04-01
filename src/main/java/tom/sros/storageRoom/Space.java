@@ -24,9 +24,6 @@ public class Space {
     
     //Checked area = the area this space object is trying to be fit in to
     public boolean canFit(Space checkedArea){
-        System.out.println("\nChecked area width: " + checkedArea.getWidth() + " box width: " + Width);
-        System.out.println("Checked area length: " + checkedArea.getLength() + " box length: " + Length);  
-        System.out.println("canFit returns: " + (checkedArea.getWidth() >= Width && checkedArea.getLength() >= Length));
         return (checkedArea.getWidth() >= Width && checkedArea.getLength() >= Length);
     }
     

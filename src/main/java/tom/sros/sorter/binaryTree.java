@@ -7,6 +7,7 @@ package tom.sros.sorter;
 
 import java.util.ArrayList;
 import java.util.List;
+import tom.sros.storageRoom.Bin;
 import tom.sros.storageRoom.Box;
 import tom.sros.storageRoom.Space;
 
@@ -14,7 +15,7 @@ import tom.sros.storageRoom.Space;
 public class binaryTree {
     
     Node root;
-    Node fail;
+    Bin currentBin;
     
     //When you add a box to a top left corner, there will be two quadrilaterals left over,
     //one bello and one to the right. Recursivly doing this allows you to fit boxes in to 
@@ -27,7 +28,6 @@ public class binaryTree {
         Box storedBox;
         Node below;
         Node right;
-        Boolean unsortable = false;
         
         Node(){
             this.binArea = null;
@@ -52,9 +52,6 @@ public class binaryTree {
         private void addBinArea(Space Area){
             binArea = Area;
         }
-        private void placeBox(Box item){
-            storedBox = item;
-        }
         
         private Space getBinArea(){
             return binArea;
@@ -63,12 +60,6 @@ public class binaryTree {
             return storedBox;
         }
         
-        private void unsortable(){
-            unsortable = true;
-        }
-        private boolean isSortable(){
-            return unsortable;
-        }
     }
     
         private void add(Box item, Space binSpace){
@@ -76,7 +67,7 @@ public class binaryTree {
     }
     
     private Node addBoxRecursive(Node currentNode, Box item, Space binSpace){
-        System.out.println("Values provided" + "\nNode: " + currentNode + "\nBox: " + item.toString() + "\nSpace: " + binSpace.toString());
+        System.out.println("Values provided" + "\nNode: " + currentNode + "\nBox: " + item.toString() + "\nSpace: " + binSpace.toString() + "\nPlaced: ");
         //The algorithm checks right then bellow, due to the right being more likely to have less space
         
         //The box checks if it is able to fit in the boxes bellow, even if they fit. This
@@ -86,23 +77,37 @@ public class binaryTree {
         //If the current node is null
         if (currentNode == null){
             System.out.println("Current node is null, box being placed");
+            //Provides information about where the bin is stored and also prevents it from being re-sorted
+            item.setBin(currentBin);
             return new Node(binSpace, item);
         }
+        
+        System.out.println("can go right: " + item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea())));
+        System.out.println("can go bellow: " + item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea())) + "\n");
         //If the box can fit in the node to the right, but there is no node right, move to the node right
-        else if (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))){
+        if ((item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != currentBin)){
             System.out.println("Going right");
             //itterativly adding to the position of the item
             item.setX(item.getX() + currentNode.getPlacedBox().getWidth());
             //continuing recursion
             currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
+            
+            if((item.getBin() != currentBin)){
+                item.setX(item.getX() - currentNode.getPlacedBox().getWidth());
+            }
         }
+        
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
-        else if (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))){
+        if ((item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != currentBin)){
             System.out.println("Going bellow");
             //itterativly adding to the position of the item
             item.setY(item.getY() + currentNode.getPlacedBox().getLength());
             //continuing recursion
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
+            
+            if((item.getBin() != currentBin)){
+                item.setY(item.getY() - currentNode.getPlacedBox().getWidth());
+            }
         }
         return currentNode;
     }
@@ -120,12 +125,13 @@ public class binaryTree {
         return nodeList;
     }
     
-    public static List<Box> sort2DBP(Space binSpace, List<Box> boxes){
+    public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes){
         binaryTree binTree = new binaryTree();
+        binTree.currentBin = storingBin;
+        Space binSpace = storingBin.getArea();
         List<Box> boxList = new ArrayList<>();
         
         boxes.forEach((curentBox) -> {
-            System.out.println("Adding box: " + curentBox.getName());
             binTree.add(curentBox, binSpace);
         });
         

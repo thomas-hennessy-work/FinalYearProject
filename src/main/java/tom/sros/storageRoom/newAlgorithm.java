@@ -97,7 +97,7 @@ public class newAlgorithm {
             
             //Sort the boxes available in to the curent talest bin
             for (Bin currentBin: tallestBins){
-                freshSortBoxes = binaryTree.sort2DBP(currentBin.getArea(), allBoxes);
+                freshSortBoxes = binaryTree.sort2DBP(currentBin, allBoxes);
                 System.out.println("Size of freshSortBoxes = " + freshSortBoxes.size());
                 for(Box currentBox: freshSortBoxes){
                     //Remove any boxes that have been sorted from the unsorted list
