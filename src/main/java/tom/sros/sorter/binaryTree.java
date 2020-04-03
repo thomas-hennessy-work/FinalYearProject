@@ -66,10 +66,9 @@ public class binaryTree {
         root = addBoxRecursive(root, item, binSpace);
     }
     
+    //The algorithm checks right then bellow, due to the right being more likely to have less space
     private Node addBoxRecursive(Node currentNode, Box item, Space binSpace){
-        System.out.println("Values provided" + "\nNode: " + currentNode + "\nBox: " + item.toString() + "\nSpace: " + binSpace.toString() + "\nPlaced: ");
-        //The algorithm checks right then bellow, due to the right being more likely to have less space
-        
+        System.out.println("Values provided" + "\nNode: " + currentNode + "\nBox: " + item.toString() + "\nSpace: " + binSpace.toString() + "\nPlaced: ");        
         //The box checks if it is able to fit in the boxes bellow, even if they fit. This
         //is due to the space constantly becoming smaller as boxes are added. If it is unable
         //to fit in the space that is already taken, it will not fit in a smaller space. This

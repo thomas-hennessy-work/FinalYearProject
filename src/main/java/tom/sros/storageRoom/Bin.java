@@ -24,6 +24,13 @@ public class Bin {
         Height = height;
     }
     
+    public Bin(String name){
+        Name = name;
+        Width = 0;
+        Length = 0;
+        Height = 0;
+    }
+    
     public Bin(){
         Width = 0;
         Length = 0;

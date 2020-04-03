@@ -32,21 +32,22 @@ public class AddToStorageRoomController {
         newAlgorithm NA = new newAlgorithm();
         
         System.out.println("Adding item to storage room");
-        //Testing sorter
-        Bin testBin = new Bin("test bin", 10, 10, 0);
-        Box box1 = new Box("box 1", 5, 5, 0);
-        Box box2 = new Box("box 2", 5, 5, 0);
-        Box box3 = new Box("box 3", 5, 5, 0);
-        Box box4 = new Box("box 4", 5, 5, 0);
-        List<Bin> binList = new ArrayList<>();
-        List<Box> boxList = new ArrayList<>();
-        binList.add(testBin);
-        boxList.add(box1);
-        boxList.add(box2);
-        boxList.add(box3);
-        boxList.add(box4);
         
-        NA.sorter(boxList, binList);
+        //Testing sorter
+//        Bin testBin = new Bin("test bin", 10, 10, 0);
+//        Box box1 = new Box("box 1", 5, 5, 0);
+//        Box box2 = new Box("box 2", 5, 5, 0);
+//        Box box3 = new Box("box 3", 5, 5, 0);
+//        Box box4 = new Box("box 4", 5, 5, 0);
+//        List<Bin> binList = new ArrayList<>();
+//        List<Box> boxList = new ArrayList<>();
+//        binList.add(testBin);
+//        boxList.add(box1);
+//        boxList.add(box2);
+//        boxList.add(box3);
+//        boxList.add(box4);
+        
+        NA.sortAndAddToDB(dataBaseName, IDs);
         
         //Clearing the stored list of items
         IDs = null;

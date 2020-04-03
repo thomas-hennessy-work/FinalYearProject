@@ -4,6 +4,7 @@ import com.github.skjolber.packing.Container;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,19 +45,19 @@ public class BinDataBase {
             c.close();
             System.out.println("Database connection closed");
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
     }
     
-    public static List<Pair> getAllBinInfo(String dataBaseName){
+    public static List<Bin> getGeneralBinInfo(String dataBaseName){
         System.out.println("Starting getAllBinInfo");
         Connection c = null;
         Statement stmt = null;
         
-        List<Pair> binSpecifications = new ArrayList<>();
+        List<Bin> availableBins = new ArrayList<>(); 
         
         try{
             //Connect to database
@@ -65,23 +66,59 @@ public class BinDataBase {
             
             //Gather the bin ID's and their quantity
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("Select type_ID, quantity FROM binType");
+            ResultSet rs = stmt.executeQuery("Select type_ID, quantity, width, length, height FROM binType");
             
             //Using the resultset containing the bin information, link the ID and their
             //ammount to a pair and add the pair to a list
             while(rs.next()){
-                Pair bin = new Pair(rs.getString("type_ID"),rs.getInt("quantity"));
-                System.out.println(bin.toString());
-                binSpecifications.add(bin);
+                for(int z = 0 ; z < rs.getInt("quantity") ; z ++){
+                    availableBins.add(new Bin(rs.getString("type_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height")));
+                }
             }
-            return binSpecifications;
+            stmt.close();
+            c.close();
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        return binSpecifications;
+        List<Bin> finalList =  convertGeneralBinToIndividual(availableBins, dataBaseName);
+        return finalList;
+    }
+    
+    //merge these two
+    
+    public static List<Bin> convertGeneralBinToIndividual(List<Bin> availableBins, String dataBaseName){
+        System.out.println("Starting getBinData");
+        Connection c = null;
+        Statement stmt = null;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            
+            stmt = c.createStatement();
+            //individual bins
+            ResultSet rs = stmt.executeQuery("Select bin_ID, type_ID FROM binIndividual");
+            
+            while (rs.next()){
+                boolean found = false;
+                for(int i = 0 ; availableBins.size() > i && found == false ; i++){
+                    if(availableBins.get(i).getName().equals(rs.getString("type_ID"))){
+                        found = true;
+                        availableBins.get(i).setName(rs.getString("type_ID"));
+                    }
+                }
+            }
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return availableBins;
     }
     
     //move this to item database
@@ -128,7 +165,7 @@ public class BinDataBase {
             return Total;
         }
         //Exception catching
-        catch (Exception e) {
+        catch (SQLException e) {
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
         }
@@ -143,6 +180,7 @@ public class BinDataBase {
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
             System.out.println("Connected to database");
             
             //Gather the available bin types and their quantity
@@ -158,7 +196,7 @@ public class BinDataBase {
             }
             
         }
-        catch (Exception e) {
+        catch (SQLException e) {
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
         }
