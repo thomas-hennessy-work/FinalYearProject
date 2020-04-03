@@ -110,6 +110,7 @@ public class newAlgorithm {
             }
             stmt.close();
             c.close();
+            System.out.println("Database connection closed");
         }
         catch (SQLException e){
             //Error catching
@@ -119,16 +120,24 @@ public class newAlgorithm {
         return unsortedBoxes;
    }
     
-   public List<Box> asignBoxInformation(String dataBaseName, List<Box> Boxes){
+   public List<Box> asignBoxInformation(String dataBaseName, List<Pair> IDAmountList){
        Connection c = null;
        Statement stmt = null;
+       
+       List<Box> Boxes = new ArrayList<>();
        
        try{
            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
            System.out.println("Connected to database");
-           
            stmt = c.createStatement();
            
+           for(Pair currentPair: IDAmountList){
+               for(int i = 0 ; i < (int)currentPair.getValue() ; i++){
+                   Boxes.add(new Box((String) currentPair.getKey()));
+               }
+           }
+           
+           //Seperated to avoid repeatedly calling the DB
            for(Box currentBox: Boxes){
                String boxName = currentBox.getName();
                ResultSet rs = stmt.executeQuery("Select width, length, height FROM boxType WHERE box_ID = " + boxName);
@@ -138,6 +147,7 @@ public class newAlgorithm {
            }
            stmt.close();
            c.close();
+           System.out.println("Database connection closed");
        }
        catch (SQLException e){
         //Error catching
@@ -152,66 +162,16 @@ public class newAlgorithm {
     
     List<Box> returnBoxList = new ArrayList<>();
     List<Box> freshSortBoxes;
-    
-    Connection c = null;
-    Statement stmt = null;
-        
+
     //obtaining bin information
-    List<Bin> binSpecifications = BinDataBase.getGeneralBinInfo(dataBaseName);
-        
-//    try{
-//        c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-//        stmt = c.createStatement();
-//        System.out.println("Connected to database");
-//            
-//        int width = 0;
-//        int length = 0;
-//        int height =0;
-//        
-//        //Create a list of all the boxes to be sorted
-//        List<Box> unsortedBoxes = new ArrayList<>();
-//        List<String> IDList = new ArrayList<>();
-//            
-//        for(int y=0 ; y < IDAmountList.size() ; y++){
-//            String boxID = (String) IDAmountList.get(y).getKey();
-//            int boxAmount = (int) IDAmountList.get(y).getValue();
-//                    
-//            //gather box dimensions from db
-//            ResultSet rs = stmt.executeQuery("Select width, length, height FROM boxType WHERE box_ID = " + boxID);
-//            width = rs.getInt("width");
-//            length = rs.getInt("length");
-//            height = rs.getInt("height");
-//                    
-//            //add the box to the list
-//            for(int i = 0; i <= boxAmount ; i++){
-//                unsortedBoxes.add(new Box(boxID, width, length, height));
-//                //Adding the ID to a list for later identification
-//                IDList.add(boxID);
-//            }
-//        }
-//            
-//        //go through each bin type given in the list of pairs "binspecifications"
-//            for(int i = 0 ; i < binSpecifications.size() ; i ++){
-//                String binTypeID = (String) binSpecifications.get(i).getKey();
-//                System.out.println("adding bin ID " + binTypeID);
-//            
-//                //gather the mesurements of the bin
-//                ResultSet rs = stmt.executeQuery("SELECT width, length, height, bin_ID FROM binType INNER JOIN binIndividual ON binType.type_ID = binIndividual.type_ID WHERE binType.type_ID = " + binTypeID + ";");
-//                System.out.println("Bin data gathered");
-//                width = rs.getInt("width");
-//                length = rs.getInt("length");
-//                height = rs.getInt("height");
-//                
-//                while(rs.next()){
-//                    binsAvailable.add(new Bin(binTypeID, width, length, height));
-//                    System.out.println("Individual ID = " + rs.getString("bin_ID") + ", width = " + width + ", height = " + height + ", length = " + length);
-//                }
-//            }
+    List<Bin> binsAvailable = BinDataBase.getGeneralBinInfo(dataBaseName);
+    //obtaining box information
+    List<Box> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
             
-        while(!unsortedBoxes.isEmpty() && !binSpecifications.isEmpty()){
+        while(!boxesAvailable.isEmpty() && !binsAvailable.isEmpty()){
             List<Bin> tallestBins = new ArrayList<>();
             //obtaining a list of the tallest bins available
-            binSpecifications.forEach((currentBin) -> {
+            binsAvailable.forEach((currentBin) -> {
                 if (tallestBins.isEmpty()){
                     tallestBins.add(currentBin);
                 }
@@ -225,24 +185,16 @@ public class newAlgorithm {
 
             //Sort the boxes available in to the curent talest bin
             for (Bin currentBin: tallestBins){
-                freshSortBoxes = binaryTree.sort2DBP(currentBin, unsortedBoxes);
+                freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable);
                 System.out.println("Size of freshSortBoxes = " + freshSortBoxes.size());
                 for(Box currentBox: freshSortBoxes){
                     //Remove any boxes that have been sorted from the unsorted list
                     //System.out.println("Name: " + currentBox.getName() + "/nX: " + currentBox.getX() + "/nY: " + currentBox.getY() + "/nArea: " + currentBox.getArea().toString());
-                   unsortedBoxes.remove(currentBox);
+                   boxesAvailable.remove(currentBox);
                    returnBoxList.add(currentBox);
                 }
-                binSpecifications.remove(currentBin);
+                binsAvailable.remove(currentBin);
             }
-//        }
-//        stmt.close();
-//        c.close();
-//    }
-    catch (SQLException e){
-        //Error catching
-        System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        System.exit(0);
     }
         System.out.println(returnBoxList.toString());
         return returnBoxList;

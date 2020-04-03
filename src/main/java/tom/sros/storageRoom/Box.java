@@ -24,6 +24,13 @@ public class Box {
         Height = height;
     }
     
+    public Box(String name){
+        Name = name;
+        Width = 0;
+        Length = 0;
+        Height = 0;
+    }
+    
     //get methods
     public String getName(){
         return Name;

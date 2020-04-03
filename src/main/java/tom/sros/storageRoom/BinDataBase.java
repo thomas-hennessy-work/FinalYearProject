@@ -75,6 +75,7 @@ public class BinDataBase {
                     availableBins.add(new Bin(rs.getString("type_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height")));
                 }
             }
+            System.out.println("Database connection closed");
             stmt.close();
             c.close();
         }
@@ -112,6 +113,9 @@ public class BinDataBase {
                     }
                 }
             }
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
         }
         catch (SQLException e){
             //Error catching
