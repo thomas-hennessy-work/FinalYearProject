@@ -1,5 +1,5 @@
 
-package tom.sros.storageRoom;
+package tom.sros.sorter;
 
 public class Space {
     

@@ -3,8 +3,9 @@ package tom.sros.item;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
+import tom.sros.sorter.Box;
 
 public class ItemDatabase {
     
@@ -54,7 +55,7 @@ public class ItemDatabase {
             c.close();
             System.out.println("Database connection closed");
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
@@ -84,7 +85,7 @@ public class ItemDatabase {
                 c.close();
                 System.out.println("Database connection closed");
             }
-            catch (Exception e) {
+            catch (SQLException e) {
                 //Exception catching
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
@@ -110,7 +111,7 @@ public class ItemDatabase {
                 c.close();
                 System.out.println("Database connection closed");
             }
-            catch (Exception e) {
+            catch (SQLException e) {
                 //Exception catching
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
@@ -155,8 +156,33 @@ public class ItemDatabase {
         System.out.println("ID check failed");
         return false;   
     }
-
-    public boolean IDCheck(String dataBaseName, List<String> ID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public Box obtainBoxInformation (String boxName, String dataBaseName){
+        Connection c = null;
+        Statement stmt = null;
+        
+        Box returnBox = new Box(boxName);
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("Select width, length, height FROM boxType WHERE box_ID = " + boxName);
+            returnBox.setWidth(rs.getFloat("width"));
+            returnBox.setLength(rs.getFloat("length"));
+            returnBox.setHeight(rs.getFloat("height"));
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        
+        return returnBox;
     }
 }

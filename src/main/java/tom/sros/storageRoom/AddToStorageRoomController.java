@@ -1,5 +1,6 @@
 package tom.sros.storageRoom;
 
+import tom.sros.sorter.newAlgorithm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,20 +34,7 @@ public class AddToStorageRoomController {
         
         System.out.println("Adding item to storage room");
         
-        //Testing sorter
-//        Bin testBin = new Bin("test bin", 10, 10, 0);
-//        Box box1 = new Box("box 1", 5, 5, 0);
-//        Box box2 = new Box("box 2", 5, 5, 0);
-//        Box box3 = new Box("box 3", 5, 5, 0);
-//        Box box4 = new Box("box 4", 5, 5, 0);
-//        List<Bin> binList = new ArrayList<>();
-//        List<Box> boxList = new ArrayList<>();
-//        binList.add(testBin);
-//        boxList.add(box1);
-//        boxList.add(box2);
-//        boxList.add(box3);
-//        boxList.add(box4);
-        
+        //Sorting and adding boxes to the storage room database
         NA.sortAndAddToDB(dataBaseName, IDs);
         
         //Clearing the stored list of items

@@ -7,9 +7,6 @@ package tom.sros.sorter;
 
 import java.util.ArrayList;
 import java.util.List;
-import tom.sros.storageRoom.Bin;
-import tom.sros.storageRoom.Box;
-import tom.sros.storageRoom.Space;
 
 
 public class binaryTree {
@@ -99,9 +96,7 @@ public class binaryTree {
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
         if ((item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != currentBin)){
             System.out.println("Going bellow");
-            //itterativly adding to the position of the item
             item.setY(item.getY() + currentNode.getPlacedBox().getLength());
-            //continuing recursion
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
             
             if((item.getBin() != currentBin)){
@@ -125,17 +120,21 @@ public class binaryTree {
     }
     
     public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes){
+        //Creating instances of the sorter
         binaryTree binTree = new binaryTree();
         binTree.currentBin = storingBin;
         Space binSpace = storingBin.getArea();
         List<Box> boxList = new ArrayList<>();
         
+        //Adding each box provided to the binary tree
         boxes.forEach((curentBox) -> {
             binTree.add(curentBox, binSpace);
         });
         
+        //Obtaining a list of the nodes
         List<Node> nodeList = binTree.traversePreOrder(binTree.root);
         
+        //Extracting box information about the sorted boxes from the nodes
         nodeList.forEach((currentNode) -> {
             boxList.add(currentNode.getPlacedBox());
         });

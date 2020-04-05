@@ -1,7 +1,6 @@
-package tom.sros.storageRoom;
+package tom.sros.sorter;
 
 import java.util.List;
-import tom.sros.storageRoom.Box;
 
 
 public class Bin {
@@ -13,7 +12,7 @@ public class Bin {
     float Length;
     float Height;
     
-    //stored bins
+    //boxes stored in the bin
     List<Box> storedBoxes;
     
     //Constructors

@@ -1,5 +1,6 @@
 package tom.sros.storageRoom;
 
+import tom.sros.sorter.Bin;
 import com.github.skjolber.packing.Container;
 import java.sql.Connection;
 import java.sql.DriverManager;
