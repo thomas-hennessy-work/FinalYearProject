@@ -77,9 +77,7 @@ public class binaryTree {
             item.setBin(currentBin);
             return new Node(binSpace, item);
         }
-        
-        System.out.println("can go right: " + item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea())));
-        System.out.println("can go bellow: " + item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea())) + "\n");
+
         //If the box can fit in the node to the right, but there is no node right, move to the node right
         if ((item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != currentBin)){
             System.out.println("Going right");
@@ -136,6 +134,7 @@ public class binaryTree {
         
         //Extracting box information about the sorted boxes from the nodes
         nodeList.forEach((currentNode) -> {
+            currentNode.getPlacedBox().setBin(storingBin);
             boxList.add(currentNode.getPlacedBox());
         });
         

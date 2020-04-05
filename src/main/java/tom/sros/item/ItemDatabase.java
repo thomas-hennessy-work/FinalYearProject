@@ -185,4 +185,30 @@ public class ItemDatabase {
         
         return returnBox;
     }
+    
+    public void addBoxLocation(Box placedBox, String dataBaseName){
+        Connection c = null;
+        Statement stmt = null;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos) "
+                    + "VALUES ('" + placedBox.getName() + "', '" + placedBox.getBin() + "', '" + placedBox.geZ() + "', '"
+                    + placedBox.getX() + "', '" + placedBox.getY() + "' );";
+            stmt.executeUpdate(sql);
+            System.out.println("Box location added to data base");
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+    }
 }

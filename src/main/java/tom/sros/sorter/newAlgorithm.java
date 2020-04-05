@@ -18,6 +18,7 @@ public class newAlgorithm {
        Statement stmt = null;
        
        List<Box> Boxes = new ArrayList<>();
+       List<Box> returnBoxes = new ArrayList<>();
            
        IDAmountList.forEach((currentPair) -> {
           for(int i = 0 ; i < (int)currentPair.getValue() ; i++){
@@ -26,12 +27,12 @@ public class newAlgorithm {
         });
            
         ItemDatabase IDB = new ItemDatabase();
-        //Seperated to avoid repeatedly calling the DB
-        for(Box currentBox: Boxes){
-            currentBox = IDB.obtainBoxInformation(currentBox.getName(), dataBaseName);
-        }
+       //Seperated to avoid repeatedly calling the DB
+       Boxes.forEach((currentBox) -> {
+           returnBoxes.add(IDB.obtainBoxInformation(currentBox.getName(), dataBaseName));
+       });
 
-        return Boxes;
+        return returnBoxes;
    }
    
    
@@ -61,12 +62,13 @@ public class newAlgorithm {
             });
 
             //Sort the boxes available in to the curent talest bin
+            ItemDatabase IDB = new ItemDatabase();
             for (Bin currentBin: tallestBins){
                 freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable);
                 System.out.println("Size of freshSortBoxes = " + freshSortBoxes.size());
                 for(Box currentBox: freshSortBoxes){
-                    //Remove any boxes that have been sorted from the unsorted list
-                    //System.out.println("Name: " + currentBox.getName() + "/nX: " + currentBox.getX() + "/nY: " + currentBox.getY() + "/nArea: " + currentBox.getArea().toString());
+                   //Remove any boxes that have been sorted from the unsorted list
+                   IDB.addBoxLocation(currentBox, dataBaseName);
                    boxesAvailable.remove(currentBox);
                    returnBoxList.add(currentBox);
                 }
