@@ -1,6 +1,8 @@
 package tom.sros.logIn;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class UserDatabase {
     
@@ -66,7 +68,34 @@ public class UserDatabase {
                 c.close();
                 System.out.println("Database connection closed");
             }
-            catch (Exception e) {
+            catch (SQLException e) {
+                //Exception catching
+                System.err.println( e.getClass().getName() + ": " + e.getMessage());
+                System.exit(0);
+            }
+        }
+        
+        public void removeUser(String dataBaseName, String ID){
+            System.out.println("Deleting user " + ID);
+            
+            Connection c = null;
+            Statement stmt = null;
+            
+            try{
+                //connecting to database
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+                System.out.println("Connected to database");
+                
+                //Insert a new user in to the user database
+                stmt = c.createStatement();
+                String sql = "DELETE FROM user WHERE user_ID = " + ID;
+                stmt.executeUpdate(sql);
+                
+                stmt.close();
+                c.close();
+                System.out.println("Database connection closed");
+            }
+            catch (SQLException e) {
                 //Exception catching
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
@@ -110,5 +139,38 @@ public class UserDatabase {
    }
              //If they do not match, return false
             return false;
+        }
+        
+        public List<user> getAllUsersNoPassword(String dataBaseName){
+            Connection c;
+            Statement stmt;
+            
+            List returnList = new ArrayList<user>();
+            
+            try{
+                //Connecting to database
+                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+                System.out.println("Connected to database");
+                stmt = c.createStatement();
+                
+                ResultSet rs = stmt.executeQuery("SELECT user_ID, user_name, is_manager FROM user");
+                
+                while(rs.next()){
+                    if(rs.getBoolean("is_manager") == true)
+                    returnList.add(new user(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager"), "True"));
+                    else
+                    returnList.add(new user(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager"), "False")); 
+                }
+                
+                stmt.close();
+                c.close();
+                System.out.println("User credentials not recognized + Database connection closed");
+            }
+            //Exception catching
+            catch ( SQLException e ) {
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                System.exit(0);
+            }
+            return returnList;
         }
     }

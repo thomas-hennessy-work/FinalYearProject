@@ -1,7 +1,5 @@
 package tom.sros.sorter;
 
-import tom.sros.sorter.Bin;
-
 public class Box {
     //Box name
     String Name;
