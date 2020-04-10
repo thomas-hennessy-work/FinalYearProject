@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 
 public class ItemDatabase {
@@ -46,6 +49,7 @@ public class ItemDatabase {
                     "corner_vertical_pos   INT   NOT NULL, " +
                     "corner_horizontal_pos   INT   NOT NULL, " +
                     "corner_depth_pos   INT   NOT NULL, " + 
+                    "sort_order    INT," +
                     "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID)" +
                     "FOREIGN KEY(bin_ID)   REFERENCES binIndividual(bin_ID))";
             stmt.executeUpdate(sql);
@@ -148,7 +152,7 @@ public class ItemDatabase {
             System.out.println("Database connection closed");
         }
         //Exception catching
-        catch (Exception e) {
+        catch (SQLException e) {
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
         }  
@@ -157,7 +161,7 @@ public class ItemDatabase {
         return false;   
     }
     
-    public Box obtainBoxInformation (String boxName, String dataBaseName){
+    public Box getBoxInformation (String boxName, String dataBaseName){
         Connection c = null;
         Statement stmt = null;
         
@@ -187,17 +191,18 @@ public class ItemDatabase {
     }
     
     public void addBoxLocation(Box placedBox, String dataBaseName){
-        Connection c = null;
-        Statement stmt = null;
+        
+        Connection c;
+        Statement stmt;
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
             stmt = c.createStatement();
             
-            String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos) "
+            String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, sort_order) "
                     + "VALUES ('" + placedBox.getName() + "', '" + placedBox.getBin() + "', '" + placedBox.geZ() + "', '"
-                    + placedBox.getX() + "', '" + placedBox.getY() + "' );";
+                    + placedBox.getX() + "', '" + placedBox.getY() + "', '" + placedBox.getSortOrder() + "' );";
             stmt.executeUpdate(sql);
             System.out.println("Box location added to data base");
             
@@ -210,5 +215,64 @@ public class ItemDatabase {
         System.err.println(e.getClass().getName() + ": " + e.getMessage());
         System.exit(0);
         }
+    }
+    
+    public List<Box> getBoxLocation(Bin binLocation, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<Box> returnList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos, boxLocation.sort_order FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '" + binLocation + "';");
+            while(rs.next()){
+                // may not need all this information
+                //returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_depth_pos"), rs.getFloat("corner_vertical_pos"), rs.getInt("sort_order")));
+                returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getInt("sort_order")));
+            }
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        return returnList;
+    }
+    
+    //Used with addBoxLocation so that boxes that were stored in the bin before the sort are not input repeatedly
+    public boolean blockRepeatingBoxEntry(Box placedBox, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        Boolean returnValue = null;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT individual_ID FROM boxLocation WHERE bin_ID = " + placedBox.getBin() + " AND sort_order = " + placedBox.getSortOrder());
+            
+            returnValue = rs.next();
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        
+        return !returnValue;
     }
 }

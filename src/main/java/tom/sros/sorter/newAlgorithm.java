@@ -1,7 +1,5 @@
 package tom.sros.sorter;
 
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.util.Pair;
@@ -13,10 +11,7 @@ public class newAlgorithm {
    //Given a list of pairs containing ID's of boxes and amounts. Produces a list
    //of boxes, including multiples of the same box (as defined by amount) along with
    //their dimensions
-   public List<Box> asignBoxInformation(String dataBaseName, List<Pair> IDAmountList){
-       Connection c = null;
-       Statement stmt = null;
-       
+   public List<Box> asignBoxInformation(String dataBaseName, List<Pair> IDAmountList){       
        List<Box> Boxes = new ArrayList<>();
        List<Box> returnBoxes = new ArrayList<>();
            
@@ -29,14 +24,13 @@ public class newAlgorithm {
         ItemDatabase IDB = new ItemDatabase();
        //Seperated to avoid repeatedly calling the DB
        Boxes.forEach((currentBox) -> {
-           returnBoxes.add(IDB.obtainBoxInformation(currentBox.getName(), dataBaseName));
+           returnBoxes.add(IDB.getBoxInformation(currentBox.getName(), dataBaseName));
        });
 
         return returnBoxes;
    }
    
-   
-    public List<Box> sortAndAddToDB(String dataBaseName, List<Pair> IDAmountList){
+    public void sortAndAddToDB(String dataBaseName, List<Pair> IDAmountList){
     
     List<Box> returnBoxList = new ArrayList<>();
     List<Box> freshSortBoxes;
@@ -64,18 +58,19 @@ public class newAlgorithm {
             //Sort the boxes available in to the curent talest bin
             ItemDatabase IDB = new ItemDatabase();
             for (Bin currentBin: tallestBins){
-                freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable);
+                freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable, dataBaseName);
                 System.out.println("Size of freshSortBoxes = " + freshSortBoxes.size());
                 for(Box currentBox: freshSortBoxes){
                    //Remove any boxes that have been sorted from the unsorted list
-                   IDB.addBoxLocation(currentBox, dataBaseName);
+                   if(IDB.blockRepeatingBoxEntry(currentBox, dataBaseName)){
+                    IDB.addBoxLocation(currentBox, dataBaseName);
+                    returnBoxList.add(currentBox);
+                   }
                    boxesAvailable.remove(currentBox);
-                   returnBoxList.add(currentBox);
                 }
                 binsAvailable.remove(currentBin);
             }
     }
         System.out.println(returnBoxList.toString());
-        return returnBoxList;
     }
 }

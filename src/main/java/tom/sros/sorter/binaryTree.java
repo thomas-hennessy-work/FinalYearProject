@@ -7,12 +7,14 @@ package tom.sros.sorter;
 
 import java.util.ArrayList;
 import java.util.List;
+import tom.sros.item.ItemDatabase;
 
 
 public class binaryTree {
     
     Node root;
     Bin currentBin;
+    static int sortOrder = 1;
     
     //When you add a box to a top left corner, there will be two quadrilaterals left over,
     //one bello and one to the right. Recursivly doing this allows you to fit boxes in to 
@@ -74,30 +76,36 @@ public class binaryTree {
         if (currentNode == null){
             System.out.println("Current node is null, box being placed");
             //Provides information about where the bin is stored and also prevents it from being re-sorted
-            item.setBin(currentBin);
+            item.setBin(currentBin.getName());
+            if(item.getSortOrder() == 0){
+                item.setSortOrder(sortOrder);
+            }
+            sortOrder ++;
             return new Node(binSpace, item);
         }
 
         //If the box can fit in the node to the right, but there is no node right, move to the node right
-        if ((item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != currentBin)){
+        //The comparison to current bin is used to check if the box has been placed
+        if ((item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
             System.out.println("Going right");
             //itterativly adding to the position of the item
             item.setX(item.getX() + currentNode.getPlacedBox().getWidth());
             //continuing recursion
             currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
             
-            if((item.getBin() != currentBin)){
+            //If the box is not placed and it comes back through the binary tree, the itterative position is undone
+            if(item.getBin() != (currentBin.getName())){
                 item.setX(item.getX() - currentNode.getPlacedBox().getWidth());
             }
         }
         
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
-        if ((item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != currentBin)){
+        if ((item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
             System.out.println("Going bellow");
             item.setY(item.getY() + currentNode.getPlacedBox().getLength());
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
             
-            if((item.getBin() != currentBin)){
+            if(item.getBin() != (currentBin.getName())){
                 item.setY(item.getY() - currentNode.getPlacedBox().getWidth());
             }
         }
@@ -117,15 +125,22 @@ public class binaryTree {
         return nodeList;
     }
     
-    public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes){
+    public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes, String dataBaseName){
         //Creating instances of the sorter
         binaryTree binTree = new binaryTree();
         binTree.currentBin = storingBin;
         Space binSpace = storingBin.getArea();
+        ItemDatabase ITDB = new ItemDatabase();
+        List<Box> existingBoxes = ITDB.getBoxLocation(storingBin, dataBaseName);
         List<Box> boxList = new ArrayList<>();
         
         //Adding each box provided to the binary tree
         boxes.forEach((curentBox) -> {
+                existingBoxes.forEach((currentExistingBoxes) -> {
+                    if(currentExistingBoxes.getSortOrder() == sortOrder){
+                        binTree.add(currentExistingBoxes, binSpace);
+                    }
+                });
             binTree.add(curentBox, binSpace);
         });
         
@@ -134,7 +149,7 @@ public class binaryTree {
         
         //Extracting box information about the sorted boxes from the nodes
         nodeList.forEach((currentNode) -> {
-            currentNode.getPlacedBox().setBin(storingBin);
+            currentNode.getPlacedBox().setBin(storingBin.getName());
             boxList.add(currentNode.getPlacedBox());
         });
         

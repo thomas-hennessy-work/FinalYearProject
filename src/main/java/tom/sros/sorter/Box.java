@@ -14,7 +14,9 @@ public class Box {
     float Y;
     float Z;
     
-    Bin Location;
+    int SortOrder;
+    
+    String Location;
     
     //Constructors
     public Box(String name, float width, float length, float height){
@@ -22,6 +24,26 @@ public class Box {
         Width = width;
         Length = length;
         Height = height;
+    }
+    
+    //May not be necacery
+    public Box(String name, float width, float length, float height, float x, float y, float z, int sortOrder){
+        Name = name;
+        Width = width;
+        Length = length;
+        Height = height;
+        X = x;
+        Y = y;
+        Z = z;
+        SortOrder = sortOrder;
+    }
+    
+    public Box(String name, float width, float length, float height, int sortOrder){
+        Name = name;
+        Width = width;
+        Length = length;
+        Height = height;
+        SortOrder = sortOrder;
     }
     
     public Box(String name){
@@ -56,8 +78,11 @@ public class Box {
         return Z;
     }
     
-    public Bin getBin(){
+    public String getBin(){
         return Location;
+    }
+    public int getSortOrder(){
+        return SortOrder;
     }
     
     //Set methods
@@ -85,8 +110,11 @@ public class Box {
         Z = z;
     }
     
-    public void setBin(Bin location){
+    public void setBin(String location){
         Location = location;
+    }
+    public void setSortOrder(int sortOrder){
+        SortOrder = sortOrder;
     }
     
     //geting calculations

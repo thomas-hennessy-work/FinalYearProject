@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -39,7 +40,7 @@ public class ItemDatabaseJUnitTest {
             stmt.close();
             c.close();
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
@@ -122,7 +123,7 @@ public class ItemDatabaseJUnitTest {
             return requestedData;
             
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);

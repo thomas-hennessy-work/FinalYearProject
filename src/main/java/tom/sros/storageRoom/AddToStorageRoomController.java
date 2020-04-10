@@ -15,7 +15,7 @@ public class AddToStorageRoomController {
     
     String dataBaseName = ("SROSData.db");
     //Lists used to store ID's as they are input
-    List<Pair> IDs = new ArrayList<Pair>();
+    List<Pair> IDs = new ArrayList<>();
     
     @FXML
     private TextField IDText;
@@ -38,7 +38,7 @@ public class AddToStorageRoomController {
         NA.sortAndAddToDB(dataBaseName, IDs);
         
         //Clearing the stored list of items
-        IDs = null;
+        IDs.clear();
         IDList.getItems().clear();
         AmountList.getItems().clear();
     }

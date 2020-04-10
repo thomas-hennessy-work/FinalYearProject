@@ -1,20 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tom.sros.storageRoom.StorageRoomManagmentController">
-   <children>
-      <Text layoutX="148.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Storage room managment">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Text>
-      <Button layoutX="68.0" layoutY="111.0" mnemonicParsing="false" text="Re-sort bins" />
-      <Button layoutX="383.0" layoutY="111.0" mnemonicParsing="false" text="Modify number of bins" />
-      <Button layoutX="468.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home"/>
-      <Button layoutX="528.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
-   </children>
-</Pane>
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="tom.sros.storageRoom.StorageRoomManagmentController">
+  <tabs>
+    <Tab text="Add bins">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="474.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <Button layoutX="529.0" layoutY="14.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Text layoutX="249.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add bins">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <TextField layoutX="14.0" layoutY="101.0" promptText="Width" />
+                  <Text layoutX="14.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin width" />
+                  <TextField layoutX="14.0" layoutY="186.0" promptText="Length" />
+                  <TextField layoutX="14.0" layoutY="269.0" promptText="Height" />
+                  <Text layoutX="14.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin length" />
+                  <Text layoutX="14.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin height" />
+                  <TextField layoutX="226.0" layoutY="101.0" promptText="Amount" text="1" />
+                  <Text layoutX="226.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount of bins" />
+                  <Button layoutX="223.0" layoutY="269.0" mnemonicParsing="false" text="Add bins" />
+               </children>
+        </AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="Remove bins">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Text layoutX="226.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove bins">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="logOutButton2" layoutX="529.0" layoutY="14.0" mnemonicParsing="false" text="Log out" />
+                  <Button layoutX="468.0" layoutY="14.0" mnemonicParsing="false" text="Home" />
+                  <Text layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin ID" />
+                  <TextField layoutX="14.0" layoutY="72.0" promptText="Enter bin ID" />
+                  <Text layoutX="184.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin amount" />
+                  <TextField layoutX="184.0" layoutY="72.0" promptText="Enter bin amount" />
+                  <Button layoutX="347.0" layoutY="72.0" mnemonicParsing="false" text="Delete bins" />
+                  <TableView layoutX="14.0" layoutY="146.0" prefHeight="200.0" prefWidth="561.0">
+                     <columns>
+                        <TableColumn text="ID" />
+                        <TableColumn prefWidth="93.0" text="Amount" />
+                        <TableColumn prefWidth="122.0" text="Width" />
+                        <TableColumn prefWidth="133.0" text="Length" />
+                        <TableColumn prefWidth="132.0" text="Height" />
+                     </columns>
+                  </TableView>
+                  <Text layoutX="14.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin list" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+    <Tab text="Resort bin">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
