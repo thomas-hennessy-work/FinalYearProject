@@ -106,7 +106,7 @@ public class UserDatabaseJUnitTest {
                 stmt = c.createStatement();
 
                 ResultSet rs = stmt.executeQuery("SELECT * FROM user WHERE user_ID = '1'"
-                        + " AND user_name = 'Default' AND is_manager = 'true' AND"
+                        + " AND user_name = 'Default' AND is_manager = true AND"
                         + " password = 'password'");
                 
                 if(rs.next() == false){
@@ -143,7 +143,7 @@ public class UserDatabaseJUnitTest {
                 stmt = c.createStatement();
                 
                 ResultSet rs = stmt.executeQuery("SELECT * FROM user WHERE user_ID = '15'"
-                        + " AND user_name = 'Tom' AND is_manager = 'false' AND"
+                        + " AND user_name = 'Tom' AND is_manager = false AND"
                         + " password = 'populate'");
                 
                 if(rs.next() == false){

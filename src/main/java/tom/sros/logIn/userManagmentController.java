@@ -47,7 +47,8 @@ public class userManagmentController implements Initializable{
     @FXML
     private void createUser() throws IOException {
         UserDatabase UDB = new UserDatabase();
-        UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), radioManager.isSelected(), passWordInput.getText());
+        boolean isManager = radioManager.isSelected();
+        UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());
         userIDInput.setText("");
         userNameInput.setText("");
         passWordInput.setText("");

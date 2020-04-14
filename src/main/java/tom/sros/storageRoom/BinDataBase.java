@@ -1,7 +1,6 @@
 package tom.sros.storageRoom;
 
 import tom.sros.sorter.Bin;
-import com.github.skjolber.packing.Container;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,8 +16,8 @@ public class BinDataBase {
     }
     
     public static void createDatabase(String dataBaseName){
-        Connection c = null;
-        Statement stmt = null;
+        Connection c;
+        Statement stmt;
         
         try{
             //Connect to database
@@ -28,7 +27,7 @@ public class BinDataBase {
             //Create tables if they do not exist
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS binType" + 
-                            "(type_ID   STRING   PRIMARY KEY   NOT NULL, " +
+                            "(type_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, " +
                             "quantity INT  NOT NULL," +
                             "width   INT   NOT NULL, " +
                             "length   INT   NOT NULL, " +
@@ -36,7 +35,7 @@ public class BinDataBase {
             stmt.executeUpdate(sql);
             
              sql = "CREATE TABLE IF NOT EXISTS binIndividual" +
-                    "(bin_ID   STRING   PRIMARY KEY   NOT NULL, " +
+                    "(bin_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, " +
                     "type_ID   STRING   NOT NULL, " +
                     "FOREIGN KEY(type_ID)   REFERENCES binType(type_ID))";
             stmt.executeUpdate(sql);
@@ -52,10 +51,11 @@ public class BinDataBase {
         }
     }
     
+    //gets information about each bin being stored
     public static List<Bin> getGeneralBinInfo(String dataBaseName){
         System.out.println("Starting getAllBinInfo");
-        Connection c = null;
-        Statement stmt = null;
+        Connection c;
+        Statement stmt;
         
         List<Bin> availableBins = new ArrayList<>(); 
         
@@ -88,12 +88,11 @@ public class BinDataBase {
         return finalList;
     }
     
-    //merge these two
     
     public static List<Bin> convertGeneralBinToIndividual(List<Bin> availableBins, String dataBaseName){
         System.out.println("Starting getBinData");
-        Connection c = null;
-        Statement stmt = null;
+        Connection c;
+        Statement stmt;
         
         try{
             //Connect to database
@@ -125,89 +124,134 @@ public class BinDataBase {
         return availableBins;
     }
     
-    //move this to item database
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public int givePosition(String dataBaseName, String box_ID){
-        Statement stmt = null;
-        Connection c = null;
+    //Inserts bins to the userses specifications. Creates a new bin type if the bin dose not exist.
+    //If it dose exist, adds to that bin type.
+    public void insertBins(List<Bin> newBins,String dataBaseName){
+        newBins.forEach((currentBin) -> {
+            String existing = binExists(currentBin, dataBaseName);
+            
+            if(existing == null){
+                String newIndividualID = addNewBinType(currentBin, dataBaseName);
+                for(int i = 0; i < currentBin.getAmount() ; i++){
+                    addBinIndividual(newIndividualID, dataBaseName);
+                }
+            }else{
+                for(int i = 0; i < currentBin.getAmount() ; i++){
+                    addBinIndividual(existing, dataBaseName);
+                }
+            }
+        });
+    }
+    
+    public void updateAmountType(int ammountAdd, String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT quantity FROM binType WHERE type_ID = " + binTypeID);
+            String sql = ("UPDATE binType SET quantity = " + (rs.getInt("quantity") + ammountAdd) + " WHERE type_ID = " + binTypeID);
+            stmt.execute(sql);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    //Creates a new bin type. Returns the ID of the new bin
+    public String addNewBinType(Bin newBintype, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        String newTypeID = null;
+
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+                
+            String sql = "INSERT INTO binType (quantity, width, length, height) "
+                        + "VALUES ('" + newBintype.getAmount()+ "', '" + newBintype.getWidth() + "', '" + newBintype.getLength() + "', '" + newBintype.getHeight() + "' );";
+            stmt.executeUpdate(sql);
+            
+            ResultSet rs = stmt.executeQuery("Select type_ID FROM binType WHERE width = " + newBintype.getWidth() + " AND length = " + newBintype.getLength() + " AND height = " + newBintype.getHeight());
+            newTypeID = rs.getString("type_ID");
+                
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return newTypeID;
+    }
+    
+    public void addBinIndividual(String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            String sql = "INSERT INTO binIndividual (type_ID) VALUES ('" + binTypeID + "');";
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    //Used to verify if a bin type already exists, if it dose, returns that bin ID, if nopt, return null
+    public String binExists(Bin binToCheck, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        String returnVal = null;
         
         try{
             //Connect to database
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
-
-            //Gather location data of that item
+            
             stmt = c.createStatement();
-            ResultSet LocationData = stmt.executeQuery("SELECT width, length, height FROM boxType WHERE box_Id = " + box_ID + ";");
-            int width = LocationData.getInt(1);
-            int length = LocationData.getInt(2);
-            int height = LocationData.getInt(3);
-            System.out.println("Position information gathered");
             
-            //Gather rear corner positions of other boxes
-            ResultSet TotalSize = stmt.executeQuery("SELECT corner_vertical_pos FROM boxLocation;");
-            int counter = 0;
-            int Total = 0;
-            int RSSize = TotalSize.getFetchSize();
-            
-            while (counter < RSSize){
-                int addtition = TotalSize.getInt(counter);
-                Total = Total + addtition;
-                counter++;
+            ResultSet rs = stmt.executeQuery("SELECT type_ID FROM binType WHERE width = " + binToCheck.getWidth() + " AND length = " + binToCheck.getLength() + " AND height = " + binToCheck.getHeight() + ";");
+            if(rs.next()){
+                returnVal = rs.getString("type_ID");
             }
             
             stmt.close();
             c.close();
-            System.out.println("database connection closed");
-            return Total;
+            System.out.println("Database connection closed");
         }
-        //Exception catching
-        catch (SQLException e) {
-                System.err.println( e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
         }
-        return 0;
+        return returnVal;
     }
-    
-    //Unfinished, need to obtain data about bins from the database
-    public static List<Container> getBinData(String dataBaseName){
-        List<Container> containers = new ArrayList<>();
-        Statement stmt = null;
-        Connection c = null;
-        
-        try{
-            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-            stmt = c.createStatement();
-            System.out.println("Connected to database");
-            
-            //Gather the available bin types and their quantity
-            ResultSet rs = stmt.executeQuery("SELECT type_ID, quantity FROM binType;");
-            
-            for(int i = 0; i < rs.getFetchSize(); i++ ){
-                rs.next();
-                rs.getString(i);
-                int quantity = rs.getInt(i);
-                for(int f = 0; f < quantity ; f++ ){
-                    //containers.add(new Container())
-                }
-            }
-            
-        }
-        catch (SQLException e) {
-                System.err.println( e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
-        }
-        return containers;
-    }
-    
-    
-    
-    
 }

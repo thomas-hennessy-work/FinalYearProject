@@ -31,7 +31,7 @@ public class UserDatabase {
                 if (rs.next() == false){
                     try (Statement stmt1 = c.createStatement()) {
                         sql = "INSERT INTO user (user_ID,user_name,is_manager,password) " +
-                                "VALUES ('1', 'Default', 'true', 'password' );";
+                                "VALUES ('1', 'Default', true, 'password' );";
                         System.out.println("Default user created");
                         stmt1.executeUpdate(sql);
                     }
@@ -48,8 +48,8 @@ public class UserDatabase {
         }
         
         public void populate(String dataBaseName, String user_ID, String user_name, Boolean is_manager, String password){
-            Connection c = null;
-            Statement stmt = null;
+            Connection c;
+            Statement stmt;
             
             try{
                 //connecting to database
@@ -59,8 +59,9 @@ public class UserDatabase {
                 //Insert a new user in to the user database
                 stmt = c.createStatement();
                 String sql = "INSERT INTO user (user_ID,user_name,is_manager,password)"
-                        + "VALUES ('" + user_ID + "', '"+ user_name + "', '"
-                        + is_manager + "', '" + password + "' );";
+                        + "VALUES ('" + user_ID + "', '"+ user_name + "', "
+                        + is_manager + ", '" + password + "' );";
+                System.out.println(is_manager);
                 stmt.executeUpdate(sql);
                 System.out.println("User added");
                 
@@ -156,15 +157,12 @@ public class UserDatabase {
                 ResultSet rs = stmt.executeQuery("SELECT user_ID, user_name, is_manager FROM user");
                 
                 while(rs.next()){
-                    if(rs.getBoolean("is_manager") == true)
-                    returnList.add(new user(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager"), "True"));
-                    else
-                    returnList.add(new user(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager"), "False")); 
+                    returnList.add(new user(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager")));
+                    System.out.println(rs.getBoolean("is_manager"));
                 }
                 
                 stmt.close();
                 c.close();
-                System.out.println("User credentials not recognized + Database connection closed");
             }
             //Exception catching
             catch ( SQLException e ) {

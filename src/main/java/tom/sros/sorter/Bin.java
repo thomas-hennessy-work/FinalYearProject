@@ -15,12 +15,22 @@ public class Bin {
     //boxes stored in the bin
     List<Box> storedBoxes;
     
+    //Amount of bins, used when adding multiple to the database
+    int Amount;
+    
     //Constructors
     public Bin(String name, float width, float length, float height){
         Name= name;
         Width = width;
         Length = length;
         Height = height;
+    }
+    
+    public Bin(float width, float length, float height, int amount){
+        Width = width;
+        Length = length;
+        Height = height;
+        Amount = amount;
     }
     
     public Bin(String name){
@@ -53,6 +63,9 @@ public class Bin {
     
     public List<Box> getBoxes(){
         return storedBoxes;
+    }
+    public int getAmount(){
+        return Amount;
     }
     
     //Set methods
