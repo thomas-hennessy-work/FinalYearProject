@@ -10,6 +10,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.*?> 
+<?import javafx.collections.*?> 
+<?import fxmltableview.*?> 
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tom.sros.storageRoom.StorageRoomManagmentController">
   <tabs>
@@ -54,20 +57,33 @@
                         <Font size="26.0" />
                      </font>
                   </Text>
-                  <Button fx:id="logOutButton2" layoutX="529.0" layoutY="14.0" mnemonicParsing="false" text="Log out" onAction="#logOut"/>
-                  <Button fx:id="homeButton2" layoutX="468.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <Button layoutX="529.0" layoutY="14.0" mnemonicParsing="false" text="Log out" onAction="#logOut"/>
+                  <Button layoutX="468.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#home" />
                   <Text layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin ID" />
-                  <TextField layoutX="14.0" layoutY="72.0" promptText="Enter bin ID" />
-                  <Text layoutX="184.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin amount" />
-                  <TextField layoutX="184.0" layoutY="72.0" promptText="Enter bin amount" />
-                  <Button layoutX="347.0" layoutY="72.0" mnemonicParsing="false" text="Delete bins" />
-                  <TableView layoutX="14.0" layoutY="146.0" prefHeight="200.0" prefWidth="561.0">
+                  <TextField fx:id="deleteBinText" layoutX="14.0" layoutY="72.0" promptText="Enter bin ID" />
+                  <Button layoutX="184.0" layoutY="72.0" mnemonicParsing="false" text="Delete bins" onAction="#deleteBin" />
+                  <TableView fx:id="binTable" layoutX="14.0" layoutY="146.0" prefHeight="200.0" prefWidth="561.0">
                      <columns>
-                        <TableColumn text="ID" />
-                        <TableColumn prefWidth="93.0" text="Amount" />
-                        <TableColumn prefWidth="122.0" text="Width" />
-                        <TableColumn prefWidth="133.0" text="Length" />
-                        <TableColumn prefWidth="132.0" text="Height" />
+                        <TableColumn text="Individual ID" >
+                            <cellValueFactory><PropertyValueFactory property="Name" />
+                            </cellValueFactory>
+                        </TableColumn>    
+                        <TableColumn prefWidth="122.0" text="Width" >
+                            <cellValueFactory><PropertyValueFactory property="width" />
+                            </cellValueFactory>
+                        </TableColumn>    
+                        <TableColumn prefWidth="133.0" text="Length" >
+                            <cellValueFactory><PropertyValueFactory property="length" />
+                            </cellValueFactory>
+                        </TableColumn>    
+                        <TableColumn prefWidth="132.0" text="Height" >
+                            <cellValueFactory><PropertyValueFactory property="height" />
+                            </cellValueFactory>
+                        </TableColumn>    
+                        <TableColumn prefWidth="93.0" text="Occupied" >
+                            <cellValueFactory><PropertyValueFactory property="occupied" />
+                            </cellValueFactory>
+                        </TableColumn>    
                      </columns>
                   </TableView>
                   <Text layoutX="14.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin list" />

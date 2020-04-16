@@ -1,15 +1,21 @@
 package tom.sros.storageRoom;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import tom.sros.App;
 import javafx.scene.control.TextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import tom.sros.sorter.Bin;
 
-public class StorageRoomManagmentController {
+public class StorageRoomManagmentController implements Initializable{
     String dataBaseName = ("SROSData.db");
     
     @FXML
@@ -30,7 +36,23 @@ public class StorageRoomManagmentController {
     @FXML
     private ListView heightList;
     
+    @FXML
+    private TextField deleteBinText;
+    
+    @FXML
+    private TableView binTable;
+    
     List<Bin> toAddList = new ArrayList<>();
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+
+        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
+        binInfoList.forEach((currentBin) -> {
+            binTable.getItems().add(currentBin);
+            System.out.println(currentBin.getOccupied());
+        });
+    }
     
     @FXML void addToDB(){
       BinDataBase BDB = new BinDataBase();
@@ -40,6 +62,14 @@ public class StorageRoomManagmentController {
       widthList.getItems().clear();
       lengthList.getItems().clear();
       heightList.getItems().clear();
+      
+      List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
+      binTable.getItems().clear();
+        
+        binInfoList.forEach((currentBin) -> {
+            binTable.getItems().add(currentBin);
+            System.out.println(currentBin.toString());
+        });
     }
     
     @FXML void addToList(){
@@ -60,6 +90,41 @@ public class StorageRoomManagmentController {
         addWidth.setText("");
         addLength.setText("");
         addHeight.setText("");
+        
+        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
+        binTable.getItems().clear();
+        
+        binInfoList.forEach((currentBin) -> {
+            binTable.getItems().add(currentBin);
+            System.out.println(currentBin.toString());
+        });
+    }
+    
+    @FXML void deleteBin(){
+        String deleteID = deleteBinText.getText();
+        
+        JFrame binExistanceWarning = new JFrame();
+        JFrame binOccupiedWarning = new JFrame();
+        
+        //Checks the existance of the bin
+        if(BinDataBase.binIDCheck(dataBaseName, deleteID) == false){
+            JOptionPane.showMessageDialog(binExistanceWarning, "Bin with that ID dose not exist.", "Unrecognised bin", 2);
+        }
+        //Checks if the bin is occupied
+        else if(BinDataBase.getStoredBoxesAndIndividualize(dataBaseName, (new Bin(deleteID))).getOccupied()){
+            JOptionPane.showMessageDialog(binOccupiedWarning, "The bin selected for deletion is occupied.", "Occupied bin", 2);
+        }
+        else{
+            BinDataBase.deleteBin(deleteID, dataBaseName);
+        }
+        
+        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
+        binTable.getItems().clear();
+        
+        binInfoList.forEach((currentBin) -> {
+            binTable.getItems().add(currentBin);
+            System.out.println(currentBin.toString());
+        });
     }
     
     //Logout and home buttons

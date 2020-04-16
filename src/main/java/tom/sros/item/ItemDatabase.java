@@ -162,8 +162,8 @@ public class ItemDatabase {
     }
     
     public Box getBoxInformation (String boxName, String dataBaseName){
-        Connection c = null;
-        Statement stmt = null;
+        Connection c;
+        Statement stmt;
         
         Box returnBox = new Box(boxName);
         

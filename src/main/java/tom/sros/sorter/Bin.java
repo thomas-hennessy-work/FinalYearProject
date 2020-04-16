@@ -1,5 +1,6 @@
 package tom.sros.sorter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,7 +14,8 @@ public class Bin {
     float Height;
     
     //boxes stored in the bin
-    List<Box> storedBoxes;
+    List<Box> StoredBoxes = new ArrayList<>();
+    boolean Occupied;
     
     //Amount of bins, used when adding multiple to the database
     int Amount;
@@ -26,7 +28,22 @@ public class Bin {
         Height = height;
     }
     
+    public Bin(String name, float width, float length, float height, List<Box> storedBoxes){
+        Name= name;
+        Width = width;
+        Length = length;
+        Height = height;
+    }
+    
     public Bin(float width, float length, float height, int amount){
+        Width = width;
+        Length = length;
+        Height = height;
+        Amount = amount;
+    }
+    
+    public Bin(String name, float width, float length, float height, int amount){
+        Name = name;
         Width = width;
         Length = length;
         Height = height;
@@ -62,7 +79,7 @@ public class Bin {
     }
     
     public List<Box> getBoxes(){
-        return storedBoxes;
+        return StoredBoxes;
     }
     public int getAmount(){
         return Amount;
@@ -84,22 +101,33 @@ public class Bin {
     }
     
     //Box methods
+    public void setBoxes(List<Box> Boxes){
+        StoredBoxes = Boxes;
+        Occupied = !StoredBoxes.isEmpty();
+    }
     public void addBox(Box item){
-        storedBoxes.add(item);
+        StoredBoxes.add(item);
+        Occupied = !StoredBoxes.isEmpty();
     }
     public void addBoxes(List<Box> items){
         items.forEach((boxes) -> {
-            storedBoxes.add(boxes);
+            StoredBoxes.add(boxes);
         });
+        Occupied = !StoredBoxes.isEmpty();
+    }
+    
+    public boolean getOccupied(){
+        return Occupied;
     }
     
     //Removes a specified box from the bin
     public void removeBox(String name){
-        storedBoxes.forEach((item) -> {
+        StoredBoxes.forEach((item) -> {
             if (item.getName().equals(name)){
-                storedBoxes.remove(item);
+                StoredBoxes.remove(item);
             }
         });
+        Occupied = !StoredBoxes.isEmpty();
     }
     
     //gets floor space

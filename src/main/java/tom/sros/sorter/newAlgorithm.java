@@ -36,7 +36,7 @@ public class newAlgorithm {
     List<Box> freshSortBoxes;
 
     //obtaining bin information
-    List<Bin> binsAvailable = BinDataBase.getGeneralBinInfo(dataBaseName);
+    List<Bin> binsAvailable = BinDataBase.getBinInfo(dataBaseName);
     //obtaining box information
     List<Box> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
             

@@ -59,6 +59,13 @@ public class userManagmentController implements Initializable{
         UserDatabase UDB = new UserDatabase();
         UDB.removeUser(dataBaseName, deleteUserIDInput.getText());
         deleteUserIDInput.setText("");
+        
+        userTable.getItems().clear();
+        List<user> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);
+        
+        userInfoList.forEach((currentUser) -> {
+            userTable.getItems().add(currentUser);
+        });
     }
 
     //Log out and home button
