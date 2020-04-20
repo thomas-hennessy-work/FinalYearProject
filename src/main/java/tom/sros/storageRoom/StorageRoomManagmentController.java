@@ -46,12 +46,7 @@ public class StorageRoomManagmentController implements Initializable{
     
     @Override
     public void initialize(URL location, ResourceBundle resources){
-
-        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
-        binInfoList.forEach((currentBin) -> {
-            binTable.getItems().add(currentBin);
-            System.out.println(currentBin.getOccupied());
-        });
+        populateTable();
     }
     
     @FXML void addToDB(){
@@ -66,10 +61,7 @@ public class StorageRoomManagmentController implements Initializable{
       List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
       binTable.getItems().clear();
         
-        binInfoList.forEach((currentBin) -> {
-            binTable.getItems().add(currentBin);
-            System.out.println(currentBin.toString());
-        });
+      populateTable();
     }
     
     @FXML void addToList(){
@@ -94,10 +86,7 @@ public class StorageRoomManagmentController implements Initializable{
         List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
         binTable.getItems().clear();
         
-        binInfoList.forEach((currentBin) -> {
-            binTable.getItems().add(currentBin);
-            System.out.println(currentBin.toString());
-        });
+        populateTable();
     }
     
     @FXML void deleteBin(){
@@ -135,6 +124,13 @@ public class StorageRoomManagmentController implements Initializable{
     @FXML
     private void home() throws IOException{
         App.setRoot("/tom/sros/home/homeScreen");
+    }
+    
+    private void populateTable(){
+        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
+        binInfoList.forEach((currentBin) -> {
+            binTable.getItems().add(currentBin);
+        });
     }
     
 }

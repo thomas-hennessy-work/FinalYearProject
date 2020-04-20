@@ -48,7 +48,7 @@ public class ItemDatabaseJUnitTest {
         
         ItemDatabase.main(dataBaseName);
         ItemDatabase ITDB = new ItemDatabase();
-        ITDB.addBox(dataBaseName, "1", "Mice", "15 Dell mice", (float) 12.4, (float) 20, (float)9.6, "Fragile, do not turn upside down");
+        ITDB.addBox(dataBaseName, "Mice", "15 Dell mice", (float) 12.4, (float) 20, (float)9.6, "Fragile, do not turn upside down");
         
     }
     

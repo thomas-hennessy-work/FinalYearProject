@@ -123,7 +123,7 @@ public class Bin {
     //Removes a specified box from the bin
     public void removeBox(String name){
         StoredBoxes.forEach((item) -> {
-            if (item.getName().equals(name)){
+            if (item.getID().equals(name)){
                 StoredBoxes.remove(item);
             }
         });

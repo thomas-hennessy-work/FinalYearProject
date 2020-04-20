@@ -24,7 +24,7 @@ public class ItemDatabase {
             //Create tables if they do not exist
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS boxType" + 
-                            "(box_ID   STRING   PRIMARY KEY   NOT NULL, " +
+                            "(box_ID   INTEGER   PRIMARY KEY   AUTOINCREMENT, " +
                             "name   STRING   NOT NULL, " +
                             "contents   TEXT, " +
                             "width   FLOAT   NOT NULL, " +
@@ -66,7 +66,7 @@ public class ItemDatabase {
         }
     }
     
-    public void addBox(String dataBaseName, String ID, String name, String contents, float width, float length, float height, String notes){
+    public void addBox(String dataBaseName,String name, String contents, float width, float length, float height, String notes){
             
             Statement stmt = null;
             Connection c = null;
@@ -78,8 +78,8 @@ public class ItemDatabase {
                 
                 //Insert into boxtype a new box
                 stmt = c.createStatement();
-                String sql = "INSERT INTO boxType (box_ID,name,contents,width,length,height,quantity,notes) "
-                        + "VALUES ('" + ID + "', '" + name + "', '" + contents + "', "
+                String sql = "INSERT INTO boxType (name,contents,width,length,height,quantity,notes) "
+                        + "VALUES ('" + name + "', '" + contents + "', "
                         + width + ", " + length + ", " + height + ", 1, '"
                         + notes + "' );";
                 stmt.executeUpdate(sql);
@@ -190,6 +190,58 @@ public class ItemDatabase {
         return returnBox;
     }
     
+    public static List<Box> getDisplayBoxTypeInformation(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<Box> returnBoxList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT box_ID, name, contents, width, length, height, notes FROM boxType");
+            
+            while(rs.next()){
+                returnBoxList.add(new Box(rs.getString("box_ID"), rs.getString("name"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getString("contents"), rs.getString("notes")));
+            }
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        
+        return returnBoxList;
+    }
+    
+//    public List<Box> getBoxLocationDisplay(String dataBaseName){
+//        Connection c;
+//        Statement stmt;
+//        
+//        try{
+//            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+//            System.out.println("Connected to database");
+//            stmt = c.createStatement();
+//            
+//            ResultSet rs = stmt.executeQuery("SELECT ");
+//            
+//            stmt.close();
+//            c.close();
+//            System.out.println("Database connection closed");
+//        }
+//        catch (SQLException e){
+//        //Error catching
+//        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//        System.exit(0);
+//        }
+//    }
+//    
     public void addBoxLocation(Box placedBox, String dataBaseName){
         
         Connection c;
@@ -201,7 +253,7 @@ public class ItemDatabase {
             stmt = c.createStatement();
             
             String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, sort_order) "
-                    + "VALUES ('" + placedBox.getName() + "', '" + placedBox.getBin() + "', '" + placedBox.geZ() + "', '"
+                    + "VALUES ('" + placedBox.getID() + "', '" + placedBox.getBin() + "', '" + placedBox.geZ() + "', '"
                     + placedBox.getX() + "', '" + placedBox.getY() + "', '" + placedBox.getSortOrder() + "' );";
             stmt.executeUpdate(sql);
             System.out.println("Box location added to data base");
@@ -217,7 +269,7 @@ public class ItemDatabase {
         }
     }
     
-    public List<Box> getBoxLocation(Bin binLocation, String dataBaseName){
+    public List<Box> getExistingBox(Bin binLocation, String dataBaseName){
         Connection c;
         Statement stmt;
         
@@ -230,8 +282,6 @@ public class ItemDatabase {
             
             ResultSet rs = stmt.executeQuery("SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos, boxLocation.sort_order FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '" + binLocation + "';");
             while(rs.next()){
-                // may not need all this information
-                //returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_depth_pos"), rs.getFloat("corner_vertical_pos"), rs.getInt("sort_order")));
                 returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getInt("sort_order")));
             }
             

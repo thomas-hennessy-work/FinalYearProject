@@ -117,7 +117,7 @@ public class binaryTree {
         List<Node> nodeList = new ArrayList<>();
         
         if (node != null){
-            System.out.println("Found box in node: " + node.getPlacedBox().getName());
+            System.out.println("Found box in node: " + node.getPlacedBox().getID());
             nodeList.addAll(traversePreOrder(node.below));
             nodeList.addAll(traversePreOrder(node.right));
             nodeList.add(node);
@@ -131,7 +131,7 @@ public class binaryTree {
         binTree.currentBin = storingBin;
         Space binSpace = storingBin.getArea();
         ItemDatabase ITDB = new ItemDatabase();
-        List<Box> existingBoxes = ITDB.getBoxLocation(storingBin, dataBaseName);
+        List<Box> existingBoxes = ITDB.getExistingBox(storingBin, dataBaseName);
         List<Box> boxList = new ArrayList<>();
         
         //Adding each box provided to the binary tree

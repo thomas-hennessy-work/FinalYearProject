@@ -36,12 +36,7 @@ public class userManagmentController implements Initializable{
     
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        UserDatabase UDB = new UserDatabase();
-        List<user> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);
-        
-        userInfoList.forEach((currentUser) -> {
-            userTable.getItems().add(currentUser);
-        });
+        populateTable();
     }
     
     @FXML
@@ -61,11 +56,7 @@ public class userManagmentController implements Initializable{
         deleteUserIDInput.setText("");
         
         userTable.getItems().clear();
-        List<user> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);
-        
-        userInfoList.forEach((currentUser) -> {
-            userTable.getItems().add(currentUser);
-        });
+        populateTable();
     }
 
     //Log out and home button
@@ -76,5 +67,14 @@ public class userManagmentController implements Initializable{
     @FXML
     private void home() throws IOException{
         App.setRoot("/tom/sros/home/homeScreen");
+    }
+    
+    private void populateTable(){
+        UserDatabase UDB = new UserDatabase();
+        List<user> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);
+        
+        userInfoList.forEach((currentUser) -> {
+            userTable.getItems().add(currentUser);
+        });
     }
 }

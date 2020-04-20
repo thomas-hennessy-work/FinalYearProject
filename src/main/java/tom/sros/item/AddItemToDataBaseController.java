@@ -1,12 +1,18 @@
 package tom.sros.item;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import tom.sros.App;
+import tom.sros.sorter.Box;
 
-public class AddItemToDataBaseController {
+public class AddItemToDataBaseController implements Initializable{
     
     String dataBaseName = ("SROSData.db");
     
@@ -22,26 +28,14 @@ public class AddItemToDataBaseController {
     private TextArea boxContents;
     @FXML
     private TextArea boxNotes;
+    
     @FXML
-    private TextField boxID;
-    @FXML
-    private TextField orderName;
-    @FXML
-    private TextField orderWidth;
-    @FXML
-    private TextField orderLength;
-    @FXML
-    private TextField orderHeight;
-    @FXML
-    private TextArea orderContents;
-    @FXML
-    private TextArea orderNotes;
-    @FXML
-    private TextField orderCustName;
-    @FXML
-    private TextField orderCustAddress;
-    @FXML
-    private TextField orderID;
+    private TableView boxInfoTable;
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        populateTable();
+    }
     
     @FXML
     private void submitBox() throws IOException{
@@ -52,7 +46,6 @@ public class AddItemToDataBaseController {
         String inBoxHeight = boxHeight.getText();
         String inBoxContents = boxContents.getText();
         String inBoxNotes = boxNotes.getText();
-        String inBoxID = boxID.getText();
         
         //whilst float has been depreciated, not sure if double can be used in a database (untested)
         //converting string to float and adding the information to the database
@@ -61,7 +54,17 @@ public class AddItemToDataBaseController {
         float floatBoxHeight = Float.parseFloat(inBoxHeight);
         ItemDatabase ITDB = new ItemDatabase();
         System.out.println("Add box to database");
-        ITDB.addBox(dataBaseName,inBoxID,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);
+        ITDB.addBox(dataBaseName,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);
+    
+        populateTable();
+        
+        //empty input boxes
+        boxName.setText("");
+        boxWidth.setText("");
+        boxLength.setText("");
+        boxHeight.setText("");
+        boxContents.setText("");
+        boxNotes.setText("");
     }
     
     //Home and log out buttons
@@ -72,6 +75,13 @@ public class AddItemToDataBaseController {
     @FXML
     private void home() throws IOException{
         App.setRoot("/tom/sros/home/homeScreen");
+    }
+    
+    private void populateTable(){
+        List<Box> boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);
+        boxInformation.forEach((currentBox)-> {
+            boxInfoTable.getItems().add(currentBox);
+        });
     }
     
 }

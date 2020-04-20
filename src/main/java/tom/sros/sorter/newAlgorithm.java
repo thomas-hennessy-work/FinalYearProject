@@ -24,7 +24,7 @@ public class newAlgorithm {
         ItemDatabase IDB = new ItemDatabase();
        //Seperated to avoid repeatedly calling the DB
        Boxes.forEach((currentBox) -> {
-           returnBoxes.add(IDB.getBoxInformation(currentBox.getName(), dataBaseName));
+           returnBoxes.add(IDB.getBoxInformation(currentBox.getID(), dataBaseName));
        });
 
         return returnBoxes;

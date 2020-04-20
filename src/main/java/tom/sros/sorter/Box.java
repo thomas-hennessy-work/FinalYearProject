@@ -2,6 +2,7 @@ package tom.sros.sorter;
 
 public class Box {
     //Box name
+    String ID;
     String Name;
     
     //Box dimensions
@@ -15,48 +16,60 @@ public class Box {
     float Z;
     
     int SortOrder;
-    
     String Location;
     
+    String Contents;
+    String Notes;
+    
     //Constructors
-    public Box(String name, float width, float length, float height){
-        Name = name;
+    public Box(String id, float width, float length, float height){
+        ID = id;
         Width = width;
         Length = length;
         Height = height;
     }
     
-    //May not be necacery
-    public Box(String name, float width, float length, float height, float x, float y, float z, int sortOrder){
+    public Box(String id, String name, float width, float length, float height, String contents, String notes){
+        ID = id;
         Name = name;
         Width = width;
         Length = length;
         Height = height;
+        Contents = contents;
+        Notes = notes;
+    }
+    
+    public Box(String id, String name, String location, float x, float y, float z){
+        ID = id;
+        Name = name;
+        Location = location;
         X = x;
         Y = y;
         Z = z;
-        SortOrder = sortOrder;
     }
     
-    public Box(String name, float width, float length, float height, int sortOrder){
-        Name = name;
+    public Box(String id, float width, float length, float height, int sortOrder){
+        ID = id;
         Width = width;
         Length = length;
         Height = height;
         SortOrder = sortOrder;
     }
     
-    public Box(String name){
-        Name = name;
+    public Box(String id){
+        ID = id;
         Width = 0;
         Length = 0;
         Height = 0;
     }
     
     //get methods
+    public String getID(){
+        return ID;
+    } 
     public String getName(){
         return Name;
-    } 
+    }
     
     public float getWidth(){
         return Width;
@@ -85,7 +98,17 @@ public class Box {
         return SortOrder;
     }
     
+    public String getContents(){
+        return Contents;
+    }
+    public String getNotes(){
+        return Notes;
+    }
+    
     //Set methods
+    public void setID(String id){
+        ID = id;
+    }
     public void setName(String name){
         Name = name;
     }
@@ -117,6 +140,14 @@ public class Box {
         SortOrder = sortOrder;
     }
     
+    public void setContents(String contents){
+        Contents = contents;
+    }
+    public void setNotes(String notes){
+        Notes = notes;
+    }
+    
+    
     //geting calculations
     public float getVolume(){
         return Width*Length*Height;
@@ -128,6 +159,6 @@ public class Box {
     
     @Override
     public String toString(){
-        return("Name:" + Name + " Width:" + Width + " Length:" + Length + " Height:" + Height + " X position:" + X + " Y position:" + Y + " Z position:" + Z);
+        return("Name:" + ID + " Width:" + Width + " Length:" + Length + " Height:" + Height + " X position:" + X + " Y position:" + Y + " Z position:" + Z);
     }
 }
