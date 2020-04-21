@@ -6,6 +6,7 @@ tom\sros\storageRoom\BinDataBase.class
 tom\sros\logIn\user.class
 tom\sros\sorter\Box.class
 tom\sros\logIn\LogInController.class
+tom\sros\sorter\Order.class
 tom\sros\home\HomeScreenController.class
 tom\sros\sorter\Bin.class
 tom\sros\App.class

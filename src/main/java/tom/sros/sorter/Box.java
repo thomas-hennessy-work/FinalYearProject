@@ -48,6 +48,15 @@ public class Box {
         Z = z;
     }
     
+    public Box(String id, String location, float x, float y, float z){
+        ID = id;
+        Location = location;
+        X = x;
+        Y = y;
+        Z = z;
+    }
+    
+    
     public Box(String id, float width, float length, float height, int sortOrder){
         ID = id;
         Width = width;
@@ -87,7 +96,7 @@ public class Box {
     public float getY(){
         return Y;
     }
-    public float geZ(){
+    public float getZ(){
         return Z;
     }
     

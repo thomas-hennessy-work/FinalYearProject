@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
+import tom.sros.sorter.Order;
+import tom.sros.sorter.newAlgorithm;
 
 public class ItemDatabase {
     
@@ -35,7 +38,7 @@ public class ItemDatabase {
             stmt.executeUpdate(sql);
             
             sql = "CREATE TABLE IF NOT EXISTS orderList" +
-                    "(order_ID   STRING   PRIMARY KEY   NOT NULL, " +
+                    "(order_ID   INTEGER   PRIMARY KEY   AUTOINCREMENT, " +
                     "box_ID   STRING   NOT NULL, " +
                     "customer_name   STRING   NOT NULL, " +
                     "customer_address   STRING   NOT NULL, " + 
@@ -123,8 +126,8 @@ public class ItemDatabase {
     }
     
     public boolean IDCheck(String dataBaseName, String ID){
-        Statement stmt = null;
-        Connection c = null;
+        Statement stmt;
+        Connection c;
         
         try{
             //Connect to database
@@ -161,18 +164,18 @@ public class ItemDatabase {
         return false;   
     }
     
-    public Box getBoxInformation (String boxName, String dataBaseName){
+    public Box getBoxInformation (String boxID, String dataBaseName){
         Connection c;
         Statement stmt;
         
-        Box returnBox = new Box(boxName);
+        Box returnBox = new Box(boxID);
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
             stmt = c.createStatement();
             
-            ResultSet rs = stmt.executeQuery("Select width, length, height FROM boxType WHERE box_ID = " + boxName);
+            ResultSet rs = stmt.executeQuery("Select width, length, height FROM boxType WHERE box_ID = " + boxID);
             returnBox.setWidth(rs.getFloat("width"));
             returnBox.setLength(rs.getFloat("length"));
             returnBox.setHeight(rs.getFloat("height"));
@@ -220,28 +223,35 @@ public class ItemDatabase {
         return returnBoxList;
     }
     
-//    public List<Box> getBoxLocationDisplay(String dataBaseName){
-//        Connection c;
-//        Statement stmt;
-//        
-//        try{
-//            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-//            System.out.println("Connected to database");
-//            stmt = c.createStatement();
-//            
-//            ResultSet rs = stmt.executeQuery("SELECT ");
-//            
-//            stmt.close();
-//            c.close();
-//            System.out.println("Database connection closed");
-//        }
-//        catch (SQLException e){
-//        //Error catching
-//        System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//        System.exit(0);
-//        }
-//    }
-//    
+    public static List<Box> getBoxLocationDisplay(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<Box> returnList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT boxLocation.individual_ID, boxType.name, boxLocation.bin_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxLocation INNER JOIN boxType ON boxLocation.box_ID = boxType.box_ID");
+            while(rs.next()){
+                returnList.add(new Box(rs.getString("individual_ID"), rs.getString("name"), rs.getString("bin_ID"), rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos")));
+            }
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        
+        return returnList;
+    }
+    
     public void addBoxLocation(Box placedBox, String dataBaseName){
         
         Connection c;
@@ -253,10 +263,78 @@ public class ItemDatabase {
             stmt = c.createStatement();
             
             String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, sort_order) "
-                    + "VALUES ('" + placedBox.getID() + "', '" + placedBox.getBin() + "', '" + placedBox.geZ() + "', '"
+                    + "VALUES ('" + placedBox.getID() + "', '" + placedBox.getBin() + "', '" + placedBox.getZ() + "', '"
                     + placedBox.getX() + "', '" + placedBox.getY() + "', '" + placedBox.getSortOrder() + "' );";
             stmt.executeUpdate(sql);
             System.out.println("Box location added to data base");
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+    }
+    
+    public void addOrdersToDB(String dataBaseName, List<Order> orderList){
+        orderList.forEach((currentOrder) -> {
+            Box orderBox = getBoxInformation(currentOrder.getID(), dataBaseName);
+            newAlgorithm NA = new newAlgorithm();
+            
+            List<Pair> IDAmountList = new ArrayList();
+            IDAmountList.add(new Pair(currentOrder.getID(), 1));
+            
+            NA.sortAndAddToDB(dataBaseName, IDAmountList);
+            currentOrder.setID(getMostRecentSortedBox(dataBaseName));
+            
+            addOrderInformation(dataBaseName, currentOrder);
+        });
+    }
+    
+    public String getMostRecentSortedBox(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        String returnValue = null;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT MAX(individual_ID) FROM boxLocation");
+            returnValue = rs.getString(1);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        System.out.println(returnValue);
+        return returnValue;
+    }
+    
+    public void addOrderInformation(String dataBaseName, Order orderToAdd){
+        Connection c;
+        Statement stmt;
+        
+        String returnValue = null;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            String sql = "INSERT INTO orderList (box_ID, customer_name, customer_address) "
+                    + "VALUES ('" + orderToAdd.getID() + "', '" + orderToAdd.getCustName() +  "', '" + orderToAdd.getAddress() + "' );";
+            stmt.executeUpdate(sql);
             
             stmt.close();
             c.close();
