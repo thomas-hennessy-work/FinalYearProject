@@ -283,8 +283,8 @@ public class ItemDatabase {
             Box orderBox = getBoxInformation(currentOrder.getID(), dataBaseName);
             newAlgorithm NA = new newAlgorithm();
             
-            List<Pair> IDAmountList = new ArrayList();
-            IDAmountList.add(new Pair(currentOrder.getID(), 1));
+            List<Box> IDAmountList = new ArrayList();
+            IDAmountList.add(new Box(currentOrder.getID(), 1));
             
             NA.sortAndAddToDB(dataBaseName, IDAmountList);
             currentOrder.setID(getMostRecentSortedBox(dataBaseName));

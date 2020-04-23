@@ -15,11 +15,12 @@ public class Box {
     float Y;
     float Z;
     
-    int SortOrder;
     String Location;
     
     String Contents;
     String Notes;
+    
+    int Amount;
     
     //Constructors
     public Box(){
@@ -69,12 +70,9 @@ public class Box {
         Z = z;
     }
     
-    public Box(String id, float width, float length, float height, int sortOrder){
+    public Box(String id, int amount){
         ID = id;
-        Width = width;
-        Length = length;
-        Height = height;
-        SortOrder = sortOrder;
+        Amount = amount;
     }
     
     public Box(String id){
@@ -115,9 +113,6 @@ public class Box {
     public String getBin(){
         return Location;
     }
-    public int getSortOrder(){
-        return SortOrder;
-    }
     
     public String getContents(){
         return Contents;
@@ -125,6 +120,11 @@ public class Box {
     public String getNotes(){
         return Notes;
     }
+    
+    public int getAmount(){
+        return Amount;
+    }
+    
     
     //Set methods
     public void setID(String id){
@@ -156,9 +156,6 @@ public class Box {
     
     public void setBin(String location){
         Location = location;
-    }
-    public void setSortOrder(int sortOrder){
-        SortOrder = sortOrder;
     }
     
     public void setContents(String contents){

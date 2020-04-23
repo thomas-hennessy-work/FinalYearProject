@@ -35,7 +35,7 @@ public class Bin {
         Height = height;
     }
     
-    public Bin(float width, float length, float height, int amount){
+    public Bin(int amount, float width, float length, float height){
         Width = width;
         Length = length;
         Height = height;

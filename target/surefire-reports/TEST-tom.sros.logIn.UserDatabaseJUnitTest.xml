@@ -15,7 +15,7 @@
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-13.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire9669809456529425760\surefirebooter461798148779371328.jar C:\Users\thoma\AppData\Local\Temp\surefire9669809456529425760 2020-04-23T12-22-07_040-jvmRun1 surefire15246498217655720220tmp surefire_08278368816046630976tmp"/>
+    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire5892137018614971897\surefirebooter16527462068440537496.jar C:\Users\thoma\AppData\Local\Temp\surefire5892137018614971897 2020-04-23T18-38-47_487-jvmRun1 surefire11601666961030070953tmp surefire_015483678523471349410tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\test-classes;C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\classes;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13-win.jar;C:\Users\thoma\.m2\repository\org\xerial\sqlite-jdbc\3.28.0\sqlite-jdbc-3.28.0.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\thoma\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\thoma\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\thoma\.m2\repository\com\github\skjolber\3d-bin-container-packing\core\1.2.10\core-1.2.10.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire9669809456529425760\surefirebooter461798148779371328.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire5892137018614971897\surefirebooter16527462068440537496.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13.0.1+9"/>

@@ -36,15 +36,28 @@
                   <TextField fx:id="addAmount" layoutX="354.0" layoutY="269.0" promptText="Amount" text="1" />
                   <Text layoutX="354.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount of bins" />
                   <Button layoutX="351.0" layoutY="332.0" mnemonicParsing="false" text="Add to database" onAction="#addToDB" />
-                  <ListView fx:id="amountList" layoutX="14.0" layoutY="85.0" prefHeight="270.0" prefWidth="80.0" />
-                  <ListView fx:id="lengthList" layoutX="174.0" layoutY="85.0" prefHeight="270.0" prefWidth="80.0" />
-                  <Text layoutX="14.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
-                  <Text layoutX="94.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Width" />
-                  <ListView fx:id="widthList" layoutX="94.0" layoutY="85.0" prefHeight="270.0" prefWidth="80.0" />
-                  <ListView fx:id="heightList" layoutX="254.0" layoutY="85.0" prefHeight="270.0" prefWidth="80.0" />
-                  <Text layoutX="174.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Length" />
-                  <Text layoutX="254.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height" />
+                  <Button layoutX="14.0" layoutY="332.0" mnemonicParsing="false" text="Remove" onAction="#removeBin" />
                   <Button layoutX="351.0" layoutY="301.0" mnemonicParsing="false" text="Add to list" onAction="#addToList" />
+                  <TableView fx:id="newBinTable" layoutX="14.0" layoutY="85.0" prefHeight="245.0" prefWidth="328.0">
+                    <columns>
+                        <TableColumn prefWidth="62.0" text="Amount" >
+                            <cellValueFactory><PropertyValueFactory property="amount" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="91.0" text="Width" >
+                            <cellValueFactory><PropertyValueFactory property="width" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="79.0" text="Length" >
+                            <cellValueFactory><PropertyValueFactory property="length" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="95.0" text="Height" >
+                            <cellValueFactory><PropertyValueFactory property="height" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                  </TableView>
                </children></AnchorPane>
       </content>
     </Tab>
@@ -62,7 +75,7 @@
                   <Text layoutX="14.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin ID" />
                   <TextField fx:id="deleteBinText" layoutX="14.0" layoutY="72.0" promptText="Enter bin ID" />
                   <Button layoutX="184.0" layoutY="72.0" mnemonicParsing="false" text="Delete bins" onAction="#deleteBin" />
-                  <TableView fx:id="binTable" layoutX="14.0" layoutY="146.0" prefHeight="200.0" prefWidth="561.0">
+                  <TableView fx:id="existingBinTable" layoutX="14.0" layoutY="146.0" prefHeight="200.0" prefWidth="561.0">
                      <columns>
                         <TableColumn text="Individual ID" >
                             <cellValueFactory><PropertyValueFactory property="Name" />

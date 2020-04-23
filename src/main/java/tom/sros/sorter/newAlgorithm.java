@@ -11,13 +11,13 @@ public class newAlgorithm {
    //Given a list of pairs containing ID's of boxes and amounts. Produces a list
    //of boxes, including multiples of the same box (as defined by amount) along with
    //their dimensions
-   public List<Box> asignBoxInformation(String dataBaseName, List<Pair> IDAmountList){       
+   public List<Box> asignBoxInformation(String dataBaseName, List<Box> IDAmountList){       
        List<Box> Boxes = new ArrayList<>();
        List<Box> returnBoxes = new ArrayList<>();
            
        IDAmountList.forEach((currentPair) -> {
-          for(int i = 0 ; i < (int)currentPair.getValue() ; i++){
-              Boxes.add(new Box((String) currentPair.getKey()));
+          for(int i = 0 ; i < (int)currentPair.getAmount(); i++){
+              Boxes.add(new Box((String) currentPair.getID()));
            }
         });
            
@@ -30,7 +30,7 @@ public class newAlgorithm {
         return returnBoxes;
    }
    
-    public void sortAndAddToDB(String dataBaseName, List<Pair> IDAmountList){
+    public void sortAndAddToDB(String dataBaseName, List<Box> IDAmountList){
     
     List<Box> returnBoxList = new ArrayList<>();
     List<Box> freshSortBoxes;

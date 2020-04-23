@@ -4,21 +4,23 @@ import tom.sros.sorter.newAlgorithm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
-import javafx.util.Pair;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
 import tom.sros.item.ItemDatabase;
+import tom.sros.sorter.Box;
 import tom.sros.sorter.Order;
 
 public class AddToStorageRoomController {
     
     String dataBaseName = ("SROSData.db");
     //Lists used to store box ID's as they are input
-    List<Pair> BoxIDs = new ArrayList<>();
+    List<Box> BoxIDs = new ArrayList<>();
     List<Order> OrderList = new ArrayList<>();
     
     //Lists to store order information as they are input
@@ -29,11 +31,6 @@ public class AddToStorageRoomController {
     private TextField IDBoxAmount;
     
     @FXML
-    private ListView IDBoxList;
-    @FXML
-    private ListView BoxAmountList;
-    
-    @FXML
     private TextField orderTypeID;
     @FXML
     private TextField addressText;
@@ -41,11 +38,9 @@ public class AddToStorageRoomController {
     private TextField custNameText;
     
     @FXML
-    private ListView IDOrderList;
+    private TableView itemTable;
     @FXML
-    private ListView CustNameList;
-    @FXML
-    private ListView AddressList;
+    private TableView orderTable;
     
     @FXML
     private void sortBoxes() throws IOException{
@@ -58,8 +53,8 @@ public class AddToStorageRoomController {
         
         //Clearing the stored list of items
         BoxIDs.clear();
-        IDBoxList.getItems().clear();
-        BoxAmountList.getItems().clear();
+        itemTable.getItems().clear();
+        orderTable.getItems().clear();
     }
     
     @FXML
@@ -74,9 +69,9 @@ public class AddToStorageRoomController {
         //Ensure that the ID exists in the item database
         //If they do, pass them as a pair to a list in the backend to be temporeraly stored.
         if(IDB.IDCheck(dataBaseName,inputID) != false){
-            IDBoxList.getItems().add(inputID);
-            BoxAmountList.getItems().add(inputAmount);
-            BoxIDs.add(new Pair(inputID,inputAmount));
+            Box inputBox = new Box(inputID, inputAmount);
+            BoxIDs.add(inputBox);
+            itemTable.getItems().add(inputBox);
             
             IDBoxText.setText("");
             IDBoxAmount.setText("");
@@ -88,7 +83,14 @@ public class AddToStorageRoomController {
     
     @FXML
     private void removeBox(){
+        TableViewSelectionModel boxesSelection = itemTable.getSelectionModel();
+        List<Box> selectedBoxes = boxesSelection.getSelectedItems();
         
+        selectedBoxes.forEach((currentBox) -> {
+            BoxIDs.remove(currentBox);
+        });
+        
+        itemTable.getItems().removeAll(selectedBoxes);
     }
     
     @FXML
@@ -100,9 +102,7 @@ public class AddToStorageRoomController {
         IDB.addOrdersToDB(dataBaseName, OrderList);
         
         OrderList.clear();
-        IDOrderList.getItems().clear();
-        CustNameList.getItems().clear();
-        AddressList.getItems().clear();
+        orderTable.getItems().clear();
     }
     
     @FXML
@@ -115,11 +115,10 @@ public class AddToStorageRoomController {
         String custName = custNameText.getText();
         
         if(IDB.IDCheck(dataBaseName, boxTypeID) != false){
-            OrderList.add(new Order(boxTypeID, address, custName));
+            Order inputOrder = new Order(boxTypeID, address, custName);
+            OrderList.add(inputOrder);
             
-            IDOrderList.getItems().add(boxTypeID);
-            CustNameList.getItems().add(custName);
-            AddressList.getItems().add(address);
+            orderTable.getItems().add(inputOrder);
             
             orderTypeID.setText("");
             addressText.setText("");
@@ -128,6 +127,18 @@ public class AddToStorageRoomController {
         else{
             JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID dose not exist.", "Unrecognised box ID", 2);
         }
+    }
+    
+    @FXML
+    private void removeOrder(){
+        TableViewSelectionModel ordersSelection = orderTable.getSelectionModel();
+        List<Order> selectedOrders = ordersSelection.getSelectedItems();
+
+        selectedOrders.forEach((currentOrder) -> {
+            OrderList.remove(currentOrder);
+        });
+        
+        orderTable.getItems().removeAll(selectedOrders);
     }
     
     //Logout and home buttons

@@ -21,6 +21,11 @@ public class LocateItemController implements Initializable{
         populateBoxTable();
     }
     
+    @FXML
+    private void removeBox(){
+        
+    }
+    
     //Logout and home buttons
     @FXML
     private void logOut() throws IOException {

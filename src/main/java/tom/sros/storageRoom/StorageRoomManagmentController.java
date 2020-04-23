@@ -5,10 +5,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import tom.sros.App;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
@@ -27,20 +28,13 @@ public class StorageRoomManagmentController implements Initializable{
     @FXML
     private TextField addHeight;
     
-    @FXML 
-    private ListView amountList;
-    @FXML
-    private ListView widthList;
-    @FXML
-    private ListView lengthList;
-    @FXML
-    private ListView heightList;
-    
     @FXML
     private TextField deleteBinText;
     
     @FXML
-    private TableView binTable;
+    private TableView existingBinTable;
+    @FXML
+    private TableView newBinTable;
     
     List<Bin> toAddList = new ArrayList<>();
     
@@ -49,47 +43,49 @@ public class StorageRoomManagmentController implements Initializable{
         populateTable();
     }
     
-    @FXML void addToDB(){
+    @FXML 
+    private void addToDB(){
       BinDataBase BDB = new BinDataBase();
       BDB.insertBins(toAddList, dataBaseName);
       toAddList.clear();
-      amountList.getItems().clear();
-      widthList.getItems().clear();
-      lengthList.getItems().clear();
-      heightList.getItems().clear();
+      newBinTable.getItems().clear();
       
-      List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
-      binTable.getItems().clear();
-        
+      existingBinTable.getItems().clear();     
       populateTable();
     }
     
-    @FXML void addToList(){
+    @FXML
+    private void addToList(){
         int amount = Integer.parseInt(addAmount.getText());
         float width = Float.parseFloat(addWidth.getText());
         float length = Float.parseFloat(addLength.getText());
         float height = Float.parseFloat(addHeight.getText());
         System.out.println("Amount: " + amount + " Width: " + width + " Length: " + length + " Height: " + height);
         
-        amountList.getItems().add(amount);
-        widthList.getItems().add(width);
-        lengthList.getItems().add(length);
-        heightList.getItems().add(height);
-
-        toAddList.add(new Bin(width, length, height, amount));
+        Bin binToAdd = new Bin(amount, width, length, height);
+        newBinTable.getItems().add(binToAdd);
+        toAddList.add(binToAdd);
         
         addAmount.setText("");
         addWidth.setText("");
         addLength.setText("");
         addHeight.setText("");
-        
-        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
-        binTable.getItems().clear();
-        
-        populateTable();
     }
     
-    @FXML void deleteBin(){
+    @FXML
+    private void removeBin(){
+        TableViewSelectionModel binSelection = newBinTable.getSelectionModel();
+        List<Bin> binsToRemove = binSelection.getSelectedItems();
+        
+        binsToRemove.forEach((currentBin) -> {
+            toAddList.remove(currentBin);
+        });
+        
+        newBinTable.getItems().removeAll(binsToRemove);
+    }
+    
+    @FXML 
+    private void deleteBin(){
         String deleteID = deleteBinText.getText();
         
         JFrame binExistanceWarning = new JFrame();
@@ -108,10 +104,10 @@ public class StorageRoomManagmentController implements Initializable{
         }
         
         List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
-        binTable.getItems().clear();
+        existingBinTable.getItems().clear();
         
         binInfoList.forEach((currentBin) -> {
-            binTable.getItems().add(currentBin);
+            existingBinTable.getItems().add(currentBin);
             System.out.println(currentBin.toString());
         });
     }
@@ -129,7 +125,7 @@ public class StorageRoomManagmentController implements Initializable{
     private void populateTable(){
         List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
         binInfoList.forEach((currentBin) -> {
-            binTable.getItems().add(currentBin);
+            existingBinTable.getItems().add(currentBin);
         });
     }
     
