@@ -31,7 +31,7 @@
                   <Button layoutX="22.0" layoutY="306.0" mnemonicParsing="false" text="Sort" onAction="#sortBoxes" />
                   <TextField fx:id="IDBoxAmount" layoutX="418.0" layoutY="98.0" prefHeight="25.0" prefWidth="66.0" promptText="Amount" />
                   <Text layoutX="418.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
-                  <Button layoutX="67.0" layoutY="306.0" mnemonicParsing="false" text="Remove" />
+                  <Button layoutX="67.0" layoutY="306.0" mnemonicParsing="false" text="Remove" onAction="#removeBox" />
 
                   <Text layoutX="171.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
                </children></AnchorPane>

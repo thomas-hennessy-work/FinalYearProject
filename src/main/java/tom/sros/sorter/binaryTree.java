@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tom.sros.sorter;
 
 import java.util.ArrayList;
@@ -14,14 +9,12 @@ public class binaryTree {
     
     Node root;
     Bin currentBin;
-    static int sortOrder = 1;
-    
-    //When you add a box to a top left corner, there will be two quadrilaterals left over,
-    //one bello and one to the right. Recursivly doing this allows you to fit boxes in to 
-    //these spaces. The tree stores the space available.
-    
-    
-    //https://www.baeldung.com/java-binary-tree
+    //Used so that if a box is not placed (due to a pre-existing one being placed instead),
+    //it is sorted again.
+    static Boolean unplaced = true;
+    static List<Box> existingBoxes = null;
+   
+
     class Node{
         Space binArea;
         Box storedBox;
@@ -73,15 +66,21 @@ public class binaryTree {
         //to fit in the space that is already taken, it will not fit in a smaller space. This
         //eliminates unnececery recursion
         //If the current node is null
+        
         if (currentNode == null){
-            System.out.println("Current node is null, box being placed");
+            //Checking if any pre-existing boxes are located in this position.
+            Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getY());
+            if(placedBox != null){
+                System.out.println("Current node is null, pre-existing box placed here, box being placed");
+                System.out.println(placedBox.getX() + " " + placedBox.getY());
+                return new Node(binSpace, placedBox);
+            }else{
             //Provides information about where the bin is stored and also prevents it from being re-sorted
-            item.setBin(currentBin.getName());
-            if(item.getSortOrder() == 0){
-                item.setSortOrder(sortOrder);
+                System.out.println("Current node is null, no preexisting boxes, box being placed");
+                item.setBin(currentBin.getName());
+                unplaced = false;
+                return new Node(binSpace, item);
             }
-            sortOrder ++;
-            return new Node(binSpace, item);
         }
 
         //If the box can fit in the node to the right, but there is no node right, move to the node right
@@ -109,6 +108,7 @@ public class binaryTree {
                 item.setY(item.getY() - currentNode.getPlacedBox().getWidth());
             }
         }
+        unplaced = false;
         return currentNode;
     }
     
@@ -126,22 +126,26 @@ public class binaryTree {
     }
     
     public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes, String dataBaseName){
-        //Creating instances of the sorter
+        //Creating the binary tree
         binaryTree binTree = new binaryTree();
         binTree.currentBin = storingBin;
-        Space binSpace = storingBin.getArea();
+        
+        //Gathering pre-existing boxes from the item database
         ItemDatabase ITDB = new ItemDatabase();
-        List<Box> existingBoxes = ITDB.getExistingBox(storingBin, dataBaseName);
+        existingBoxes = ITDB.getExistingBoxes(storingBin, dataBaseName);
+        System.out.println("existingBoxes size(): " + existingBoxes.size());
+        
+        //Gathering information about the bin that will be storing the boxes and the boxes that will be placed
+        Space binSpace = storingBin.getArea();
         List<Box> boxList = new ArrayList<>();
         
         //Adding each box provided to the binary tree
         boxes.forEach((curentBox) -> {
-                existingBoxes.forEach((currentExistingBoxes) -> {
-                    if(currentExistingBoxes.getSortOrder() == sortOrder){
-                        binTree.add(currentExistingBoxes, binSpace);
-                    }
-                });
-            binTree.add(curentBox, binSpace);
+            while(unplaced == true){
+                binTree.add(curentBox, binSpace);
+                System.out.println("Looping and unplaced = " + unplaced);
+            }
+            unplaced = true;
         });
         
         //Obtaining a list of the nodes
@@ -154,5 +158,19 @@ public class binaryTree {
         });
         
         return boxList;
+    }
+    
+    //Used to see if any pre-existing boxes should be placed instead of a new box, due
+    //to boxes already occupying the position
+    private static Box findPlacedBox(List<Box> placedBoxes, float x, float y){
+        Box returnValue = null;
+        
+        for(Box currentPlacedBox: placedBoxes){
+            if((currentPlacedBox.getX() == x) && (currentPlacedBox.getY() == y)){
+                returnValue = currentPlacedBox;
+            }
+        }
+        System.out.println("Box found in this position: " + returnValue);
+        return returnValue;
     }
 }

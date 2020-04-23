@@ -87,6 +87,11 @@ public class AddToStorageRoomController {
     }
     
     @FXML
+    private void removeBox(){
+        
+    }
+    
+    @FXML
     private void sortOrders(){
         //Sorting the list of items given to the system
         ItemDatabase IDB = new ItemDatabase();

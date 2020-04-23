@@ -22,6 +22,9 @@ public class Box {
     String Notes;
     
     //Constructors
+    public Box(){
+    }
+    
     public Box(String id, float width, float length, float height){
         ID = id;
         Width = width;
@@ -56,6 +59,15 @@ public class Box {
         Z = z;
     }
     
+    public Box(String id, float width, float length, float height, float x, float y, float z){
+        ID = id;
+        Width = width;
+        Length = length;
+        Height = height;
+        X = x;
+        Y = y;
+        Z = z;
+    }
     
     public Box(String id, float width, float length, float height, int sortOrder){
         ID = id;

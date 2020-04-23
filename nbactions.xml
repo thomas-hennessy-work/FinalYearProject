@@ -6,13 +6,9 @@
                 <packaging>jar</packaging>
             </packagings>
             <goals>
-                <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+                <goal>clean</goal>
+                <goal>javafx:run</goal>
             </goals>
-            <properties>
-                <exec.args>-classpath %classpath tom.sros.App</exec.args>
-                <exec.executable>java</exec.executable>
-            </properties>
         </action>
         <action>
             <actionName>debug</actionName>
@@ -20,12 +16,10 @@
                 <packaging>jar</packaging>
             </packagings>
             <goals>
-                <goal>process-classes</goal>
-                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+                <goal>clean</goal>
+                <goal>javafx:run@debug</goal>
             </goals>
             <properties>
-                <exec.args>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath tom.sros.App</exec.args>
-                <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
         </action>
@@ -39,7 +33,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath tom.sros.App</exec.args>
+                <exec.args>-classpath %classpath tom.sros.App --module-path C:\Users\thoma\Documents\NetBeansProjects\javafx-sdk-11.0.2\lib --add-modules javafx.controls</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

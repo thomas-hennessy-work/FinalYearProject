@@ -16,8 +16,8 @@ import tom.sros.sorter.newAlgorithm;
 public class ItemDatabase {
     
     public static void main(String dataBaseName){
-        Connection c = null;
-        Statement stmt = null;
+        Connection c;
+        Statement stmt;
         
         try{
             //Connect to database
@@ -52,7 +52,6 @@ public class ItemDatabase {
                     "corner_vertical_pos   INT   NOT NULL, " +
                     "corner_horizontal_pos   INT   NOT NULL, " +
                     "corner_depth_pos   INT   NOT NULL, " + 
-                    "sort_order    INT," +
                     "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID)" +
                     "FOREIGN KEY(bin_ID)   REFERENCES binIndividual(bin_ID))";
             stmt.executeUpdate(sql);
@@ -71,8 +70,8 @@ public class ItemDatabase {
     
     public void addBox(String dataBaseName,String name, String contents, float width, float length, float height, String notes){
             
-            Statement stmt = null;
-            Connection c = null;
+            Statement stmt;
+            Connection c;
             
             try{
                 //connect to database
@@ -262,9 +261,9 @@ public class ItemDatabase {
             System.out.println("Connected to database");
             stmt = c.createStatement();
             
-            String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, sort_order) "
-                    + "VALUES ('" + placedBox.getID() + "', '" + placedBox.getBin() + "', '" + placedBox.getZ() + "', '"
-                    + placedBox.getX() + "', '" + placedBox.getY() + "', '" + placedBox.getSortOrder() + "' );";
+            String sql = "INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos) "
+                    + "VALUES ('" + placedBox.getID() + "', '" + placedBox.getBin() + "', '" + placedBox.getY() + "', '"
+                    + placedBox.getX() + "', '" + placedBox.getZ() + "' );";
             stmt.executeUpdate(sql);
             System.out.println("Box location added to data base");
             
@@ -347,7 +346,7 @@ public class ItemDatabase {
         }
     }
     
-    public List<Box> getExistingBox(Bin binLocation, String dataBaseName){
+    public List<Box> getExistingBoxes(Bin binLocation, String dataBaseName){
         Connection c;
         Statement stmt;
         
@@ -357,10 +356,10 @@ public class ItemDatabase {
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             System.out.println("Connected to database");
             stmt = c.createStatement();
-            
-            ResultSet rs = stmt.executeQuery("SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos, boxLocation.sort_order FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '" + binLocation + "';");
+
+            ResultSet rs = stmt.executeQuery("SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '" + binLocation.getName() + "';");
             while(rs.next()){
-                returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getInt("sort_order")));
+                returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos")));
             }
             
             stmt.close();
@@ -387,7 +386,7 @@ public class ItemDatabase {
             System.out.println("Connected to database");
             stmt = c.createStatement();
             
-            ResultSet rs = stmt.executeQuery("SELECT individual_ID FROM boxLocation WHERE bin_ID = " + placedBox.getBin() + " AND sort_order = " + placedBox.getSortOrder());
+            ResultSet rs = stmt.executeQuery("SELECT individual_ID FROM boxLocation WHERE bin_ID = " + placedBox.getBin() + " AND corner_vertical_pos = " + placedBox.getY() + " AND corner_horizontal_pos = " + placedBox.getX() + " AND corner_depth_pos = " + placedBox.getZ());
             
             returnValue = rs.next();
             
