@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.util.Pair;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
+import tom.sros.sorter.EmptySpace;
 import tom.sros.sorter.Order;
 import tom.sros.sorter.newAlgorithm;
 
@@ -49,11 +49,23 @@ public class ItemDatabase {
                     "(individual_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, " +
                     "box_ID   STRING   NOT NULL, " +
                     "bin_ID  STRING   NOT NULL, " +
-                    "corner_vertical_pos   INT   NOT NULL, " +
-                    "corner_horizontal_pos   INT   NOT NULL, " +
-                    "corner_depth_pos   INT   NOT NULL, " + 
+                    "corner_vertical_pos   FLOAT   NOT NULL, " +
+                    "corner_horizontal_pos   FLOAT   NOT NULL, " +
+                    "corner_depth_pos   INT   FLOAT   NULL, " + 
                     "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID)" +
                     "FOREIGN KEY(bin_ID)   REFERENCES binIndividual(bin_ID))";
+            stmt.executeUpdate(sql);
+            
+            sql = "CREATE TABLE IF NOT EXISTS emptySpace" + 
+                    "(space_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "bin_ID     STRING NOT   NULL, " + 
+                    "corner_vertical_pos   FLOAT   NOT NULL, " +
+                    "corner_horizontal_pos   FLOAT   NOT NULL, " +
+                    "corner_depth_pos   FLOAT   NOT NULL, " +
+                    "width   FLOAT   NOT NULL, " +
+                    "length   FLOAT   NOT NULL, " +
+                    "height   FLOAT   NOT NULL, " +
+                    "FOREIGN KEY(bin_ID)    REFERENCES binIndividual(bin_ID))";
             stmt.executeUpdate(sql);
             System.out.println("Tables created if not alredy");
             
@@ -98,9 +110,9 @@ public class ItemDatabase {
             }
         }
     
-    public void removeBox(String dataBaseName, String boxID){
-            Statement stmt = null;
-            Connection c = null;
+    public void removeBoxType(String dataBaseName, String boxID){
+            Statement stmt;
+            Connection c;
             
             try{
                 //connect to database
@@ -374,6 +386,35 @@ public class ItemDatabase {
         return returnList;
     }
     
+    public Box getSpecificExistingBoxDimensions(Box boxPosition, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        Box returnBox = boxPosition;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT boxType.width, boxType.length, boxType.height FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '" + boxPosition.getBin() + "' AND boxLocation.corner_vertical_pos = '" + boxPosition.getY() + "' AND boxLocation.corner_horizontal_pos = '" +  boxPosition.getX() + "' AND boxLocation.corner_depth_pos = '" + boxPosition.getZ() + "';");
+            while(rs.next()){
+                returnBox.setWidth(rs.getFloat("width"));
+                returnBox.setLength(rs.getFloat("length"));
+                returnBox.setHeight(rs.getFloat("height"));
+            }
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        return returnBox;
+    }
+    
     //Used with addBoxLocation so that boxes that were stored in the bin before the sort are not input repeatedly
     public boolean blockRepeatingBoxEntry(Box placedBox, String dataBaseName){
         Connection c;
@@ -401,5 +442,65 @@ public class ItemDatabase {
         }
         
         return !returnValue;
+    }
+
+    
+    public void removeStoredBox(Box boxToRemoved, String dataBaseName){
+        //Creating an empty space, similar to the box being removed
+        Box removedBox = getSpecificExistingBoxDimensions(boxToRemoved, dataBaseName);
+        EmptySpace newSpace = new EmptySpace(removedBox.getWidth(), removedBox.getLength(), removedBox.getHeight(), removedBox.getX(), removedBox.getY(), removedBox.getZ(), removedBox.getBin());
+        
+        addEmptySpace(newSpace, dataBaseName);
+        deleteBoxLocation(boxToRemoved, dataBaseName);
+    }
+    
+    //Adds the empty space object to the database
+    public void addEmptySpace(EmptySpace newSpace, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            String sql = "INSERT INTO emptySpace (bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, height) "
+                    + "VALUES ('" + newSpace.getBin() + "', '" + newSpace.getY() +  "', '" + newSpace.getX() + "', '" + newSpace.getZ() +
+                    "', '" + newSpace.getWidth() + "', '" + newSpace.getLength() + "', '" + newSpace.getHeight() + "' );";
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    //removes a specific box from the storage room
+    public void deleteBoxLocation(Box boxToRemove, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            String sql = "DELETE FROM boxLocation WHERE individual_ID = " + boxToRemove.getID();
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
 }

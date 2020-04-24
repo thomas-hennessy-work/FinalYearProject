@@ -69,10 +69,10 @@ public class binaryTree {
         
         if (currentNode == null){
             //Checking if any pre-existing boxes are located in this position.
-            Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getY());
+            Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getZ());
             if(placedBox != null){
                 System.out.println("Current node is null, pre-existing box placed here, box being placed");
-                System.out.println(placedBox.getX() + " " + placedBox.getY());
+                System.out.println(placedBox.getX() + " " + placedBox.getZ());
                 return new Node(binSpace, placedBox);
             }else{
             //Provides information about where the bin is stored and also prevents it from being re-sorted
@@ -101,11 +101,11 @@ public class binaryTree {
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
         if ((item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
             System.out.println("Going bellow");
-            item.setY(item.getY() + currentNode.getPlacedBox().getLength());
+            item.setZ(item.getZ() + currentNode.getPlacedBox().getLength());
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
             
             if(item.getBin() != (currentBin.getName())){
-                item.setY(item.getY() - currentNode.getPlacedBox().getWidth());
+                item.setZ(item.getZ() - currentNode.getPlacedBox().getWidth());
             }
         }
         unplaced = false;
@@ -135,6 +135,8 @@ public class binaryTree {
         existingBoxes = ITDB.getExistingBoxes(storingBin, dataBaseName);
         System.out.println("existingBoxes size(): " + existingBoxes.size());
         
+        //Gathering empty spaces in the bin
+        
         //Gathering information about the bin that will be storing the boxes and the boxes that will be placed
         Space binSpace = storingBin.getArea();
         List<Box> boxList = new ArrayList<>();
@@ -162,11 +164,11 @@ public class binaryTree {
     
     //Used to see if any pre-existing boxes should be placed instead of a new box, due
     //to boxes already occupying the position
-    private static Box findPlacedBox(List<Box> placedBoxes, float x, float y){
+    private static Box findPlacedBox(List<Box> placedBoxes, float x, float z){
         Box returnValue = null;
         
         for(Box currentPlacedBox: placedBoxes){
-            if((currentPlacedBox.getX() == x) && (currentPlacedBox.getY() == y)){
+            if((currentPlacedBox.getX() == x) && (currentPlacedBox.getZ() == z)){
                 returnValue = currentPlacedBox;
             }
         }

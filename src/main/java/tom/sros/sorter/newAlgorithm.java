@@ -2,7 +2,6 @@ package tom.sros.sorter;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.util.Pair;
 import tom.sros.storageRoom.BinDataBase;
 import tom.sros.item.ItemDatabase;
 
@@ -15,9 +14,9 @@ public class newAlgorithm {
        List<Box> Boxes = new ArrayList<>();
        List<Box> returnBoxes = new ArrayList<>();
            
-       IDAmountList.forEach((currentPair) -> {
-          for(int i = 0 ; i < (int)currentPair.getAmount(); i++){
-              Boxes.add(new Box((String) currentPair.getID()));
+       IDAmountList.forEach((currentBox) -> {
+          for(int i = 0 ; i < (int)currentBox.getAmount(); i++){
+              Boxes.add(new Box((String) currentBox.getID()));
            }
         });
            

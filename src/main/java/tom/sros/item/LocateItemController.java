@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import tom.sros.App;
 import tom.sros.sorter.Box;
 
@@ -23,7 +24,16 @@ public class LocateItemController implements Initializable{
     
     @FXML
     private void removeBox(){
+        TableViewSelectionModel boxesSelection = boxTable.getSelectionModel();
+        List<Box> selectedBoxes = boxesSelection.getSelectedItems();
+        ItemDatabase ITDB = new ItemDatabase();
         
+        selectedBoxes.forEach((currentSelectedBox) -> {
+            ITDB.removeStoredBox(currentSelectedBox, dataBaseName);
+        });
+        
+        boxTable.getItems().clear();
+        populateBoxTable();
     }
     
     //Logout and home buttons

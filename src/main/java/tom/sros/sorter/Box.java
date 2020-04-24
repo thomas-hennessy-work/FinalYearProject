@@ -70,6 +70,16 @@ public class Box {
         Z = z;
     }
     
+    public Box(float width, float length, float height, float x, float y, float z, String location){
+        Location = location;
+        Width = width;
+        Length = length;
+        Height = height;
+        X = x;
+        Y = y;
+        Z = z;
+    }
+    
     public Box(String id, int amount){
         ID = id;
         Amount = amount;

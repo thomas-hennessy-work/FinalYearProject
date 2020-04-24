@@ -183,7 +183,7 @@ public class ItemDatabaseJUnitTest {
     public void testRemoveBox(){
         System.out.println("remove box test started");
         ItemDatabase ITDB = new ItemDatabase();
-        ITDB.removeBox(dataBaseName, "1");
+        ITDB.removeBoxType(dataBaseName, "1");
         
         Connection c = null;
         Statement stmt = null;

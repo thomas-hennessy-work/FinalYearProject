@@ -4,7 +4,6 @@ import tom.sros.sorter.newAlgorithm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
