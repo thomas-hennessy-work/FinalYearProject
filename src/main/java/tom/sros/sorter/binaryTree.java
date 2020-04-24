@@ -13,11 +13,13 @@ public class binaryTree {
     //it is sorted again.
     static Boolean unplaced = true;
     static List<Box> existingBoxes = null;
+    static List<EmptySpace> unocupiedSpace = null;
    
 
     class Node{
         Space binArea;
         Box storedBox;
+        EmptySpace unusedSpace;
         Node below;
         Node right;
         
@@ -37,12 +39,16 @@ public class binaryTree {
         Node(Space binArea, Box item){
             this.binArea = binArea;
             storedBox = item;
+            unusedSpace = null;
             below = null;
             right = null;
         }
-        
-        private void addBinArea(Space Area){
-            binArea = Area;
+        Node(Space binArea, EmptySpace emptySpace){
+            this.binArea = binArea;
+            storedBox = null;
+            unusedSpace = emptySpace;
+            below = null;
+            right = null;
         }
         
         private Space getBinArea(){
@@ -50,6 +56,9 @@ public class binaryTree {
         }
         private Box getPlacedBox(){
             return storedBox;
+        }
+        private EmptySpace getEmptySpace(){
+            return unusedSpace;
         }
         
     }
@@ -70,11 +79,18 @@ public class binaryTree {
         if (currentNode == null){
             //Checking if any pre-existing boxes are located in this position.
             Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getZ());
+            EmptySpace placedSpace = findEmptySpace(unocupiedSpace, item.getX(), item.getZ());
             if(placedBox != null){
                 System.out.println("Current node is null, pre-existing box placed here, box being placed");
                 System.out.println(placedBox.getX() + " " + placedBox.getZ());
                 return new Node(binSpace, placedBox);
-            }else{
+            }
+            //If an empty space is located in the current node. Tries to place the new box within the empty space
+            //If it cannot fit, it places the empty space in the binary tree.
+            else if(placedSpace != null){
+                return new Node(binSpace, placedSpace);
+            }
+            else{
             //Provides information about where the bin is stored and also prevents it from being re-sorted
                 System.out.println("Current node is null, no preexisting boxes, box being placed");
                 item.setBin(currentBin.getName());
@@ -85,8 +101,8 @@ public class binaryTree {
 
         //If the box can fit in the node to the right, but there is no node right, move to the node right
         //The comparison to current bin is used to check if the box has been placed
-        if ((item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
-            System.out.println("Going right");
+        if ((currentNode.getPlacedBox() != null) && (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
+            System.out.println("Going right, box stored");
             //itterativly adding to the position of the item
             item.setX(item.getX() + currentNode.getPlacedBox().getWidth());
             //continuing recursion
@@ -96,11 +112,24 @@ public class binaryTree {
             if(item.getBin() != (currentBin.getName())){
                 item.setX(item.getX() - currentNode.getPlacedBox().getWidth());
             }
+        } 
+        //Same as the initial if statement, only it executes on empty spaces rather than stored boxes
+        else if((currentNode.getEmptySpace()!= null) && (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
+            System.out.println("Going right, empty space");
+            //itterativly adding to the position of the item
+            item.setX(item.getX() + currentNode.getEmptySpace().getWidth());
+            //continuing recursion
+            currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()));
+            
+            //If the box is not placed and it comes back through the binary tree, the itterative position is undone
+            if(item.getBin() != (currentBin.getName())){
+                item.setX(item.getX() - currentNode.getEmptySpace().getWidth());
+            }
         }
         
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
-        if ((item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
-            System.out.println("Going bellow");
+        if ((currentNode.getPlacedBox() != null) && (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
+            System.out.println("Going bellow, box stored");
             item.setZ(item.getZ() + currentNode.getPlacedBox().getLength());
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()));
             
@@ -108,6 +137,17 @@ public class binaryTree {
                 item.setZ(item.getZ() - currentNode.getPlacedBox().getWidth());
             }
         }
+        else if((currentNode.getEmptySpace()!= null) && (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
+            System.out.println("Going bellow, empty space");
+            item.setZ(item.getZ() + currentNode.getEmptySpace().getLength());
+            currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()));
+            
+            if(item.getBin() != (currentBin.getName())){
+                item.setZ(item.getZ() - currentNode.getEmptySpace().getWidth());
+            }
+        }
+        
+        
         unplaced = false;
         return currentNode;
     }
@@ -117,7 +157,6 @@ public class binaryTree {
         List<Node> nodeList = new ArrayList<>();
         
         if (node != null){
-            System.out.println("Found box in node: " + node.getPlacedBox().getID());
             nodeList.addAll(traversePreOrder(node.below));
             nodeList.addAll(traversePreOrder(node.right));
             nodeList.add(node);
@@ -133,9 +172,9 @@ public class binaryTree {
         //Gathering pre-existing boxes from the item database
         ItemDatabase ITDB = new ItemDatabase();
         existingBoxes = ITDB.getExistingBoxes(storingBin, dataBaseName);
-        System.out.println("existingBoxes size(): " + existingBoxes.size());
         
         //Gathering empty spaces in the bin
+        unocupiedSpace = ITDB.getEmptySpaces(storingBin.getName(), dataBaseName);
         
         //Gathering information about the bin that will be storing the boxes and the boxes that will be placed
         Space binSpace = storingBin.getArea();
@@ -155,8 +194,10 @@ public class binaryTree {
         
         //Extracting box information about the sorted boxes from the nodes
         nodeList.forEach((currentNode) -> {
-            currentNode.getPlacedBox().setBin(storingBin.getName());
-            boxList.add(currentNode.getPlacedBox());
+            if(currentNode.getPlacedBox() != null){
+                currentNode.getPlacedBox().setBin(storingBin.getName());
+                boxList.add(currentNode.getPlacedBox());
+            }
         });
         
         return boxList;
@@ -173,6 +214,19 @@ public class binaryTree {
             }
         }
         System.out.println("Box found in this position: " + returnValue);
+        return returnValue;
+    }
+    
+    //Similar to findPlacedBox, used to find empty space in a location
+    private static EmptySpace findEmptySpace(List<EmptySpace> emptySpaces, float x, float z){
+        EmptySpace returnValue = null;
+        
+        for(EmptySpace currentSpace: emptySpaces){
+            if((currentSpace.getX() == x) && (currentSpace.getZ() == z)){
+                returnValue = currentSpace;
+            }
+        }
+        System.out.println("Space found in this position: " + returnValue);
         return returnValue;
     }
 }

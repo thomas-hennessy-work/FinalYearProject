@@ -480,6 +480,35 @@ public class ItemDatabase {
         }
     }
     
+    public List<EmptySpace> getEmptySpaces(String binID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<EmptySpace> returnList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, height FROM emptySpace WHERE bin_ID = " + binID);
+            while(rs.next()){
+                returnList.add(new EmptySpace(rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"), rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos"), binID));
+            }
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        
+        return returnList;
+    }
+    
     //removes a specific box from the storage room
     public void deleteBoxLocation(Box boxToRemove, String dataBaseName){
         Connection c;
