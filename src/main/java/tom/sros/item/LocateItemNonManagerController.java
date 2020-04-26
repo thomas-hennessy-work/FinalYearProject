@@ -12,7 +12,7 @@ import tom.sros.App;
 import tom.sros.home.HomeScreenController;
 import tom.sros.sorter.Box;
 
-public class LocateItemController implements Initializable{
+public class LocateItemNonManagerController implements Initializable{
     String dataBaseName = ("SROSData.db");
     
     boolean UserType;
@@ -50,7 +50,7 @@ public class LocateItemController implements Initializable{
     }
     @FXML
     private void home() throws IOException{
-        App.setRoot("/tom/sros/home/homeScreen");
+        App.setRoot("/tom/sros/home/homeScreenNonManager");
     }
     
     private void populateBoxTable(){

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.*?> 
+<?import javafx.collections.*?> 
+<?import fxmltableview.*?> 
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="tom.sros.item.AddItemToDataBaseNonManagerController">
+  <tabs>
+    <Tab text="Add box">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="boxName" layoutX="14.0" layoutY="83.0" promptText="Enter name" />
+                  <TextField fx:id="boxWidth" layoutX="14.0" layoutY="135.0" promptText="Enter box width" />
+                  <TextField fx:id="boxLength" layoutX="14.0" layoutY="190.0" promptText="Enter box length" />
+                  <TextField fx:id="boxHeight" layoutX="14.0" layoutY="245.0" promptText="Enter box height" />
+                  <Text layoutX="240.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add box">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="14.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box name:" />
+                  <Text layoutX="14.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box width:" />
+                  <Text layoutX="14.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box length:" />
+                  <Text layoutX="14.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box height:" />
+                  <TextArea fx:id="boxContents" layoutX="288.0" layoutY="81.0" prefHeight="54.0" prefWidth="200.0" promptText="Enter contents" />
+                  <TextArea fx:id="boxNotes" layoutX="288.0" layoutY="171.0" prefHeight="132.0" prefWidth="200.0" promptText="Enter notes" />
+                  <Text layoutX="289.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box contents:" />
+                  <Text layoutX="289.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notes" />
+                  <Button layoutX="527.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Button layoutX="462.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <Button layoutX="16.0" layoutY="303.0" mnemonicParsing="false" text="Submit" onAction="#submitBox" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Box types">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="446.0" prefWidth="600.0">
+               <children>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="527.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                        <Button layoutX="462.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                        <TableView fx:id="boxInfoTable" layoutX="14.0" layoutY="80.0" prefHeight="280.0" prefWidth="570.0">
+                          <columns>
+                            <TableColumn prefWidth="59.0" text="Box ID" >
+                                <cellValueFactory><PropertyValueFactory property="ID" />
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn text="Name" >
+                                <cellValueFactory><PropertyValueFactory property="Name" />
+                                </cellValueFactory>
+                            </TableColumn>      
+                            <TableColumn prefWidth="50.0" text="Width" >
+                                <cellValueFactory><PropertyValueFactory property="Width" />
+                                </cellValueFactory>
+                            </TableColumn>   
+                            <TableColumn prefWidth="60.0" text="Length" >
+                                <cellValueFactory><PropertyValueFactory property="Length" />
+                                </cellValueFactory>
+                            </TableColumn>   
+                            <TableColumn prefWidth="60.0" text="Height" >
+                                <cellValueFactory><PropertyValueFactory property="Height" />
+                                </cellValueFactory>
+                            </TableColumn>   
+                            <TableColumn prefWidth="150.0" text="Contents" >
+                                <cellValueFactory><PropertyValueFactory property="Contents" />
+                                </cellValueFactory>
+                            </TableColumn>   
+                            <TableColumn prefWidth="110.0" text="Notes" >
+                                <cellValueFactory><PropertyValueFactory property="Notes" />
+                                </cellValueFactory>
+                            </TableColumn>   
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+                  <Text layoutX="205.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Box types stored">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

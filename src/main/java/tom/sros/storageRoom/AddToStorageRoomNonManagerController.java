@@ -16,7 +16,7 @@ import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.Order;
 
-public class AddToStorageRoomController {
+public class AddToStorageRoomNonManagerController {
     
     String dataBaseName = ("SROSData.db");
     
@@ -155,6 +155,6 @@ public class AddToStorageRoomController {
     }
     @FXML
     private void home() throws IOException{
-        App.setRoot("/tom/sros/home/homeScreen");
+        App.setRoot("/tom/sros/home/homeScreenNonManager");
     }
 }

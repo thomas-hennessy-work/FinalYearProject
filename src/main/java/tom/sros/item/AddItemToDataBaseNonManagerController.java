@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import tom.sros.App;
 import tom.sros.sorter.Box;
 
-public class AddItemToDataBaseController implements Initializable{
+public class AddItemToDataBaseNonManagerController implements Initializable{
     
     String dataBaseName = ("SROSData.db");
     
@@ -80,7 +80,7 @@ public class AddItemToDataBaseController implements Initializable{
     }
     @FXML
     private void home() throws IOException{
-            App.setRoot("/tom/sros/home/homeScreen");
+        App.setRoot("/tom/sros/home/homeScreenNonManager");
     }
     
     private void populateTable(){

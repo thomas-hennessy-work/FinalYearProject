@@ -34,6 +34,7 @@ public class LogInController {
             JOptionPane.showMessageDialog(passwordWarning, "User name or password not recognised.", "Unrecognised user", 2);
         }
         else if (loginValue){
+            //HSC used to ensure that users type is passed throughout system
             App.setRoot("/tom/sros/home/homeScreen");
         }
         else if(!loginValue){
