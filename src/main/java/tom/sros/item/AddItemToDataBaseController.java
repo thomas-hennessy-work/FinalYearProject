@@ -16,6 +16,8 @@ public class AddItemToDataBaseController implements Initializable{
     
     String dataBaseName = ("SROSData.db");
     
+    boolean userType;
+    
     @FXML
     private TextField boxName;
     @FXML
@@ -35,6 +37,10 @@ public class AddItemToDataBaseController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources){
         populateTable();
+    }
+    
+    public void userTypeData(){
+        
     }
     
     @FXML

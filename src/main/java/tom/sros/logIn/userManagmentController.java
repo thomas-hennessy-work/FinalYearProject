@@ -47,6 +47,9 @@ public class userManagmentController implements Initializable{
         userIDInput.setText("");
         userNameInput.setText("");
         passWordInput.setText("");
+        
+        userTable.getItems().clear();
+        populateTable();
     }
     
     @FXML

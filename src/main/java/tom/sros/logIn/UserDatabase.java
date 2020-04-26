@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class UserDatabase {
     
         public static void main(String dataBaseName){
-            Connection c = null;
-            Statement stmt = null;
+            Connection c;
+            Statement stmt;
             
             try{
                 //Conect to the database
@@ -41,7 +41,7 @@ public class UserDatabase {
                 System.out.println("Database connection closed");
             }
             //Exception catching
-            catch (Exception e){
+            catch (SQLException e){
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
             }
@@ -79,8 +79,8 @@ public class UserDatabase {
         public void removeUser(String dataBaseName, String ID){
             System.out.println("Deleting user " + ID);
             
-            Connection c = null;
-            Statement stmt = null;
+            Connection c;
+            Statement stmt;
             
             try{
                 //connecting to database
@@ -103,43 +103,36 @@ public class UserDatabase {
             }
         }
         
-        public static boolean logInCheck(String dataBaseName, String userName, String passWord){
-            Connection c = null;
-            Statement stmt = null;
+        public static Boolean logInCheck(String dataBaseName, String userName, String passWord){
+            Connection c;
+            Statement stmt;
+            
+            Boolean returnValue = null;
             
             try{
                 //Connecting to database
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 System.out.println("Connected to database");
                 
-                //Gather user information from
+                //Gather user information from dataBase
                 stmt = c.createStatement();
-                ResultSet dBData = stmt.executeQuery("SELECT * FROM user;");
+                ResultSet rs = stmt.executeQuery("SELECT is_manager FROM user WHERE user_name = '" + userName + "' AND password = '" + passWord + "';");
                 
-                //Compare the given username and password with the stored user names and passwords
-                while (dBData.next()){
-                    String userNameCheck = dBData.getString("user_name");
-                    String passWordCheck = dBData.getString("password");
-                    
-                    //If they are the same, return true
-                    if ((userName.equals(userNameCheck)) && (passWord.equals(passWordCheck))){
-                        stmt.close();
-                        c.close();
-                        System.out.println("User credentials recognized + Database connection closed");
-                        return true;
-                    }
+                //If the user exists, check if they are manager
+                while (rs.next()){
+                    returnValue = rs.getBoolean("is_manager");
                 }
                 stmt.close();
                 c.close();
                 System.out.println("User credentials not recognized + Database connection closed");
             }
             //Exception catching
-            catch ( Exception e ) {
+            catch ( SQLException e ) {
                 System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                 System.exit(0);
    }
-             //If they do not match, return false
-            return false;
+            //Will return null if the user dose not exist. If they do, the boolean value will indicate if they are a manager
+            return returnValue;
         }
         
         public List<user> getAllUsersNoPassword(String dataBaseName){

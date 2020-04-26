@@ -11,6 +11,7 @@ import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.EmptySpace;
 import tom.sros.sorter.Order;
+import tom.sros.sorter.Space;
 import tom.sros.sorter.newAlgorithm;
 
 public class ItemDatabase {
@@ -51,7 +52,7 @@ public class ItemDatabase {
                     "bin_ID  STRING   NOT NULL, " +
                     "corner_vertical_pos   FLOAT   NOT NULL, " +
                     "corner_horizontal_pos   FLOAT   NOT NULL, " +
-                    "corner_depth_pos   INT   FLOAT   NULL, " + 
+                    "corner_depth_pos   FLOAT   NULL, " + 
                     "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID)" +
                     "FOREIGN KEY(bin_ID)   REFERENCES binIndividual(bin_ID))";
             stmt.executeUpdate(sql);
@@ -480,6 +481,7 @@ public class ItemDatabase {
         }
     }
     
+    //Retreves the empty spaces in a specified bin
     public List<EmptySpace> getEmptySpaces(String binID, String dataBaseName){
         Connection c;
         Statement stmt;
@@ -509,6 +511,30 @@ public class ItemDatabase {
         return returnList;
     }
     
+    //Removes a specified empty space from the data base
+    public void removeEmptySpace(EmptySpace spaceToRemove, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            String sql = "DELETE FROM emptySpace WHERE bin_ID = " + spaceToRemove.getBin() + " AND corner_horizontal_pos = " + spaceToRemove.getX() + " AND corner_vertical_pos = " + spaceToRemove.getY() + " AND corner_depth_pos = " + spaceToRemove.getZ();
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
     //removes a specific box from the storage room
     public void deleteBoxLocation(Box boxToRemove, String dataBaseName){
         Connection c;
@@ -531,5 +557,44 @@ public class ItemDatabase {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    
+    //Takes the new box and the old empty space, places the box in the storage room, roomoves
+    //the original empty space object and creates two new ones for the new item. The new empty
+    //space object
+    public List<EmptySpace> fillEmptySpace(EmptySpace spaceFilled, Box itemFillingSpace, String dataBaseName){
+        List<EmptySpace> newEmptySpaces = new ArrayList<>();
+        
+        //Calculate the area of the new spaces
+        Space bellowArea = spaceFilled.getArea().areaBellow(spaceFilled.getArea(), itemFillingSpace.getArea());
+        Space rightArea = spaceFilled.getArea().areaRight(spaceFilled.getArea(), itemFillingSpace.getArea());
+        
+        float BellowX = spaceFilled.getX();
+        float BellowZ = spaceFilled.getLength() + spaceFilled.getZ();
+        float BellowY = spaceFilled.getY();
+        
+        float RightX = spaceFilled.getWidth() + spaceFilled.getX();
+        float RightZ = spaceFilled.getZ();
+        float RightY = spaceFilled.getY();
+        
+        //Creating new space objects using calculations
+        EmptySpace bellowEmpty = new EmptySpace(bellowArea.getWidth(), bellowArea.getLength(), spaceFilled.getHeight(), BellowX, BellowY, BellowZ, spaceFilled.getBin());
+        EmptySpace rightEmpty = new EmptySpace(rightArea.getWidth(), rightArea.getLength(), spaceFilled.getHeight(), RightX, RightY, RightZ, spaceFilled.getBin());
+
+        //Adding new empty spaces to the database and to the return value
+        //Only creates the empty space if they have an area (e.g. no width of 0)
+        if((bellowEmpty.getWidth() > 0) && (bellowEmpty.getLength() > 0)){
+            addEmptySpace(bellowEmpty, dataBaseName);
+            newEmptySpaces.add(bellowEmpty);
+        }
+        if((rightEmpty.getWidth() > 0) && (rightEmpty.getLength() > 0)){
+            addEmptySpace(rightEmpty, dataBaseName);
+            newEmptySpaces.add(rightEmpty);
+        }
+        
+        //Deleting filled empty space
+        removeEmptySpace(spaceFilled, dataBaseName);
+                
+        return newEmptySpaces;
     }
 }

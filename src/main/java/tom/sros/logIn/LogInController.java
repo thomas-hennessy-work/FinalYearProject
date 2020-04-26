@@ -26,12 +26,18 @@ public class LogInController {
         
         //Check if they match any on record accounts
         System.out.println("Check if credentials are valid");
-        if (UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn)){
-            App.setRoot("/tom/sros/home/homeScreen");
-        }
-        else{
+        
+        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn);
+        
+        if(loginValue == null){
             passWordText.setText("");
             JOptionPane.showMessageDialog(passwordWarning, "User name or password not recognised.", "Unrecognised user", 2);
+        }
+        else if (loginValue){
+            App.setRoot("/tom/sros/home/homeScreen");
+        }
+        else if(!loginValue){
+            App.setRoot("/tom/sros/home/homeScreenNonManager");
         }
     }
     
