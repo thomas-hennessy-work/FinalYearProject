@@ -11,8 +11,8 @@ import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
-import tom.sros.home.HomeScreenController;
 import tom.sros.item.ItemDatabase;
+import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.Order;
 
@@ -56,7 +56,8 @@ public class AddToStorageRoomController {
         System.out.println("Adding item to storage room");
         
         //Sorting and adding boxes to the storage room database
-        NA.sortAndAddToDB(dataBaseName, BoxIDs);
+        List<Bin> emptyBin = null;
+        NA.sortAndAddToDB(dataBaseName, BoxIDs, emptyBin);
         
         //Clearing the stored list of items
         BoxIDs.clear();

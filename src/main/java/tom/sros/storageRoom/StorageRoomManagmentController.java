@@ -13,7 +13,10 @@ import tom.sros.App;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
+import tom.sros.sorter.Box;
+import tom.sros.sorter.newAlgorithm;
 
 public class StorageRoomManagmentController implements Initializable{
     String dataBaseName = ("SROSData.db");
@@ -31,11 +34,17 @@ public class StorageRoomManagmentController implements Initializable{
     private TextField deleteBinText;
     
     @FXML
+    private TextField deleteSortText;
+    
+    @FXML
     private TableView existingBinTable;
     @FXML
     private TableView newBinTable;
+    @FXML
+    private TableView sortDeleteTable;
     
     List<Bin> toAddList = new ArrayList<>();
+    List<Bin> toRemoveList = new ArrayList<>();
     
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -105,9 +114,45 @@ public class StorageRoomManagmentController implements Initializable{
         List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
         existingBinTable.getItems().clear();
         
-        binInfoList.forEach((currentBin) -> {
-            existingBinTable.getItems().add(currentBin);
-            System.out.println(currentBin.toString());
+        populateTable();
+    }
+    
+    @FXML
+    private void addDeleteSortTable(){
+        String deleteSortID = deleteSortText.getText();
+        
+        JFrame binExistanceWarning = new JFrame();
+        JFrame binNotOccupiedWarning = new JFrame();
+        
+        //Checks the existance of the bin
+        if(BinDataBase.binIDCheck(dataBaseName, deleteSortID) == false){
+            JOptionPane.showMessageDialog(binExistanceWarning, "Bin with that ID dose not exist.", "Unrecognised bin", 2);
+        }
+        //Checks if the bin is occupied, if not, it is recomended to delete it from the remove bins tab
+        else if(!(BinDataBase.getStoredBoxesAndIndividualize(dataBaseName, (new Bin(deleteSortID))).getOccupied())){
+            JOptionPane.showMessageDialog(binNotOccupiedWarning, "The bin selected for deletion is not occupied. It can be deleted from the remove bins tab.", "Occupied bin", 2);
+        }
+        else{
+            sortDeleteTable.getItems().add(new Bin(deleteSortID));
+            toRemoveList.add(new Bin(deleteSortID));
+        }
+    }
+    
+    @FXML
+    private void reSortBins(){
+        newAlgorithm NA = new newAlgorithm();
+        ItemDatabase ITDB = new ItemDatabase();
+        
+        //Obtains the information about all boxes
+        List<Box> allBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        ITDB.clearBoxLocationData(dataBaseName);
+        
+        //Puts all boxes through the sorting algorithm, minus the bins specified
+        NA.sortAndAddToDB(dataBaseName, allBoxes, toRemoveList);
+        
+        //Removes any bins from the database that were specified
+        toRemoveList.forEach((currentBin) -> {
+            BinDataBase.deleteBin(currentBin.getName(), dataBaseName);
         });
     }
     

@@ -105,9 +105,31 @@
         </content>
       </Tab>
     <Tab text="Resort bin">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Button layoutX="472.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <Text layoutX="236.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resort Bins">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <Button layoutX="14.0" layoutY="305.0" mnemonicParsing="false" text="Re-sort bins" />
+                  <TableView fx:id="sortDeleteTable" layoutX="14.0" layoutY="76.0" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn prefWidth="199.0" text="Removing Bin ID's" >
+                            <cellValueFactory><PropertyValueFactory property="Name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                  </TableView>
+                  <Text layoutX="352.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bin ID" />
+                  <TextField fx:id="deleteSortText" layoutX="352.0" layoutY="93.0" promptText="Enter bin ID" />
+                  <Button layoutX="352.0" layoutY="130.0" mnemonicParsing="false" text="Add to list" onAction="#addDeleteSortTable" />
+               </children>
+            </AnchorPane>
+        </content>
     </Tab>
   </tabs>
 </TabPane>

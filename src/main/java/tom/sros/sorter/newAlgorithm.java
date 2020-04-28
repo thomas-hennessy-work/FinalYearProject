@@ -2,6 +2,8 @@ package tom.sros.sorter;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import tom.sros.storageRoom.BinDataBase;
 import tom.sros.item.ItemDatabase;
 
@@ -29,7 +31,7 @@ public class newAlgorithm {
         return returnBoxes;
    }
    
-    public void sortAndAddToDB(String dataBaseName, List<Box> IDAmountList){
+    public void sortAndAddToDB(String dataBaseName, List<Box> IDAmountList, List<Bin> removedBins){
     
     List<Box> returnBoxList = new ArrayList<>();
     List<Box> freshSortBoxes;
@@ -38,7 +40,18 @@ public class newAlgorithm {
     List<Bin> binsAvailable = BinDataBase.getBinInfo(dataBaseName);
     //obtaining box information
     List<Box> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
-            
+    
+    //Removing any bins from the algorithm that have been specified
+    if(removedBins != null){
+        removedBins.forEach((currentBinRemove) -> {
+            for(Bin currentBinAvailable: binsAvailable){
+                if(currentBinRemove.getName().equals(currentBinAvailable.getName())){
+                    binsAvailable.remove(currentBinRemove);
+                }
+            }
+        });
+    }
+    
         while(!boxesAvailable.isEmpty() && !binsAvailable.isEmpty()){
             List<Bin> tallestBins = new ArrayList<>();
             //obtaining a list of the tallest bins available
@@ -69,7 +82,15 @@ public class newAlgorithm {
                 }
                 binsAvailable.remove(currentBin);
             }
-    }
+        }
+        
+        //Used if there are unsorted boxes once the algorithm is completed
+        if(!boxesAvailable.isEmpty()){
+            JFrame unsortedWarning = new JFrame();
+            JOptionPane.showMessageDialog(unsortedWarning, "Not all the boxes were able to fit in the bins provided. The unsorted boxes have been added to the unsorted boxes tab in storage room managment.", "Unsorted boxes", 2);
+            ItemDatabase ITDB = new ItemDatabase();
+            ITDB.addUnsorted(boxesAvailable, dataBaseName);
+        }
         System.out.println(returnBoxList.toString());
     }
 }

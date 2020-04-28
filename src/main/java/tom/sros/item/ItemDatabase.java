@@ -16,6 +16,12 @@ import tom.sros.sorter.newAlgorithm;
 
 public class ItemDatabase {
     
+    /**
+     * Takes the database name and creates the tables relating to boxes and box types
+     * in the database.
+     * @param dataBaseName 
+     */
+    
     public static void main(String dataBaseName){
         Connection c;
         Statement stmt;
@@ -59,7 +65,7 @@ public class ItemDatabase {
             
             sql = "CREATE TABLE IF NOT EXISTS emptySpace" + 
                     "(space_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "bin_ID     STRING NOT   NULL, " + 
+                    "bin_ID     STRING NOT   NOT NULL, " + 
                     "corner_vertical_pos   FLOAT   NOT NULL, " +
                     "corner_horizontal_pos   FLOAT   NOT NULL, " +
                     "corner_depth_pos   FLOAT   NOT NULL, " +
@@ -67,6 +73,12 @@ public class ItemDatabase {
                     "length   FLOAT   NOT NULL, " +
                     "height   FLOAT   NOT NULL, " +
                     "FOREIGN KEY(bin_ID)    REFERENCES binIndividual(bin_ID))";
+            stmt.executeUpdate(sql);
+            
+            sql = "CREATE TABLE IF NOT EXISTS unSortedBoxes" + 
+                    "(unsorted_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "box_ID     STRING    NOT NULL, " + 
+                    "FOREIGN KEY(box_ID)    REFERENCES  boxType(box_ID))";
             stmt.executeUpdate(sql);
             System.out.println("Tables created if not alredy");
             
@@ -81,7 +93,18 @@ public class ItemDatabase {
         }
     }
     
-    public void addBox(String dataBaseName,String name, String contents, float width, float length, float height, String notes){
+    /**
+     * Creates a new box type and adds it to the box type table
+     * 
+     * @param dataBaseName
+     * @param name
+     * @param contents
+     * @param width
+     * @param length
+     * @param height
+     * @param notes 
+     */
+    public void addBoxType(String dataBaseName,String name, String contents, float width, float length, float height, String notes){
             
             Statement stmt;
             Connection c;
@@ -299,7 +322,8 @@ public class ItemDatabase {
             List<Box> IDAmountList = new ArrayList();
             IDAmountList.add(new Box(currentOrder.getID(), 1));
             
-            NA.sortAndAddToDB(dataBaseName, IDAmountList);
+            List<Bin> emptyBin = null;
+            NA.sortAndAddToDB(dataBaseName, IDAmountList, emptyBin);
             currentOrder.setID(getMostRecentSortedBox(dataBaseName));
             
             addOrderInformation(dataBaseName, currentOrder);
@@ -596,5 +620,60 @@ public class ItemDatabase {
         removeEmptySpace(spaceFilled, dataBaseName);
                 
         return newEmptySpaces;
+    }
+    
+    public void addUnsorted(List<Box> unsortedBoxes, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            for(Box currentBox: unsortedBoxes){
+                String sql = "INSERT INTO unSortedBoxes (box_ID) "
+                            + "VALUES ('" + currentBox.getID()  + "' );";
+                stmt.executeUpdate(sql);
+            }
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    public void clearBoxLocationData(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            System.out.println("Connected to database");
+            stmt = c.createStatement();
+            
+            //drops both tables relating to box information
+            String sql = ("DROP TABLE IF EXISTS boxLocation");
+            stmt.executeUpdate(sql);
+            sql = ("DROP TABLE IF EXISTS emptySpace");
+            stmt.executeUpdate(sql);
+            
+            //runs the main method, recreating the tables
+            main(dataBaseName);
+            
+            stmt.close();
+            c.close();
+            System.out.println("Database connection closed");
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
 }

@@ -60,7 +60,7 @@ public class AddItemToDataBaseController implements Initializable{
         float floatBoxHeight = Float.parseFloat(inBoxHeight);
         ItemDatabase ITDB = new ItemDatabase();
         System.out.println("Add box to database");
-        ITDB.addBox(dataBaseName,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);
+        ITDB.addBoxType(dataBaseName,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);
     
         populateTable();
         
