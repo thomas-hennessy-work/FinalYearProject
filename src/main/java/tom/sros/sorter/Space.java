@@ -6,6 +6,7 @@ public class Space {
     float Width;
     float Length;
     
+    //Constructor
     public Space(float width, float length){
         this.Width = width;
         Length = length;
@@ -15,6 +16,8 @@ public class Space {
     public String toString(){
         return("Width: " + Width + ", Length: " + Length);
     }
+    
+    //Geth mothods
     public float getLength(){
         return Length;
     }
@@ -28,7 +31,8 @@ public class Space {
     }
     
     
-    //Methods relating to bin calculations
+    //Methods relating to calculating the space to the right and bellow a box once it
+    //has been placed
     public Space areaBellow(Space binArea, Space boxArea){
         float bellowWidth = binArea.getWidth();
         float bellowLength = ((binArea.getLength()) - (boxArea.getLength()));

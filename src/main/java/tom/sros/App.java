@@ -28,7 +28,7 @@ public class App extends Application {
         
         UserDatabase.main(dataBaseName);
         ItemDatabase.main(dataBaseName);
-        BinDataBase.createDatabase(dataBaseName);
+        BinDataBase.main(dataBaseName);
     }
 
     public static void setRoot(String fxml) throws IOException {

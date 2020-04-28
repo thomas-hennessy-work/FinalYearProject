@@ -34,15 +34,18 @@ public class AddItemToDataBaseNonManagerController implements Initializable{
     @FXML
     private TableView boxInfoTable;
     
+    //Populates the box information table on load
     @Override
     public void initialize(URL location, ResourceBundle resources){
         populateTable();
     }
     
-    public void userTypeData(boolean userType){
-        UserType = userType;
-    }
-    
+     /**
+     * Takes the users inputs, creates a box type with them
+     * and adds it to the box type table.
+     * 
+     * @throws IOException 
+     */
     @FXML
     private void submitBox() throws IOException{
         //gathering the data input by the user
@@ -83,6 +86,7 @@ public class AddItemToDataBaseNonManagerController implements Initializable{
         App.setRoot("/tom/sros/home/homeScreenNonManager");
     }
     
+    //method for populating box type table
     private void populateTable(){
         List<Box> boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);
         boxInformation.forEach((currentBox)-> {

@@ -6,6 +6,11 @@ import java.util.ArrayList;
 
 public class UserDatabase {
     
+        /**
+         * Creates the user table and inserts a default user if no user exists
+         * 
+         * @param dataBaseName 
+         */
         public static void main(String dataBaseName){
             Connection c;
             Statement stmt;
@@ -13,7 +18,6 @@ public class UserDatabase {
             try{
                 //Conect to the database
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-                System.out.println("Connected to database");
                 
                 //Creates user table. If it already exists, it will not run
                 stmt = c.createStatement();
@@ -38,7 +42,6 @@ public class UserDatabase {
                 }
                 stmt.close();
                 c.close();
-                System.out.println("Database connection closed");
             }
             //Exception catching
             catch (SQLException e){
@@ -47,6 +50,15 @@ public class UserDatabase {
             }
         }
         
+        /**
+         * Adds a user to the user table
+         * 
+         * @param dataBaseName
+         * @param user_ID
+         * @param user_name
+         * @param is_manager
+         * @param password 
+         */
         public void populate(String dataBaseName, String user_ID, String user_name, Boolean is_manager, String password){
             Connection c;
             Statement stmt;
@@ -54,20 +66,16 @@ public class UserDatabase {
             try{
                 //connecting to database
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-                System.out.println("Connected to database");
                 
                 //Insert a new user in to the user database
                 stmt = c.createStatement();
                 String sql = "INSERT INTO user (user_ID,user_name,is_manager,password)"
                         + "VALUES ('" + user_ID + "', '"+ user_name + "', "
                         + is_manager + ", '" + password + "' );";
-                System.out.println(is_manager);
                 stmt.executeUpdate(sql);
-                System.out.println("User added");
                 
                 stmt.close();
                 c.close();
-                System.out.println("Database connection closed");
             }
             catch (SQLException e) {
                 //Exception catching
@@ -76,25 +84,27 @@ public class UserDatabase {
             }
         }
         
+        /**
+         * Removes a user from the user table
+         * 
+         * @param dataBaseName
+         * @param ID 
+         */
         public void removeUser(String dataBaseName, String ID){
-            System.out.println("Deleting user " + ID);
-            
             Connection c;
             Statement stmt;
             
             try{
                 //connecting to database
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-                System.out.println("Connected to database");
                 
-                //Insert a new user in to the user database
+                //Delete a user where the ID matches the one given
                 stmt = c.createStatement();
                 String sql = "DELETE FROM user WHERE user_ID = " + ID;
                 stmt.executeUpdate(sql);
                 
                 stmt.close();
                 c.close();
-                System.out.println("Database connection closed");
             }
             catch (SQLException e) {
                 //Exception catching
@@ -103,6 +113,14 @@ public class UserDatabase {
             }
         }
         
+        /**
+         * Verifies the credentials of the user logging in
+         * 
+         * @param dataBaseName
+         * @param userName
+         * @param passWord
+         * @return Returns if the information presented is a user and if they are manager or not
+         */
         public static Boolean logInCheck(String dataBaseName, String userName, String passWord){
             Connection c;
             Statement stmt;
@@ -112,7 +130,6 @@ public class UserDatabase {
             try{
                 //Connecting to database
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-                System.out.println("Connected to database");
                 
                 //Gather user information from dataBase
                 stmt = c.createStatement();
@@ -124,7 +141,6 @@ public class UserDatabase {
                 }
                 stmt.close();
                 c.close();
-                System.out.println("User credentials not recognized + Database connection closed");
             }
             //Exception catching
             catch ( SQLException e ) {
@@ -135,6 +151,12 @@ public class UserDatabase {
             return returnValue;
         }
         
+        /**
+         * Gathers all users information without their password
+         * 
+         * @param dataBaseName
+         * @return List of user information without passwords
+         */
         public List<user> getAllUsersNoPassword(String dataBaseName){
             Connection c;
             Statement stmt;
@@ -144,7 +166,6 @@ public class UserDatabase {
             try{
                 //Connecting to database
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-                System.out.println("Connected to database");
                 stmt = c.createStatement();
                 
                 ResultSet rs = stmt.executeQuery("SELECT user_ID, user_name, is_manager FROM user");
@@ -164,4 +185,4 @@ public class UserDatabase {
             }
             return returnList;
         }
-    }
+}

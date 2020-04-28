@@ -26,8 +26,6 @@ public class AddToStorageRoomNonManagerController {
     List<Box> BoxIDs = new ArrayList<>();
     List<Order> OrderList = new ArrayList<>();
     
-    //Lists to store order information as they are input
-    
     @FXML
     private TextField IDBoxText;
     @FXML
@@ -45,10 +43,9 @@ public class AddToStorageRoomNonManagerController {
     @FXML
     private TableView orderTable;
     
-    public void userTypeData(boolean userType){
-        UserType = userType;
-    }
-    
+    /**
+     * Gets the boxes in the list and puts them through the sorting algorithm
+     */
     @FXML
     private void sortBoxes() throws IOException{
         //Sorting the list of items given to the system
@@ -65,6 +62,10 @@ public class AddToStorageRoomNonManagerController {
         orderTable.getItems().clear();
     }
     
+    /**
+     * Adds a box (or boxes) to the list of boxes prepared to be added
+     * to the box location table.
+     */
     @FXML
     private void addToBoxList(){
         ItemDatabase IDB = new ItemDatabase();
@@ -76,7 +77,7 @@ public class AddToStorageRoomNonManagerController {
         
         //Ensure that the ID exists in the item database
         //If they do, pass them as a pair to a list in the backend to be temporeraly stored.
-        if(IDB.IDCheck(dataBaseName,inputID) != false){
+        if(IDB.IDCheckBoxType(dataBaseName,inputID) != false){
             Box inputBox = new Box(inputID, inputAmount);
             BoxIDs.add(inputBox);
             itemTable.getItems().add(inputBox);
@@ -89,6 +90,9 @@ public class AddToStorageRoomNonManagerController {
         }
     }
     
+    /**
+     * Removes a box from the list of boxes to be added
+     */
     @FXML
     private void removeBox(){
         TableViewSelectionModel boxesSelection = itemTable.getSelectionModel();
@@ -101,6 +105,9 @@ public class AddToStorageRoomNonManagerController {
         itemTable.getItems().removeAll(selectedBoxes);
     }
     
+    /**
+     * Gets the orders in the list and puts them through the sorting algorithm
+     */
     @FXML
     private void sortOrders(){
         //Sorting the list of items given to the system
@@ -113,6 +120,9 @@ public class AddToStorageRoomNonManagerController {
         orderTable.getItems().clear();
     }
     
+    /**
+     * Adds an order to the order list with the information provided by the user
+     */
     @FXML
     private void addToOrderList(){
         ItemDatabase IDB = new ItemDatabase();
@@ -122,7 +132,7 @@ public class AddToStorageRoomNonManagerController {
         String address = addressText.getText();
         String custName = custNameText.getText();
         
-        if(IDB.IDCheck(dataBaseName, boxTypeID) != false){
+        if(IDB.IDCheckBoxType(dataBaseName, boxTypeID) != false){
             Order inputOrder = new Order(boxTypeID, address, custName);
             OrderList.add(inputOrder);
             
@@ -137,6 +147,9 @@ public class AddToStorageRoomNonManagerController {
         }
     }
     
+    /**
+     * Removes an order from the order list
+     */
     @FXML
     private void removeOrder(){
         TableViewSelectionModel ordersSelection = orderTable.getSelectionModel();

@@ -28,22 +28,7 @@ public class Bin {
         Height = height;
     }
     
-    public Bin(String name, float width, float length, float height, List<Box> storedBoxes){
-        Name= name;
-        Width = width;
-        Length = length;
-        Height = height;
-    }
-    
     public Bin(int amount, float width, float length, float height){
-        Width = width;
-        Length = length;
-        Height = height;
-        Amount = amount;
-    }
-    
-    public Bin(String name, float width, float length, float height, int amount){
-        Name = name;
         Width = width;
         Length = length;
         Height = height;
@@ -52,12 +37,6 @@ public class Bin {
     
     public Bin(String name){
         Name = name;
-        Width = 0;
-        Length = 0;
-        Height = 0;
-    }
-    
-    public Bin(){
         Width = 0;
         Length = 0;
         Height = 0;

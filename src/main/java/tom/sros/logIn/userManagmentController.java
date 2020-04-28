@@ -34,16 +34,29 @@ public class userManagmentController implements Initializable{
     @FXML
     private TableView userTable;
     
+    /**
+     * Populates the user table when initialized
+     * 
+     * @param location
+     * @param resources 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources){
         populateTable();
     }
     
+    /**
+     * Gathers the information from the text feilds and uses them to create a user
+     * 
+     * @throws IOException 
+     */
     @FXML
     private void createUser() throws IOException {
         UserDatabase UDB = new UserDatabase();
+        
         boolean isManager = radioManager.isSelected();
         UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());
+        
         userIDInput.setText("");
         userNameInput.setText("");
         passWordInput.setText("");
@@ -52,6 +65,11 @@ public class userManagmentController implements Initializable{
         populateTable();
     }
     
+    /**
+     * Removes a user from the user table
+     * 
+     * @throws IOException 
+     */
     @FXML
     private void removeUser() throws IOException {
         UserDatabase UDB = new UserDatabase();
@@ -72,6 +90,7 @@ public class userManagmentController implements Initializable{
         App.setRoot("/tom/sros/home/homeScreen");
     }
     
+    //Method for populating table
     private void populateTable(){
         UserDatabase UDB = new UserDatabase();
         List<user> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);

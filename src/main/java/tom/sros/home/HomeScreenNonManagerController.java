@@ -12,7 +12,8 @@ public class HomeScreenNonManagerController {
         UserType = userType;
     }
     
-    //Functions for buttons to use to take the user to different screens.
+    //Functions used in conjunction with FXML buttons to navigate to other pages
+    //in the system.
     @FXML
     private void logOut() throws IOException{
         App.setRoot("/tom/sros/logIn/logInScreen");

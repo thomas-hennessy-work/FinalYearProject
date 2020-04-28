@@ -9,26 +9,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import tom.sros.App;
-import tom.sros.home.HomeScreenController;
 import tom.sros.sorter.Box;
 
 public class LocateItemNonManagerController implements Initializable{
     String dataBaseName = ("SROSData.db");
     
-    boolean UserType;
-    
     @FXML
     private TableView boxTable;
     
+    //Populate the box location table
     @Override
     public void initialize(URL location, ResourceBundle resources){
         populateBoxTable();
     }
     
-    public void userTypeData(boolean userType){
-        UserType = userType;
-    }
-    
+    //Removes a selected box from the storage room
     @FXML
     private void removeBox(){
         TableViewSelectionModel boxesSelection = boxTable.getSelectionModel();
@@ -53,6 +48,7 @@ public class LocateItemNonManagerController implements Initializable{
         App.setRoot("/tom/sros/home/homeScreenNonManager");
     }
     
+    //Method for filling the box location table
     private void populateBoxTable(){
         List<Box> boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         boxInformation.forEach((currentBox)-> {

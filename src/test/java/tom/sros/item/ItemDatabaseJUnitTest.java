@@ -48,7 +48,7 @@ public class ItemDatabaseJUnitTest {
         
         ItemDatabase.main(dataBaseName);
         ItemDatabase ITDB = new ItemDatabase();
-        ITDB.addBox(dataBaseName, "Mice", "15 Dell mice", (float) 12.4, (float) 20, (float)9.6, "Fragile, do not turn upside down");
+        ITDB.addBoxType(dataBaseName, "Mice", "15 Dell mice", (float) 12.4, (float) 20, (float)9.6, "Fragile, do not turn upside down");
         
     }
     
@@ -165,7 +165,7 @@ public class ItemDatabaseJUnitTest {
     @Test
     public void testIDCheckMatch(){
         ItemDatabase ITDB = new ItemDatabase();
-        if(ITDB.IDCheck(dataBaseName, "1") == false){
+        if(ITDB.IDCheckBoxType(dataBaseName, "1") == false){
             fail("ID match should succeded");
         }
     }
@@ -173,7 +173,7 @@ public class ItemDatabaseJUnitTest {
     @Test
     public void testIDCheckFail(){
         ItemDatabase ITDB = new ItemDatabase();
-        if(ITDB.IDCheck(dataBaseName, "5") == true){
+        if(ITDB.IDCheckBoxType(dataBaseName, "5") == true){
             fail("ID match should have failed");
         }
     }

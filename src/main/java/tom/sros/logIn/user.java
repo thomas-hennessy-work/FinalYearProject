@@ -7,12 +7,14 @@ public class user {
     String UserName;
     Boolean IsManager;
     
+    //Constructor
     public user(String id, String userName, Boolean managerStatus){
         ID = id;
         UserName = userName;
         IsManager = managerStatus;
     }
     
+    //Get methods
     public String getID(){
         return ID;
     }

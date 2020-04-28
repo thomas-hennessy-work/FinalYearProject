@@ -9,28 +9,40 @@ import tom.sros.item.ItemDatabase;
 
 public class newAlgorithm {
     
-   //Given a list of pairs containing ID's of boxes and amounts. Produces a list
-   //of boxes, including multiples of the same box (as defined by amount) along with
-   //their dimensions
+    /**
+     * Finds the information related to the box types
+     * 
+     * @param dataBaseName
+     * @param IDAmountList
+     * @return List of boxes with their dimensions
+     */
    public List<Box> asignBoxInformation(String dataBaseName, List<Box> IDAmountList){       
        List<Box> Boxes = new ArrayList<>();
        List<Box> returnBoxes = new ArrayList<>();
            
+       //Creating a list ofn boxes with no information
        IDAmountList.forEach((currentBox) -> {
           for(int i = 0 ; i < (int)currentBox.getAmount(); i++){
               Boxes.add(new Box((String) currentBox.getID()));
            }
         });
            
-        ItemDatabase IDB = new ItemDatabase();
-       //Seperated to avoid repeatedly calling the DB
+       ItemDatabase IDB = new ItemDatabase();
        Boxes.forEach((currentBox) -> {
-           returnBoxes.add(IDB.getBoxInformation(currentBox.getID(), dataBaseName));
+           //Assigning the width, length and height to the list of boxes
+           returnBoxes.add(IDB.getBoxTypeInformation(currentBox.getID(), dataBaseName));
        });
-
         return returnBoxes;
    }
    
+   /**
+    * Works with the binary tree to sort boxes. Decides which box should try to be sorted
+    * in which bin and the order of the sort.
+    * 
+    * @param dataBaseName
+    * @param IDAmountList
+    * @param removedBins 
+    */
     public void sortAndAddToDB(String dataBaseName, List<Box> IDAmountList, List<Bin> removedBins){
     
     List<Box> returnBoxList = new ArrayList<>();
@@ -41,7 +53,7 @@ public class newAlgorithm {
     //obtaining box information
     List<Box> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
     
-    //Removing any bins from the algorithm that have been specified
+    //Removing any bins from the algorithm that have been specified (if any have been specified)
     if(removedBins != null){
         removedBins.forEach((currentBinRemove) -> {
             for(Bin currentBinAvailable: binsAvailable){
@@ -84,13 +96,13 @@ public class newAlgorithm {
             }
         }
         
-        //Used if there are unsorted boxes once the algorithm is completed
+        //Used if there are unsorted boxes once the algorithm is completed. Places the bins in the unsorted table
         if(!boxesAvailable.isEmpty()){
             JFrame unsortedWarning = new JFrame();
             JOptionPane.showMessageDialog(unsortedWarning, "Not all the boxes were able to fit in the bins provided. The unsorted boxes have been added to the unsorted boxes tab in storage room managment.", "Unsorted boxes", 2);
+            
             ItemDatabase ITDB = new ItemDatabase();
             ITDB.addUnsorted(boxesAvailable, dataBaseName);
         }
-        System.out.println(returnBoxList.toString());
     }
 }

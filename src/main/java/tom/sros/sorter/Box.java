@@ -23,8 +23,6 @@ public class Box {
     int Amount;
     
     //Constructors
-    public Box(){
-    }
     
     public Box(String id, float width, float length, float height){
         ID = id;
@@ -185,6 +183,7 @@ public class Box {
         return new Space(Width, Length);
     }
     
+    //To string method
     @Override
     public String toString(){
         return("Name:" + ID + " Width:" + Width + " Length:" + Length + " Height:" + Height + " X position:" + X + " Y position:" + Y + " Z position:" + Z);

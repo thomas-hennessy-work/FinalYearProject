@@ -22,20 +22,8 @@ public class binaryTree {
         EmptySpace unusedSpace;
         Node below;
         Node right;
-        
-        Node(){
-            this.binArea = null;
-            storedBox = null;
-            below = null;
-            right = null;
-        }
-        
-        Node(Space binArea){
-            this.binArea = binArea;
-            storedBox = null;
-            below = null;
-            right = null;
-        }
+       
+        //Node constructors
         Node(Space binArea, Box item){
             this.binArea = binArea;
             storedBox = item;
@@ -51,6 +39,7 @@ public class binaryTree {
             right = null;
         }
         
+        //Get methods
         private Space getBinArea(){
             return binArea;
         }
@@ -63,11 +52,30 @@ public class binaryTree {
         
     }
     
-        private void add(Box item, Space binSpace, String dataBaseName){
+    /**
+     * Method used to add boxes to the binary tree. Always begins at root node
+     * 
+     * @param item
+     * @param binSpace
+     * @param dataBaseName 
+     */
+    private void add(Box item, Space binSpace, String dataBaseName){
         root = addBoxRecursive(root, item, binSpace, dataBaseName);
     }
     
-    //The algorithm checks right then bellow, due to the right being more likely to have less space
+    /**
+     * 2D sorting algorithm. Takes the item that needs to be stored in bin and finds an empty node. The empty node contains a position
+     * in the bin and once that position is reached, it checks for anything stored there. If a box is stored there from the database, then the
+     * box from the database will be placed there and the box being placed will go through the binary tree once again. If there is nothing there,
+     * the box will be placed, if it can fit in the area given. If an empty space is stored there, then the box will be placed in the empty space, if it can fit
+     * and new empty space objects will be placed in the binary tree to represent any area not filled by the new box.
+     * 
+     * @param currentNode
+     * @param item
+     * @param binSpace
+     * @param dataBaseName
+     * @return Node with location information and whit is placed in that location, this could be either a box, an empty space or nothing.
+     */
     private Node addBoxRecursive(Node currentNode, Box item, Space binSpace, String dataBaseName){
         System.out.println("Values provided" + "\nNode: " + currentNode + "\nBox: " + item.toString() + "\nSpace: " + binSpace.toString() + "\nPlaced: ");        
         //The box checks if it is able to fit in the boxes bellow, even if they fit. This
@@ -162,12 +170,16 @@ public class binaryTree {
             }
         }
         
-        
         unplaced = false;
         return currentNode;
     }
     
-    //Depth fisrt search pre-order
+    /**
+     * Depth fisrt search pre-order. Searches through all the nodes from root for the placed items
+     * 
+     * @param node
+     * @return list of nodes with boxes stored in them
+     */
     private List<Node> traversePreOrder(Node node){
         List<Node> nodeList = new ArrayList<>();
         
@@ -179,6 +191,15 @@ public class binaryTree {
         return nodeList;
     }
     
+    /**
+     * Gathers a list of boxes to store and the bin it would like to
+     * store those boxes in. 
+     * 
+     * @param storingBin
+     * @param boxes
+     * @param dataBaseName
+     * @return List of boxes with their bin locations and positions
+     */
     public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes, String dataBaseName){
         //Creating the binary tree
         binaryTree binTree = new binaryTree();
@@ -218,8 +239,14 @@ public class binaryTree {
         return boxList;
     }
     
-    //Used to see if any pre-existing boxes should be placed instead of a new box, due
-    //to boxes already occupying the position
+    /**
+     * Finds if any preexisting boxes stored in the location specified
+     * 
+     * @param placedBoxes
+     * @param x
+     * @param z
+     * @return The box (if there is one) stored in that location
+     */
     private static Box findPlacedBox(List<Box> placedBoxes, float x, float z){
         Box returnValue = null;
         
@@ -232,7 +259,14 @@ public class binaryTree {
         return returnValue;
     }
     
-    //Similar to findPlacedBox, used to find empty space in a location
+    /**
+     * Similar to findPlacedBox, finds the location of empty space objects in the bin
+     * 
+     * @param emptySpaces
+     * @param x
+     * @param z
+     * @return The empty space (if there is one) stored in that location
+     */
     private static EmptySpace findEmptySpace(List<EmptySpace> emptySpaces, float x, float z){
         EmptySpace returnValue = null;
         

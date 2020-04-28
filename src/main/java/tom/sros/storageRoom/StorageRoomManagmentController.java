@@ -51,10 +51,15 @@ public class StorageRoomManagmentController implements Initializable{
         populateTable();
     }
     
+    /**
+     * Adds bins to the bin individual table
+     */
     @FXML 
     private void addToDB(){
       BinDataBase BDB = new BinDataBase();
+      
       BDB.insertBins(toAddList, dataBaseName);
+      
       toAddList.clear();
       newBinTable.getItems().clear();
       
@@ -62,6 +67,9 @@ public class StorageRoomManagmentController implements Initializable{
       populateTable();
     }
     
+    /**
+     * Adds a bin to the list of bins ready to be added to the database
+     */
     @FXML
     private void addToList(){
         int amount = Integer.parseInt(addAmount.getText());
@@ -80,6 +88,9 @@ public class StorageRoomManagmentController implements Initializable{
         addHeight.setText("");
     }
     
+    /**
+     * Removes a bin from the list of bins ready to be added
+     */
     @FXML
     private void removeBin(){
         TableViewSelectionModel binSelection = newBinTable.getSelectionModel();
@@ -92,6 +103,9 @@ public class StorageRoomManagmentController implements Initializable{
         newBinTable.getItems().removeAll(binsToRemove);
     }
     
+    /**
+     * Deletes a bin from the din individual table, only if the bin is empty
+     */
     @FXML 
     private void deleteBin(){
         String deleteID = deleteBinText.getText();
@@ -111,12 +125,14 @@ public class StorageRoomManagmentController implements Initializable{
             BinDataBase.deleteBin(deleteID, dataBaseName);
         }
         
-        List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
         existingBinTable.getItems().clear();
         
         populateTable();
     }
     
+    /**
+     * Adds a bin to the list of bins to be removed when the full storage room sort is executed
+     */
     @FXML
     private void addDeleteSortTable(){
         String deleteSortID = deleteSortText.getText();
@@ -138,6 +154,9 @@ public class StorageRoomManagmentController implements Initializable{
         }
     }
     
+    /**
+     * Resorts all the bins within the system, removing any specified bins
+     */
     @FXML
     private void reSortBins(){
         newAlgorithm NA = new newAlgorithm();
@@ -166,11 +185,13 @@ public class StorageRoomManagmentController implements Initializable{
         App.setRoot("/tom/sros/home/homeScreen");
     }
     
+    /**
+     * Populates the table of existing bins
+     */
     private void populateTable(){
         List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
         binInfoList.forEach((currentBin) -> {
             existingBinTable.getItems().add(currentBin);
         });
     }
-    
 }
