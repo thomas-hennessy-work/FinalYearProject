@@ -141,27 +141,26 @@ public class ItemDatabase {
      * @param boxID 
      */
     public void removeBoxType(String dataBaseName, String boxID){
-            Statement stmt;
-            Connection c;
+        Statement stmt;
+        Connection c;
             
-            try{
-                //connect to database
-                c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+        try{
+            //connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 
-                //Insert into boxtype a new box
-                stmt = c.createStatement();
-                String sql = "DELETE FROM boxType WHERE box_ID = " + boxID;
-                stmt.executeUpdate(sql);
-                System.out.println("Box removed from database");
+            //Insert into boxtype a new box
+            stmt = c.createStatement();
+            String sql = "DELETE FROM boxType WHERE box_ID = " + boxID;
+            stmt.executeUpdate(sql);
                 
-                stmt.close();
-                c.close();
-            }
-            catch (SQLException e) {
-                //Exception catching
-                System.err.println( e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
-            }
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e) {
+            //Exception catching
+            System.err.println( e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
     
     /**
@@ -194,6 +193,7 @@ public class ItemDatabase {
                 System.err.println( e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
         }  
+        
         //If ID's dont match, return missing
         System.out.println("ID exists = " + IDExists);
         return IDExists;   
@@ -217,6 +217,7 @@ public class ItemDatabase {
             stmt = c.createStatement();
             
             ResultSet rs = stmt.executeQuery("Select width, length, height FROM boxType WHERE box_ID = " + boxID);
+            returnBox.setID(boxID);
             returnBox.setWidth(rs.getFloat("width"));
             returnBox.setLength(rs.getFloat("length"));
             returnBox.setHeight(rs.getFloat("height"));

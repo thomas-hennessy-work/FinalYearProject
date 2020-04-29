@@ -12,10 +12,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Order;
+import tom.sros.sorter.Box;
 
 public class ItemDatabaseJUnitTest {
     
     static String dataBaseName = ("SROSTestData.db");
+    static ItemDatabase ITDB = new ItemDatabase();
+    static Box expectedBox1 = new Box("1", "Mice", (float)12.4, (float)20.0, (float)9.6, "15 Dell mice", "Fragile, do not turn upside down");
+    static Box expectedBox2 = new Box("2", "Monitors", (float) 15, (float) 6.7, (float)8.9, "2 HP monitors", "Glass, do not drop");
+    static Box expectedBox3 = new Box("3", "Speakers", (float) 16, (float) 8.5, (float)6, "one speaker", "hold uproght");
     
     public ItemDatabaseJUnitTest() {
     }
@@ -23,8 +29,8 @@ public class ItemDatabaseJUnitTest {
     @BeforeAll
     public static void setUpClass() {
         
-        Connection c = null;
-        Statement stmt = null;
+        Connection c;
+        Statement stmt;
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -47,9 +53,9 @@ public class ItemDatabaseJUnitTest {
         }
         
         ItemDatabase.main(dataBaseName);
-        ItemDatabase ITDB = new ItemDatabase();
         ITDB.addBoxType(dataBaseName, "Mice", "15 Dell mice", (float) 12.4, (float) 20, (float)9.6, "Fragile, do not turn upside down");
-        
+        ITDB.addBoxType(dataBaseName, "Monitors", "2 HP monitors", (float) 15, (float) 6.7, (float)8.9, "Glass, do not drop");
+        ITDB.addBoxType(dataBaseName, "Speakers", "one speaker", (float) 16, (float) 8.5, (float)6,  "hold uproght");
     }
     
     @AfterAll
@@ -66,9 +72,10 @@ public class ItemDatabaseJUnitTest {
     
     public void tableExist(String tableName){
         //A method to check if the database table exists.
+        Connection c;
+        Statement stmt;
         
-        Connection c = null;
-        Statement stmt = null;
+        boolean isCreated = false;
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -77,17 +84,19 @@ public class ItemDatabaseJUnitTest {
             DatabaseMetaData dmd = c.getMetaData();
             ResultSet rs = dmd.getTables(null, null, tableName, null);
 
-            if(rs.next() == false){
-                fail(tableName + " table not created");
-            }
+            isCreated = rs.next();
             
             stmt.close();
             c.close();
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
+        }
+        
+        if(isCreated == false){
+            fail(tableName + " table not created");
         }
     }
     
@@ -100,27 +109,27 @@ public class ItemDatabaseJUnitTest {
     public void boxTypeTableExist(){
         tableExist("boxType");
     }
-    @Test void orderListTableExist(){
+    @Test 
+    public void orderListTableExist(){
         tableExist("orderList");
     }
     
     
     public String getBoxData(int rowID){
+        Connection c;
+        Statement stmt;
         
-        Connection c = null;
-        Statement stmt = null;
+        String returnValue = null;
         
         try{
             //Connect to database
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM boxType WHERE box_ID = 1");
-            String requestedData = rs.getString(rowID);
+            returnValue = rs.getString(rowID);
             
             stmt.close();
             c.close();
-            
-            return requestedData;
             
         }
         catch (SQLException e){
@@ -128,7 +137,7 @@ public class ItemDatabaseJUnitTest {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        return null;
+        return returnValue;
     }
     
     
@@ -162,9 +171,61 @@ public class ItemDatabaseJUnitTest {
     }
     
     
+    
+    @Test
+    public void testGetBoxTypeInformationWidth(){
+        assertEquals(expectedBox1.getWidth(), ITDB.getBoxTypeInformation("1", dataBaseName).getWidth(), "Dose box have the same width");
+    }
+    @Test
+    public void testGetBoxTypeInformationLength(){
+        assertEquals(expectedBox1.getLength(), ITDB.getBoxTypeInformation("1", dataBaseName).getLength(), "Dose box have the same length");
+    }
+    @Test
+    public void testGetBoxTypeInformationHeight(){
+        assertEquals(expectedBox1.getHeight(), ITDB.getBoxTypeInformation("1", dataBaseName).getHeight(), "Dose the box have the same height");
+    }
+    
+    
+    @Test
+    public void testGetDisplayBoxTypeInformationIDs(){
+        assertEquals(expectedBox1.getID(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getID(), "first box ID check");
+        assertEquals(expectedBox2.getID(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getID(), "second box ID check");
+    }
+    @Test
+    public void testGetDisplayBoxTypeInformationNamess(){
+        assertEquals(expectedBox1.getName(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getName(), "first box Name check");
+        assertEquals(expectedBox2.getName(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getName(), "second box Name check");
+    }
+    @Test
+    public void testGetDisplayBoxTypeInformationWidths(){
+        assertEquals(expectedBox1.getWidth(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getWidth(), "first box Width check");
+        assertEquals(expectedBox2.getWidth(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getWidth(), "second box Width check");
+    }
+    @Test
+    public void testGetDisplayBoxTypeInformationLengths(){
+        assertEquals(expectedBox1.getLength(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getLength(), "first box Length check");
+        assertEquals(expectedBox2.getLength(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getLength(), "second box Length check");
+    }
+    @Test
+    public void testGetDisplayBoxTypeInformationHeights(){
+        assertEquals(expectedBox1.getHeight(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getHeight(), "first box Height check");
+        assertEquals(expectedBox2.getHeight(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getHeight(), "second box Height check");
+    }
+    @Test
+    public void testGetDisplayBoxTypeInformationContentses(){
+        assertEquals(expectedBox1.getContents(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getContents(), "first box Contents check");
+        assertEquals(expectedBox2.getContents(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getContents(), "second box Contents check");
+    }
+    @Test
+    public void testGetDisplayBoxTypeInformationNotes(){
+        assertEquals(expectedBox1.getNotes(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getNotes(), "first box Notes check");
+        assertEquals(expectedBox2.getNotes(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getNotes(), "second box Notes check");
+    }
+    
+    
+    
     @Test
     public void testIDCheckMatch(){
-        ItemDatabase ITDB = new ItemDatabase();
         if(ITDB.IDCheckBoxType(dataBaseName, "1") == false){
             fail("ID match should succeded");
         }
@@ -172,7 +233,6 @@ public class ItemDatabaseJUnitTest {
     
     @Test
     public void testIDCheckFail(){
-        ItemDatabase ITDB = new ItemDatabase();
         if(ITDB.IDCheckBoxType(dataBaseName, "5") == true){
             fail("ID match should have failed");
         }
@@ -182,32 +242,104 @@ public class ItemDatabaseJUnitTest {
     @Test
     public void testRemoveBox(){
         System.out.println("remove box test started");
-        ItemDatabase ITDB = new ItemDatabase();
         ITDB.removeBoxType(dataBaseName, "1");
         
-        Connection c = null;
-        Statement stmt = null;
+        if(ITDB.IDCheckBoxType(dataBaseName, "1") == true){
+            fail("Box with ID 1 should have been deleted");
+        }
+    }
+    
+    @Test
+    public void testNonRemovedBox(){
+        System.out.println("non removed box test started");
+        Connection c;
+        Statement stmt;
+        
+        boolean dataFound = false;
+        
         try{
             //Connect to database
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM boxType WHERE box_ID = 1");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM boxType WHERE box_ID = 2");
             
-           
-            
-            //If the result set dose not have any data in it
-            if(rs.next()){
-                fail("Test data should have been removed");
-            }
+            dataFound = rs.next();
             
             stmt.close();
             c.close();
         }
-        catch (Exception e){
+        catch (SQLException e){
             //Error catching
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+        
+        if(dataFound == false){
+            fail("Test data should have been found");
+        }
+    }
+
+    public void addBoxLocationData(){
+        expectedBox2.setX(0);
+        expectedBox2.setY(0);
+        expectedBox2.setZ(0);
+        expectedBox2.setBin("1");
+        ITDB.addBoxLocation(expectedBox2, dataBaseName);
+        
+        expectedBox3.setX(10);
+        expectedBox3.setY(10);
+        expectedBox3.setZ(10);
+        expectedBox3.setBin("1");
+        ITDB.addBoxLocation(expectedBox3, dataBaseName);
+    }
+    
+    @Test
+    public void testAddLocation(){
+        System.out.println("testAddLocation started");
+        addBoxLocationData();
+        
+        boolean noData = false;
+        boolean ID2 = false;
+        boolean ID3 = false;
+        
+        Connection c;
+        Statement stmt;
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM boxLocation");
+            
+            noData = !rs.next();
+            ID2 = rs.getString("box_ID") == ("2");
+            rs.next();
+            ID3 = rs.getString("box_ID") == ("3");
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        
+        if(noData){
+            fail("No data inserted in the boxLocation table");
+        }
+        if(ID2){
+            fail("ID 2 not inserted");
+        }
+        if(ID3){
+            fail("ID 3 not inserted");
+        }
+        
+    }
+    
+    @Test
+    @Order(26)
+    public void testGetBoxLocationDisplay(){
+        assertEquals(expectedBox1.getID(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getID(), "second box Notes check");
     }
 }
 
