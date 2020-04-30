@@ -12,9 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 import tom.sros.sorter.Box;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class ItemDatabaseJUnitTest {
     
     static String dataBaseName = ("SROSTestData.db");
@@ -41,6 +44,10 @@ public class ItemDatabaseJUnitTest {
             sql = ("DROP TABLE IF EXISTS boxLocation");
             stmt.executeUpdate(sql);
             sql = ("DROP TABLE IF EXISTS boxType");
+            stmt.executeUpdate(sql);
+            sql = ("DROP TABLE IF EXISTS unSortedBoxes");
+            stmt.executeUpdate(sql);
+            sql = ("DROP TABLE IF EXISTS emptySpace");
             stmt.executeUpdate(sql);
             
             stmt.close();
@@ -102,16 +109,29 @@ public class ItemDatabaseJUnitTest {
     
     //Testing the main method.
     @Test
+    @Order(1)
     public void boxLocationTableExist(){
         tableExist("boxLocation");
     }
     @Test
+    @Order(2)
     public void boxTypeTableExist(){
         tableExist("boxType");
     }
     @Test 
+    @Order(3)
     public void orderListTableExist(){
         tableExist("orderList");
+    }
+    @Test 
+    @Order(4)
+    public void emptySpaceTableExist(){
+        tableExist("emptySpace");
+    }
+    @Test 
+    @Order(5)
+    public void unSortedBoxesTableExist(){
+        tableExist("unSortedBoxes");
     }
     
     
@@ -142,30 +162,37 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
+    @Order(6)
     public void testIdInsert(){
         assertEquals("1", getBoxData(1), "Box ID should be '1'");
     }
     @Test
+    @Order(7)
     public void testNameInsert(){
         assertEquals("Mice", getBoxData(2), "Box name should be 'Mice'");
     }
     @Test
+    @Order(8)
     public void testContentsInsert(){
         assertEquals("15 Dell mice", getBoxData(3), "Box contents should be '15 Dell mice'");
     }
     @Test
+    @Order(9)
     public void testWidthInsert(){
         assertEquals("12.4", getBoxData(4), "Box width should be '12.4'");
     }
     @Test
+    @Order(10)
     public void testLengthInsert(){
         assertEquals("20.0", getBoxData(5), "Box length should be '20'");
     }
     @Test
+    @Order(11)
     public void testHeightInsert(){
         assertEquals("9.6", getBoxData(6), "Box height should be '9.6'");
     }
     @Test
+    @Order(12)
     public void testNotesInsert(){
         assertEquals("Fragile, do not turn upside down", getBoxData(8), "Box height should be 'Fragile, do not turn upside down'");
     }
@@ -173,50 +200,60 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
+    @Order(12)
     public void testGetBoxTypeInformationWidth(){
         assertEquals(expectedBox1.getWidth(), ITDB.getBoxTypeInformation("1", dataBaseName).getWidth(), "Dose box have the same width");
     }
     @Test
+    @Order(13)
     public void testGetBoxTypeInformationLength(){
         assertEquals(expectedBox1.getLength(), ITDB.getBoxTypeInformation("1", dataBaseName).getLength(), "Dose box have the same length");
     }
     @Test
+    @Order(14)
     public void testGetBoxTypeInformationHeight(){
         assertEquals(expectedBox1.getHeight(), ITDB.getBoxTypeInformation("1", dataBaseName).getHeight(), "Dose the box have the same height");
     }
     
     
     @Test
+    @Order(15)
     public void testGetDisplayBoxTypeInformationIDs(){
         assertEquals(expectedBox1.getID(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getID(), "first box ID check");
         assertEquals(expectedBox2.getID(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getID(), "second box ID check");
     }
     @Test
+    @Order(16)
     public void testGetDisplayBoxTypeInformationNamess(){
         assertEquals(expectedBox1.getName(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getName(), "first box Name check");
         assertEquals(expectedBox2.getName(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getName(), "second box Name check");
     }
     @Test
+    @Order(17)
     public void testGetDisplayBoxTypeInformationWidths(){
         assertEquals(expectedBox1.getWidth(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getWidth(), "first box Width check");
         assertEquals(expectedBox2.getWidth(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getWidth(), "second box Width check");
     }
     @Test
+    @Order(18)
     public void testGetDisplayBoxTypeInformationLengths(){
         assertEquals(expectedBox1.getLength(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getLength(), "first box Length check");
         assertEquals(expectedBox2.getLength(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getLength(), "second box Length check");
     }
     @Test
+    @Order(19)
     public void testGetDisplayBoxTypeInformationHeights(){
         assertEquals(expectedBox1.getHeight(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getHeight(), "first box Height check");
         assertEquals(expectedBox2.getHeight(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getHeight(), "second box Height check");
     }
     @Test
+    @Order(20)
     public void testGetDisplayBoxTypeInformationContentses(){
         assertEquals(expectedBox1.getContents(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getContents(), "first box Contents check");
         assertEquals(expectedBox2.getContents(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getContents(), "second box Contents check");
     }
     @Test
+    @Order(21)
     public void testGetDisplayBoxTypeInformationNotes(){
         assertEquals(expectedBox1.getNotes(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getNotes(), "first box Notes check");
         assertEquals(expectedBox2.getNotes(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getNotes(), "second box Notes check");
@@ -225,6 +262,7 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
+    @Order(22)
     public void testIDCheckMatch(){
         if(ITDB.IDCheckBoxType(dataBaseName, "1") == false){
             fail("ID match should succeded");
@@ -232,6 +270,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
+    @Order(23)
     public void testIDCheckFail(){
         if(ITDB.IDCheckBoxType(dataBaseName, "5") == true){
             fail("ID match should have failed");
@@ -240,6 +279,7 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
+    @Order(24)
     public void testRemoveBox(){
         System.out.println("remove box test started");
         ITDB.removeBoxType(dataBaseName, "1");
@@ -250,6 +290,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
+    @Order(25)
     public void testNonRemovedBox(){
         System.out.println("non removed box test started");
         Connection c;
@@ -294,6 +335,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
+    @Order(26)
     public void testAddLocation(){
         System.out.println("testAddLocation started");
         addBoxLocationData();
@@ -333,13 +375,92 @@ public class ItemDatabaseJUnitTest {
         if(ID3){
             fail("ID 3 not inserted");
         }
-        
     }
     
     @Test
-    @Order(26)
-    public void testGetBoxLocationDisplay(){
-        assertEquals(expectedBox1.getID(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getID(), "second box Notes check");
+    @Order(27)
+    public void testGetMostRecentSortedBox(){
+        assertEquals("2", ITDB.getMostRecentSortedBox(dataBaseName), "Checking most recently sorted box");
+    }
+    
+    @Test
+    @Order(28)
+    public void testGetBoxLocationDisplayID(){
+        assertEquals("1", ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getID(), "box 2 ID check");
+        assertEquals("2", ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getID(), "box 3 ID check");
+    }
+    
+    
+    @Test
+    @Order(28)
+    public void testGetBoxLocationDisplayName(){
+        assertEquals(expectedBox2.getName(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getName(), "box 2 Name check");
+        assertEquals(expectedBox3.getName(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getName(), "box 3 Name check");
+    }
+    
+    @Test
+    @Order(28)
+    public void testGetBoxLocationDisplayBin(){
+        assertEquals(expectedBox2.getBin(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getBin(), "box 2 Bin check");
+        assertEquals(expectedBox3.getBin(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getBin(), "box 3 Bin check");
+    }
+    
+    @Test
+    @Order(28)
+    public void testGetBoxLocationDisplayXPos(){
+        assertEquals(expectedBox2.getX(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getX(), "box 2 X check");
+        assertEquals(expectedBox3.getX(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getX(), "box 3 X check");
+    }
+    
+    @Test
+    @Order(28)
+    public void testGetBoxLocationDisplayYPos(){
+        assertEquals(expectedBox2.getY(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getY(), "box 2 Y check");
+        assertEquals(expectedBox3.getY(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getY(), "box 3 Y check");
+    }
+    
+    @Test
+    @Order(28)
+    public void testGetBoxLocationDisplayZPos(){
+        assertEquals(expectedBox2.getZ(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getZ(), "box 2 Z check");
+        assertEquals(expectedBox3.getZ(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getZ(), "box 3 Z check");
+    }
+    
+    @Test
+    @Order(29)
+    public void testReplaceBoxEmptSpace(){
+        expectedBox3.setID("2");
+        ITDB.removeStoredBox(expectedBox3, dataBaseName);
+        boolean ID2 = false;
+        boolean ID3 = false;
+        
+        Connection c;
+        Statement stmt;
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM boxLocation");
+            
+            ID2 = rs.getString("individual_ID") == ("1");
+            rs.next();
+            ID3 = (rs.getString("individual_ID") == ("2"));
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        
+        if(ID2){
+            fail("Box 1 removed");
+        }
+        if(ID3){
+            fail("ID 2 not removed");
+        }
     }
 }
 
