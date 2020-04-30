@@ -14,7 +14,7 @@ import tom.sros.App;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
-import tom.sros.sorter.Order;
+import tom.sros.sorter.CustOrder;
 
 public class AddToStorageRoomController {
     
@@ -24,7 +24,7 @@ public class AddToStorageRoomController {
     
     //Lists used to store box ID's as they are input
     List<Box> BoxIDs = new ArrayList<>();
-    List<Order> OrderList = new ArrayList<>();
+    List<CustOrder> OrderList = new ArrayList<>();
     
     @FXML
     private TextField IDBoxText;
@@ -134,7 +134,7 @@ public class AddToStorageRoomController {
         String custName = custNameText.getText();
         
         if(IDB.IDCheckBoxType(dataBaseName, boxTypeID) != false){
-            Order inputOrder = new Order(boxTypeID, address, custName);
+            CustOrder inputOrder = new CustOrder(boxTypeID, address, custName);
             OrderList.add(inputOrder);
             
             orderTable.getItems().add(inputOrder);
@@ -154,7 +154,7 @@ public class AddToStorageRoomController {
     @FXML
     private void removeOrder(){
         TableViewSelectionModel ordersSelection = orderTable.getSelectionModel();
-        List<Order> selectedOrders = ordersSelection.getSelectedItems();
+        List<CustOrder> selectedOrders = ordersSelection.getSelectedItems();
 
         selectedOrders.forEach((currentOrder) -> {
             OrderList.remove(currentOrder);

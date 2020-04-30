@@ -16,6 +16,8 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import tom.sros.sorter.Box;
+import tom.sros.sorter.CustOrder;
+import tom.sros.sorter.EmptySpace;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class ItemDatabaseJUnitTest {
@@ -25,6 +27,10 @@ public class ItemDatabaseJUnitTest {
     static Box expectedBox1 = new Box("1", "Mice", (float)12.4, (float)20.0, (float)9.6, "15 Dell mice", "Fragile, do not turn upside down");
     static Box expectedBox2 = new Box("2", "Monitors", (float) 15, (float) 6.7, (float)8.9, "2 HP monitors", "Glass, do not drop");
     static Box expectedBox3 = new Box("3", "Speakers", (float) 16, (float) 8.5, (float)6, "one speaker", "hold uproght");
+    
+    static EmptySpace empty1 = new EmptySpace((float) 16, (float) 8.5, (float)6, (float)10, (float)10, (float)10, "1");
+    
+    static CustOrder order1 = new CustOrder("1", "DMU Library", "Thomas");
     
     public ItemDatabaseJUnitTest() {
     }
@@ -428,7 +434,7 @@ public class ItemDatabaseJUnitTest {
     
     @Test
     @Order(29)
-    public void testReplaceBoxEmptSpace(){
+    public void testReplaceBoxRemoved(){
         expectedBox3.setID("2");
         ITDB.removeStoredBox(expectedBox3, dataBaseName);
         boolean ID2 = false;
@@ -461,6 +467,117 @@ public class ItemDatabaseJUnitTest {
         if(ID3){
             fail("ID 2 not removed");
         }
+    }
+    
+    @Test
+    @Order(29)
+    public void testReplaceEmptSpaceAdded(){
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM emptySpace WHERE space_ID = 1");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        assertEquals(true, success, "Empty space object should be added");
+    }
+    
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesWidth(){
+        assertEquals(empty1.getWidth(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getWidth(), "Width should match");
+    }
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesLength(){
+        assertEquals(empty1.getLength(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getLength(), "Length should match");
+    }
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesHeight(){
+        assertEquals(empty1.getHeight(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getHeight(), "Height should match");
+    }
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesXPos(){
+        assertEquals(empty1.getX(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getX(), "X position should match");
+    }
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesYPos(){
+        assertEquals(empty1.getY(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getY(), "Y position should match");
+    }
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesZPos(){
+        assertEquals(empty1.getZ(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getZ(), "Z position should match");
+    }
+    @Test
+    @Order(30)
+    public void testAddGetEmptySpacesBin(){
+        assertEquals(empty1.getBin(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getBin(), "Bins should match");
+    }
+    
+    @Test
+    @Order(31)
+    public void testDeleteBoxLocation(){
+        expectedBox3.setID("1");
+        ITDB.deleteBoxLocation(expectedBox3, dataBaseName);
+        
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM boxLocation");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        if(success){
+            fail("All boxes should be removed");
+        }
+    }
+    
+    @Test
+    @Order(32)
+    public void testRemoveEmptySpace(){
+        ITDB.removeEmptySpace(empty1, dataBaseName);
+        
+        if(!(ITDB.getEmptySpaces("1", dataBaseName).isEmpty())){
+            fail("empty space should have been removed");
+        }
+    }
+    
+    @Test
+    @Order(33)
+    public void testAddOrderInformation(){
+        
     }
 }
 

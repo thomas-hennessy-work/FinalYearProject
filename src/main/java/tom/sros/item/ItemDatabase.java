@@ -10,7 +10,7 @@ import java.util.List;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.EmptySpace;
-import tom.sros.sorter.Order;
+import tom.sros.sorter.CustOrder;
 import tom.sros.sorter.Space;
 import tom.sros.sorter.newAlgorithm;
 
@@ -337,7 +337,7 @@ public class ItemDatabase {
      * @param dataBaseName
      * @param orderList 
      */
-    public void addOrdersToDB(String dataBaseName, List<Order> orderList){
+    public void addOrdersToDB(String dataBaseName, List<CustOrder> orderList){
         newAlgorithm NA = new newAlgorithm();
 
         //Go through each order
@@ -392,7 +392,7 @@ public class ItemDatabase {
      * @param dataBaseName
      * @param orderToAdd 
      */
-    public void addOrderInformation(String dataBaseName, Order orderToAdd){
+    public void addOrderInformation(String dataBaseName, CustOrder orderToAdd){
         Connection c;
         Statement stmt;
         

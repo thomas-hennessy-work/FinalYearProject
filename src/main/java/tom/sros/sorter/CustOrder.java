@@ -1,12 +1,12 @@
 package tom.sros.sorter;
 
-public class Order extends Box{
+public class CustOrder extends Box{
     
     String CustAddress;
     String CustName;
     
     //Constructor
-    public Order(String id, String address, String custName){
+    public CustOrder(String id, String address, String custName){
         super(id);
         CustAddress = address;
         CustName = custName;

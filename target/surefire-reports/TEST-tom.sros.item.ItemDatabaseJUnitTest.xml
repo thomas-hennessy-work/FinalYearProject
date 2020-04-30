@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.item.ItemDatabaseJUnitTest" time="0.42" tests="35" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.item.ItemDatabaseJUnitTest" time="0.444" tests="45" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-13.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire1892455737207975110\surefirebooter4648153835712206342.jar C:\Users\thoma\AppData\Local\Temp\surefire1892455737207975110 2020-04-30T14-20-45_207-jvmRun1 surefire3143270550694222491tmp surefire_0354443577160988283tmp"/>
+    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire3017920093571629134\surefirebooter13437627165171017273.jar C:\Users\thoma\AppData\Local\Temp\surefire3017920093571629134 2020-04-30T16-53-00_932-jvmRun1 surefire9222141921804403942tmp surefire_012039400694620033563tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="tom.sros.item.ItemDatabaseJUnitTest"/>
     <property name="surefire.test.class.path" value="C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\test-classes;C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\classes;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13-win.jar;C:\Users\thoma\.m2\repository\org\xerial\sqlite-jdbc\3.28.0\sqlite-jdbc-3.28.0.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\thoma\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\thoma\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\thoma\.m2\repository\com\github\skjolber\3d-bin-container-packing\core\1.2.10\core-1.2.10.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire1892455737207975110\surefirebooter4648153835712206342.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire3017920093571629134\surefirebooter13437627165171017273.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13.0.1+9"/>
@@ -57,39 +57,49 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="boxLocationTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.01"/>
-  <testcase name="boxTypeTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="orderListTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="emptySpaceTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="unSortedBoxesTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="boxLocationTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.016"/>
+  <testcase name="boxTypeTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="orderListTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="emptySpaceTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="unSortedBoxesTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testIdInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
   <testcase name="testNameInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testContentsInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testWidthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testLengthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testWidthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testLengthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testHeightInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testNotesInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testNotesInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetBoxTypeInformationWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetBoxTypeInformationLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetBoxTypeInformationHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetDisplayBoxTypeInformationIDs" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
+  <testcase name="testGetDisplayBoxTypeInformationIDs" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetDisplayBoxTypeInformationNamess" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetDisplayBoxTypeInformationWidths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetDisplayBoxTypeInformationLengths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetDisplayBoxTypeInformationHeights" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationContentses" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetDisplayBoxTypeInformationContentses" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetDisplayBoxTypeInformationNotes" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testIDCheckMatch" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testIDCheckFail" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testRemoveBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
-  <testcase name="testNonRemovedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testAddLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.014"/>
-  <testcase name="testGetMostRecentSortedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testRemoveBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
+  <testcase name="testNonRemovedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.015"/>
+  <testcase name="testGetMostRecentSortedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetBoxLocationDisplayName" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxLocationDisplayXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetBoxLocationDisplayYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxLocationDisplayZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetBoxLocationDisplayBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testReplaceBoxEmptSpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.019"/>
+  <testcase name="testGetBoxLocationDisplayID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="testReplaceBoxRemoved" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.019"/>
+  <testcase name="testReplaceEmptSpaceAdded" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testAddGetEmptySpacesHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testDeleteBoxLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
+  <testcase name="testRemoveEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
 </testsuite>
