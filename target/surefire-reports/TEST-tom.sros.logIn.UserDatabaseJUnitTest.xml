@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.item.ItemDatabaseJUnitTest" time="0.442" tests="45" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.logIn.UserDatabaseJUnitTest" time="0.016" tests="5" errors="1" skipped="0" failures="1">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -56,49 +56,19 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="57.0"/>
   </properties>
-  <testcase name="boxLocationTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.016"/>
-  <testcase name="boxTypeTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="orderListTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="emptySpaceTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="unSortedBoxesTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testIdInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
-  <testcase name="testNameInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testContentsInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testWidthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testLengthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testHeightInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testNotesInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetBoxTypeInformationWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxTypeInformationLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxTypeInformationHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetDisplayBoxTypeInformationIDs" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
-  <testcase name="testGetDisplayBoxTypeInformationNamess" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationWidths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationLengths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
-  <testcase name="testGetDisplayBoxTypeInformationHeights" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationContentses" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationNotes" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testIDCheckMatch" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testIDCheckFail" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testRemoveBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
-  <testcase name="testNonRemovedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testAddLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.014"/>
-  <testcase name="testGetMostRecentSortedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayName" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testReplaceBoxRemoved" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.019"/>
-  <testcase name="testReplaceEmptSpaceAdded" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testAddGetEmptySpacesBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testAddGetEmptySpacesHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testAddGetEmptySpacesLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testAddGetEmptySpacesWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testAddGetEmptySpacesXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testAddGetEmptySpacesYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testAddGetEmptySpacesZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testDeleteBoxLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
-  <testcase name="testRemoveEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
+  <testcase name="userTableExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0"/>
+  <testcase name="defaultUserExist" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0"/>
+  <testcase name="testPopulate" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.003"/>
+  <testcase name="logInCheckTestMatch" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.01">
+    <failure message="The check should have passed" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: The check should have passed
+	at tom.sros.logIn.UserDatabaseJUnitTest.logInCheckTestMatch(UserDatabaseJUnitTest.java:169)
+</failure>
+    <system-out><![CDATA[false
+]]></system-out>
+  </testcase>
+  <testcase name="logInCheckTestMiss" classname="tom.sros.logIn.UserDatabaseJUnitTest" time="0.002">
+    <error type="java.lang.NullPointerException">java.lang.NullPointerException
+	at tom.sros.logIn.UserDatabaseJUnitTest.logInCheckTestMiss(UserDatabaseJUnitTest.java:176)
+</error>
+  </testcase>
 </testsuite>

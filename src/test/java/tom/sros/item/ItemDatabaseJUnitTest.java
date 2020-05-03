@@ -24,9 +24,10 @@ public class ItemDatabaseJUnitTest {
     
     static String dataBaseName = ("SROSTestData.db");
     static ItemDatabase ITDB = new ItemDatabase();
-    static Box expectedBox1 = new Box("1", "Mice", (float)12.4, (float)20.0, (float)9.6, "15 Dell mice", "Fragile, do not turn upside down");
-    static Box expectedBox2 = new Box("2", "Monitors", (float) 15, (float) 6.7, (float)8.9, "2 HP monitors", "Glass, do not drop");
-    static Box expectedBox3 = new Box("3", "Speakers", (float) 16, (float) 8.5, (float)6, "one speaker", "hold uproght");
+    static Box expectedBox1 = new Box("1", "Mice", (float) 12.4, (float) 20.0, (float) 9.6, "15 Dell mice", "Fragile, do not turn upside down");
+    static Box expectedBox2 = new Box("2", "Monitors", (float) 15, (float) 6.7, (float) 8.9, "2 HP monitors", "Glass, do not drop");
+    static Box expectedBox3 = new Box("3", "Speakers", (float) 16, (float) 8.5, (float) 6, "one speaker", "hold uproght");
+    static Box expectedBox4 = new Box("4", "Radio", (float) 8, (float) 13.2, (float) 5, "Old radio", "very fragile");
     
     static EmptySpace empty1 = new EmptySpace((float) 16, (float) 8.5, (float)6, (float)10, (float)10, (float)10, "1");
     
@@ -566,18 +567,29 @@ public class ItemDatabaseJUnitTest {
     
     @Test
     @Order(32)
-    public void testRemoveEmptySpace(){
+    public void testRemoveAndGetEmptySpace(){
         ITDB.removeEmptySpace(empty1, dataBaseName);
         
         if(!(ITDB.getEmptySpaces("1", dataBaseName).isEmpty())){
             fail("empty space should have been removed");
         }
-    }
-    
-    @Test
-    @Order(33)
-    public void testAddOrderInformation(){
-        
-    }
+    }    
 }
 
+/*
+addOrderInformation
+getOrderInformationDisplay
+getExistingBoxes
+getSpecificExistingBoxDimensions
+blockRepeatingBoxEntry
+deleteStoredOrder
+getOrderBox
+addEmptySpace
+getEmptySpaces
+removeEmptySpace
+deleteBoxLocation
+addUnsorted
+clearBoxLocationData
+getUnsortedBoxDisplay
+emptyUnsortedTable
+*/

@@ -131,5 +131,34 @@
             </AnchorPane>
         </content>
     </Tab>
+    <Tab text="Unsorted boxes">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Text layoutX="210.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unsorted Boxes">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+                  <Button layoutX="529.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Button layoutX="470.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <TableView fx:id="unsortedTable" layoutX="28.0" layoutY="91.0" prefHeight="237.0" prefWidth="201.0">
+                     <columns>
+                        <TableColumn text="Box ID" >
+                            <cellValueFactory><PropertyValueFactory property="ID" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="120.0" text="Amount" >
+                            <cellValueFactory><PropertyValueFactory property="Amount" />
+                            </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                  </TableView>
+                  <Button layoutX="248.0" layoutY="303.0" mnemonicParsing="false" text="Sort" onAction="#addUnsortedBoxes" />
+                  <Text layoutX="248.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Try sorting the unsorted boxes" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
   </tabs>
 </TabPane>

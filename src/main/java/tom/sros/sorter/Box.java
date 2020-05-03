@@ -24,6 +24,9 @@ public class Box {
     
     //Constructors
     
+    public Box(){
+    }
+    
     public Box(String id, float width, float length, float height){
         ID = id;
         Width = width;
@@ -171,6 +174,10 @@ public class Box {
     }
     public void setNotes(String notes){
         Notes = notes;
+    }
+    
+    public void setAmount(int amount){
+        Amount = amount;
     }
     
     

@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: tom.sros.logIn.UserDatabaseJUnitTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.016 s <<< FAILURE! - in tom.sros.logIn.UserDatabaseJUnitTest
+logInCheckTestMatch  Time elapsed: 0.01 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: The check should have passed
+	at tom.sros.logIn.UserDatabaseJUnitTest.logInCheckTestMatch(UserDatabaseJUnitTest.java:169)
+
+logInCheckTestMiss  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.NullPointerException
+	at tom.sros.logIn.UserDatabaseJUnitTest.logInCheckTestMiss(UserDatabaseJUnitTest.java:176)
+

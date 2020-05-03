@@ -49,7 +49,7 @@ public class ItemDatabase {
                     "box_ID   STRING   NOT NULL, " +
                     "customer_name   STRING   NOT NULL, " +
                     "customer_address   STRING   NOT NULL, " + 
-                    "FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID))";
+                    "FOREIGN KEY(box_ID)   REFERENCES boxLocation(individual_ID))";
             stmt.executeUpdate(sql);
             
             //box location table
@@ -401,7 +401,7 @@ public class ItemDatabase {
             stmt = c.createStatement();
             
             String sql = "INSERT INTO orderList (box_ID, customer_name, customer_address) "
-                    + "VALUES ('" + orderToAdd.getID() + "', '" + orderToAdd.getCustName() +  "', '" + orderToAdd.getAddress() + "' );";
+                    + "VALUES ('" + orderToAdd.getID() + "', '" + orderToAdd.getCustName() +  "', '" + orderToAdd.getCustAddress() + "' );";
             stmt.executeUpdate(sql);
             
             stmt.close();
@@ -412,6 +412,36 @@ public class ItemDatabase {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    
+    public List<CustOrder> getOrderInformationDisplay(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<CustOrder> returnList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT orderList.order_ID, orderList.box_ID, orderList.customer_name, orderList.customer_address, "
+                    + "boxLocation.bin_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos "
+                    + "FROM orderList INNER JOIN boxLocation ON orderList.box_ID = boxLocation.individual_ID;");
+            
+            while(rs.next()){
+                returnList.add(new CustOrder(rs.getString("box_ID"), rs.getString("order_ID"), rs.getString("customer_address"), rs.getString("customer_name"),
+                rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos"), rs.getString("bin_ID")));
+            }
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return returnList;
     }
     
     /**
@@ -539,6 +569,80 @@ public class ItemDatabase {
         //Adds the empty space, removes the box
         addEmptySpace(newSpace, dataBaseName);
         deleteBoxLocation(boxToRemoved, dataBaseName);
+    }
+    
+    public void removeStoredOrder(CustOrder orderToRemove, String dataBasename){
+        Box linkedBox = getOrderBox(orderToRemove.getOrderID(), dataBasename);
+        deleteStoredOrder(orderToRemove, dataBasename);
+        removeStoredBox(linkedBox, dataBasename);
+    }
+    
+    /**
+     * Deletes a specified order from the order table 
+     * 
+     * @param orderToRemove
+     * @param dataBasename 
+     */
+    public void deleteStoredOrder(CustOrder orderToRemove, String dataBasename){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBasename);
+            stmt = c.createStatement();
+            
+            String sql = "DELETE FROM orderList WHERE order_ID = " + orderToRemove.getOrderID();
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    /**
+     * Gathers information regarding boxes linked to a specified order
+     * 
+     * @param orderID
+     * @param dataBasename
+     * @return Box and its associated information that is linked to an order
+     */
+    public Box getOrderBox(String orderID, String dataBasename){
+        Connection c;
+        Statement stmt;
+        
+        Box returnBox = new Box();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBasename);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT boxLocation.individual_ID, boxLocation.bin_ID, boxLocation.corner_vertical_pos, "
+                    + "boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxLocation INNER JOIN orderList ON boxLocation.individual_ID = orderList.box_ID "
+                    + "WHERE orderList.order_ID = '" + orderID + "';");
+            
+            System.out.println(rs.next());
+            
+            returnBox.setBin(rs.getString("bin_ID"));
+            returnBox.setX(rs.getFloat("corner_horizontal_pos"));
+            returnBox.setY(rs.getFloat("corner_vertical_pos"));
+            returnBox.setZ(rs.getFloat("corner_depth_pos"));
+            returnBox.setID(rs.getString("individual_ID"));
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        
+        return returnBox;
     }
     
     /**
@@ -756,6 +860,72 @@ public class ItemDatabase {
             
             //runs the main method, recreating the tables
             main(dataBaseName);
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    /**
+     * Gathers the display information about unsorted boxes
+     * 
+     * @param dataBaseName
+     * @return amount and type of unsorted boxes
+     */
+    public List<Box> getUnsortedBoxDisplay(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<Box> returnList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM unSortedBoxes");
+            while(rs.next()){
+                boolean found = false;
+                for(Box currentBox : returnList){
+                    if(currentBox.getID().equals(rs.getString("box_ID"))){
+                        currentBox.setAmount(currentBox.getAmount() + 1);
+                        found = true;
+                    }
+                }
+                if(found == false){
+                    returnList.add(new Box(rs.getString("box_ID"), 1));
+                }
+            }
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return returnList;
+    }
+    
+    /**
+     * Empties all boxes stored in the unsorted boxes table
+     * 
+     * @param dataBasename 
+     */
+    public void emptyUnsortedTable(String dataBasename){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBasename);
+            stmt = c.createStatement();
+            
+            String sql = "DELETE FROM unSortedBoxes;";
+            stmt.executeUpdate(sql);
             
             stmt.close();
             c.close();

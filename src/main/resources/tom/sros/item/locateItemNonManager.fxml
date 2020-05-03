@@ -68,22 +68,22 @@
                   </Text>
                   <Button layoutX="462.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
                   <Button layoutX="534.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home" />
-                  <TableView layoutY="91.0" prefHeight="279.0" prefWidth="600.0">
+                  <TableView fx:id="orderTable" layoutY="91.0" prefHeight="279.0" prefWidth="600.0">
                      <columns>
                         <TableColumn prefWidth="75.0" text="Order ID" >
                             <cellValueFactory><PropertyValueFactory property="ID" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn prefWidth="42.0" text="Bin" >
-                            <cellValueFactory><PropertyValueFactory property="Bin" />
-                            </cellValueFactory>
-                        </TableColumn>
                         <TableColumn prefWidth="108.0" text="Customer name" >
-                            <cellValueFactory><PropertyValueFactory property="CustoemrName" />
+                            <cellValueFactory><PropertyValueFactory property="CustName" />
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn prefWidth="123.0" text="Customer address" >
-                            <cellValueFactory><PropertyValueFactory property="CustoemrAddress" />
+                            <cellValueFactory><PropertyValueFactory property="CustAddress" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn prefWidth="42.0" text="Bin" >
+                            <cellValueFactory><PropertyValueFactory property="Bin" />
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn prefWidth="87.0" text="X location" >
@@ -100,6 +100,7 @@
                         </TableColumn>
                      </columns>
                   </TableView>
+                  <Button layoutY="370.0" mnemonicParsing="false" text="Remove" onAction="#removeOrder" />
                </children></AnchorPane>
       </content>
     </Tab>

@@ -42,13 +42,16 @@ public class StorageRoomManagmentController implements Initializable{
     private TableView newBinTable;
     @FXML
     private TableView sortDeleteTable;
+    @FXML
+    private TableView unsortedTable;
     
     List<Bin> toAddList = new ArrayList<>();
     List<Bin> toRemoveList = new ArrayList<>();
     
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        populateTable();
+        populateBinTable();
+        populateUnsortedTable();
     }
     
     /**
@@ -64,7 +67,7 @@ public class StorageRoomManagmentController implements Initializable{
       newBinTable.getItems().clear();
       
       existingBinTable.getItems().clear();     
-      populateTable();
+      populateBinTable();
     }
     
     /**
@@ -127,7 +130,7 @@ public class StorageRoomManagmentController implements Initializable{
         
         existingBinTable.getItems().clear();
         
-        populateTable();
+        populateBinTable();
     }
     
     /**
@@ -175,6 +178,21 @@ public class StorageRoomManagmentController implements Initializable{
         });
     }
     
+    @FXML
+    private void addUnsortedBoxes(){
+        ItemDatabase ITDB = new ItemDatabase();
+        newAlgorithm NA = new newAlgorithm();
+        
+        List<Box> boxUnsortedList = ITDB.getUnsortedBoxDisplay(dataBaseName);
+        List<Bin> emptyLisy = new ArrayList<>();
+        
+        ITDB.emptyUnsortedTable(dataBaseName);
+        NA.sortAndAddToDB(dataBaseName, boxUnsortedList, emptyLisy);
+        
+        unsortedTable.getItems().clear();
+        populateUnsortedTable();
+    }
+    
     //Logout and home buttons
     @FXML
     private void logOut() throws IOException {
@@ -188,10 +206,18 @@ public class StorageRoomManagmentController implements Initializable{
     /**
      * Populates the table of existing bins
      */
-    private void populateTable(){
+    private void populateBinTable(){
         List<Bin> binInfoList = BinDataBase.getBinInfo(dataBaseName);
         binInfoList.forEach((currentBin) -> {
             existingBinTable.getItems().add(currentBin);
+        });
+    }
+    
+    private void populateUnsortedTable(){
+        ItemDatabase ITDB = new ItemDatabase();
+        List<Box> boxInfoList =  ITDB.getUnsortedBoxDisplay(dataBaseName);
+        boxInfoList.forEach((currentBox) -> {
+            unsortedTable.getItems().add(currentBox);
         });
     }
 }
