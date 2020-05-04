@@ -164,8 +164,9 @@ public class UserDatabaseJUnitTest {
     @Test
     @Order(4)
     public void logInCheckTestMatch(){
-        if(UserDatabase.logInCheck(dataBaseName, "Tom", "populate") == false){
-            System.out.println(UserDatabase.logInCheck(dataBaseName, "Tom", "populate"));
+        System.out.println(UserDatabase.logInCheck(dataBaseName, "Tom", "default"));
+        if(UserDatabase.logInCheck(dataBaseName, "Tom", "default") == false){
+            System.out.println(UserDatabase.logInCheck(dataBaseName, "Tom", "default"));
             fail("The check should have passed");
         }
     }
@@ -173,8 +174,8 @@ public class UserDatabaseJUnitTest {
     @Test
     @Order(5)
     public void logInCheckTestMiss(){
-        if(UserDatabase.logInCheck(dataBaseName, "Bary", "populate")){
-            fail("The check should have passed");
+        if(UserDatabase.logInCheck(dataBaseName, "Bary", "default")){
+            fail("The check should not have passed");
         }
     }
 }

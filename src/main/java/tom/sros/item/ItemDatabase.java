@@ -405,7 +405,7 @@ public class ItemDatabase {
             stmt.executeUpdate(sql);
             
             stmt.close();
-            c.close();
+            c.close(); 
         }
         catch (SQLException e){
             //Error catching
@@ -414,6 +414,12 @@ public class ItemDatabase {
         }
     }
     
+    /**
+     * Gathers a list of orders stored in the database used for display
+     * 
+     * @param dataBaseName
+     * @return List of orders stored in the database
+     */
     public List<CustOrder> getOrderInformationDisplay(String dataBaseName){
         Connection c;
         Statement stmt;
@@ -524,7 +530,7 @@ public class ItemDatabase {
      * 
      * @param placedBox
      * @param dataBaseName
-     * @return if the box already existed
+     * @return true if there is a box in that location, false if there is not
      */
     public boolean blockRepeatingBoxEntry(Box placedBox, String dataBaseName){
         Connection c;
@@ -839,8 +845,7 @@ public class ItemDatabase {
     }
     
     /**
-     * Gathers all boxes curently stored and drops the box location and empty space tables
-     * and resorts all the bins
+     * Deletes all stored information in the box location and empty space tables
      * 
      * @param dataBaseName 
      */
@@ -853,9 +858,9 @@ public class ItemDatabase {
             stmt = c.createStatement();
             
             //drops both tables relating to box information
-            String sql = ("DROP TABLE IF EXISTS boxLocation");
+            String sql = ("DELETE FROM boxLocation");
             stmt.executeUpdate(sql);
-            sql = ("DROP TABLE IF EXISTS emptySpace");
+            sql = ("DELETE FROM emptySpace");
             stmt.executeUpdate(sql);
             
             //runs the main method, recreating the tables

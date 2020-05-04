@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
+import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.CustOrder;
 import tom.sros.sorter.EmptySpace;
@@ -28,10 +31,16 @@ public class ItemDatabaseJUnitTest {
     static Box expectedBox2 = new Box("2", "Monitors", (float) 15, (float) 6.7, (float) 8.9, "2 HP monitors", "Glass, do not drop");
     static Box expectedBox3 = new Box("3", "Speakers", (float) 16, (float) 8.5, (float) 6, "one speaker", "hold uproght");
     static Box expectedBox4 = new Box("4", "Radio", (float) 8, (float) 13.2, (float) 5, "Old radio", "very fragile");
+    static Box expectedBox5 = new Box("4", "Radio", (float) 8, (float) 13.2, (float) 5, "Old radio", "very fragile");
     
     static EmptySpace empty1 = new EmptySpace((float) 16, (float) 8.5, (float)6, (float)10, (float)10, (float)10, "1");
+    static EmptySpace empty2 = new EmptySpace((float) 3.5, (float) 9, (float)9.7, (float)10, (float)0, (float)0, "1");
     
     static CustOrder order1 = new CustOrder("1", "DMU Library", "Thomas");
+    
+    static Bin bin1 = new Bin("1");
+    static Bin bin2 = new Bin("2");
+    static Bin bin3 = new Bin("3");
     
     public ItemDatabaseJUnitTest() {
     }
@@ -121,22 +130,22 @@ public class ItemDatabaseJUnitTest {
         tableExist("boxLocation");
     }
     @Test
-    @Order(2)
+    @Order(1)
     public void boxTypeTableExist(){
         tableExist("boxType");
     }
     @Test 
-    @Order(3)
+    @Order(1)
     public void orderListTableExist(){
         tableExist("orderList");
     }
     @Test 
-    @Order(4)
+    @Order(1)
     public void emptySpaceTableExist(){
         tableExist("emptySpace");
     }
     @Test 
-    @Order(5)
+    @Order(1)
     public void unSortedBoxesTableExist(){
         tableExist("unSortedBoxes");
     }
@@ -169,37 +178,37 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
-    @Order(6)
+    @Order(2)
     public void testIdInsert(){
         assertEquals("1", getBoxData(1), "Box ID should be '1'");
     }
     @Test
-    @Order(7)
+    @Order(2)
     public void testNameInsert(){
         assertEquals("Mice", getBoxData(2), "Box name should be 'Mice'");
     }
     @Test
-    @Order(8)
+    @Order(2)
     public void testContentsInsert(){
         assertEquals("15 Dell mice", getBoxData(3), "Box contents should be '15 Dell mice'");
     }
     @Test
-    @Order(9)
+    @Order(2)
     public void testWidthInsert(){
         assertEquals("12.4", getBoxData(4), "Box width should be '12.4'");
     }
     @Test
-    @Order(10)
+    @Order(2)
     public void testLengthInsert(){
         assertEquals("20.0", getBoxData(5), "Box length should be '20'");
     }
     @Test
-    @Order(11)
+    @Order(2)
     public void testHeightInsert(){
         assertEquals("9.6", getBoxData(6), "Box height should be '9.6'");
     }
     @Test
-    @Order(12)
+    @Order(2)
     public void testNotesInsert(){
         assertEquals("Fragile, do not turn upside down", getBoxData(8), "Box height should be 'Fragile, do not turn upside down'");
     }
@@ -207,60 +216,60 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
-    @Order(12)
+    @Order(3)
     public void testGetBoxTypeInformationWidth(){
         assertEquals(expectedBox1.getWidth(), ITDB.getBoxTypeInformation("1", dataBaseName).getWidth(), "Dose box have the same width");
     }
     @Test
-    @Order(13)
+    @Order(3)
     public void testGetBoxTypeInformationLength(){
         assertEquals(expectedBox1.getLength(), ITDB.getBoxTypeInformation("1", dataBaseName).getLength(), "Dose box have the same length");
     }
     @Test
-    @Order(14)
+    @Order(3)
     public void testGetBoxTypeInformationHeight(){
         assertEquals(expectedBox1.getHeight(), ITDB.getBoxTypeInformation("1", dataBaseName).getHeight(), "Dose the box have the same height");
     }
     
     
     @Test
-    @Order(15)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationIDs(){
         assertEquals(expectedBox1.getID(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getID(), "first box ID check");
         assertEquals(expectedBox2.getID(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getID(), "second box ID check");
     }
     @Test
-    @Order(16)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationNamess(){
         assertEquals(expectedBox1.getName(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getName(), "first box Name check");
         assertEquals(expectedBox2.getName(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getName(), "second box Name check");
     }
     @Test
-    @Order(17)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationWidths(){
         assertEquals(expectedBox1.getWidth(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getWidth(), "first box Width check");
         assertEquals(expectedBox2.getWidth(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getWidth(), "second box Width check");
     }
     @Test
-    @Order(18)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationLengths(){
         assertEquals(expectedBox1.getLength(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getLength(), "first box Length check");
         assertEquals(expectedBox2.getLength(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getLength(), "second box Length check");
     }
     @Test
-    @Order(19)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationHeights(){
         assertEquals(expectedBox1.getHeight(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getHeight(), "first box Height check");
         assertEquals(expectedBox2.getHeight(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getHeight(), "second box Height check");
     }
     @Test
-    @Order(20)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationContentses(){
         assertEquals(expectedBox1.getContents(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getContents(), "first box Contents check");
         assertEquals(expectedBox2.getContents(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getContents(), "second box Contents check");
     }
     @Test
-    @Order(21)
+    @Order(4)
     public void testGetDisplayBoxTypeInformationNotes(){
         assertEquals(expectedBox1.getNotes(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(0).getNotes(), "first box Notes check");
         assertEquals(expectedBox2.getNotes(), ItemDatabase.getDisplayBoxTypeInformation(dataBaseName).get(1).getNotes(), "second box Notes check");
@@ -269,7 +278,7 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
-    @Order(22)
+    @Order(5)
     public void testIDCheckMatch(){
         if(ITDB.IDCheckBoxType(dataBaseName, "1") == false){
             fail("ID match should succeded");
@@ -277,7 +286,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(23)
+    @Order(5)
     public void testIDCheckFail(){
         if(ITDB.IDCheckBoxType(dataBaseName, "5") == true){
             fail("ID match should have failed");
@@ -286,7 +295,7 @@ public class ItemDatabaseJUnitTest {
     
     
     @Test
-    @Order(24)
+    @Order(5)
     public void testRemoveBox(){
         System.out.println("remove box test started");
         ITDB.removeBoxType(dataBaseName, "1");
@@ -297,7 +306,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(25)
+    @Order(5)
     public void testNonRemovedBox(){
         System.out.println("non removed box test started");
         Connection c;
@@ -342,7 +351,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(26)
+    @Order(6)
     public void testAddLocation(){
         System.out.println("testAddLocation started");
         addBoxLocationData();
@@ -385,56 +394,55 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(27)
+    @Order(7)
     public void testGetMostRecentSortedBox(){
         assertEquals("2", ITDB.getMostRecentSortedBox(dataBaseName), "Checking most recently sorted box");
     }
     
     @Test
-    @Order(28)
+    @Order(7)
     public void testGetBoxLocationDisplayID(){
         assertEquals("1", ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getID(), "box 2 ID check");
         assertEquals("2", ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getID(), "box 3 ID check");
     }
     
-    
     @Test
-    @Order(28)
+    @Order(7)
     public void testGetBoxLocationDisplayName(){
         assertEquals(expectedBox2.getName(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getName(), "box 2 Name check");
         assertEquals(expectedBox3.getName(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getName(), "box 3 Name check");
     }
     
     @Test
-    @Order(28)
+    @Order(7)
     public void testGetBoxLocationDisplayBin(){
         assertEquals(expectedBox2.getBin(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getBin(), "box 2 Bin check");
         assertEquals(expectedBox3.getBin(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getBin(), "box 3 Bin check");
     }
     
     @Test
-    @Order(28)
+    @Order(7)
     public void testGetBoxLocationDisplayXPos(){
         assertEquals(expectedBox2.getX(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getX(), "box 2 X check");
         assertEquals(expectedBox3.getX(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getX(), "box 3 X check");
     }
     
     @Test
-    @Order(28)
+    @Order(7)
     public void testGetBoxLocationDisplayYPos(){
         assertEquals(expectedBox2.getY(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getY(), "box 2 Y check");
         assertEquals(expectedBox3.getY(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getY(), "box 3 Y check");
     }
     
     @Test
-    @Order(28)
+    @Order(7)
     public void testGetBoxLocationDisplayZPos(){
         assertEquals(expectedBox2.getZ(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(0).getZ(), "box 2 Z check");
         assertEquals(expectedBox3.getZ(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getZ(), "box 3 Z check");
     }
     
     @Test
-    @Order(29)
+    @Order(8)
     public void testReplaceBoxRemoved(){
         expectedBox3.setID("2");
         ITDB.removeStoredBox(expectedBox3, dataBaseName);
@@ -471,7 +479,7 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(29)
+    @Order(9)
     public void testReplaceEmptSpaceAdded(){
         Connection c;
         Statement stmt;
@@ -498,43 +506,79 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(30)
-    public void testAddGetEmptySpacesWidth(){
-        assertEquals(empty1.getWidth(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getWidth(), "Width should match");
-    }
-    @Test
-    @Order(30)
-    public void testAddGetEmptySpacesLength(){
-        assertEquals(empty1.getLength(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getLength(), "Length should match");
-    }
-    @Test
-    @Order(30)
-    public void testAddGetEmptySpacesHeight(){
-        assertEquals(empty1.getHeight(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getHeight(), "Height should match");
-    }
-    @Test
-    @Order(30)
-    public void testAddGetEmptySpacesXPos(){
-        assertEquals(empty1.getX(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getX(), "X position should match");
-    }
-    @Test
-    @Order(30)
-    public void testAddGetEmptySpacesYPos(){
-        assertEquals(empty1.getY(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getY(), "Y position should match");
-    }
-    @Test
-    @Order(30)
-    public void testAddGetEmptySpacesZPos(){
-        assertEquals(empty1.getZ(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getZ(), "Z position should match");
-    }
-    @Test
-    @Order(30)
-    public void testAddGetEmptySpacesBin(){
-        assertEquals(empty1.getBin(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getBin(), "Bins should match");
+    @Order(10)
+    public void testAddEmptySpace(){
+        ITDB.addEmptySpace(empty2, dataBaseName);
+        
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM emptySpace WHERE space_ID = 2");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        assertEquals(true, success, "Empty space object should be added");
     }
     
     @Test
-    @Order(31)
+    @Order(11)
+    public void testAddGetEmptySpacesWidth(){
+        assertEquals(empty1.getWidth(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getWidth(), "Width should match");
+        assertEquals(empty2.getWidth(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getWidth(), "Width should match");
+    }
+    @Test
+    @Order(11)
+    public void testAddGetEmptySpacesLength(){
+        assertEquals(empty1.getLength(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getLength(), "Length should match");
+        assertEquals(empty2.getLength(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getLength(), "Length should match");
+    }
+    @Test
+    @Order(11)
+    public void testAddGetEmptySpacesHeight(){
+        assertEquals(empty1.getHeight(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getHeight(), "Height should match");
+        assertEquals(empty2.getHeight(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getHeight(), "Height should match");
+    }
+    @Test
+    @Order(11)
+    public void testAddGetEmptySpacesXPos(){
+        assertEquals(empty1.getX(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getX(), "X position should match");
+        assertEquals(empty2.getX(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getX(), "X position should match");
+    }
+    @Test
+    @Order(11)
+    public void testAddGetEmptySpacesYPos(){
+        assertEquals(empty1.getY(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getY(), "Y position should match");
+        assertEquals(empty2.getY(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getY(), "Y position should match");
+    }
+    @Test
+    @Order(11)
+    public void testAddGetEmptySpacesZPos(){
+        assertEquals(empty1.getZ(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getZ(), "Z position should match");
+        assertEquals(empty2.getZ(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getZ(), "Z position should match");
+    }
+    @Test
+    @Order(11)
+    public void testAddGetEmptySpacesBin(){
+        assertEquals(empty1.getBin(), ITDB.getEmptySpaces("1",dataBaseName).get(0).getBin(), "Bins should match");
+        assertEquals(empty2.getBin(), ITDB.getEmptySpaces("1",dataBaseName).get(1).getBin(), "Bins should match");
+    }
+    
+    @Test
+    @Order(12)
     public void testDeleteBoxLocation(){
         expectedBox3.setID("1");
         ITDB.deleteBoxLocation(expectedBox3, dataBaseName);
@@ -566,30 +610,376 @@ public class ItemDatabaseJUnitTest {
     }
     
     @Test
-    @Order(32)
+    @Order(13)
+    public void tesgetRemovedEmptySpace(){
+        ITDB.removeEmptySpace(empty1, dataBaseName);
+        
+        if(ITDB.getEmptySpaces("1", dataBaseName).get(0).getID() != empty2.getID()){
+            fail("fail, empty space 1 has not been found");
+        } 
+        
+        ITDB.removeEmptySpace(empty2, dataBaseName);
+
+        System.out.println(ITDB.getEmptySpaces("1", dataBaseName).size());
+        if(!ITDB.getEmptySpaces("1", dataBaseName).isEmpty()){
+            fail("fail, empty space 2 should have been removed");
+        }
+    }
+    
+    @Test
+    @Order(13)
     public void testRemoveAndGetEmptySpace(){
         ITDB.removeEmptySpace(empty1, dataBaseName);
         
-        if(!(ITDB.getEmptySpaces("1", dataBaseName).isEmpty())){
-            fail("empty space should have been removed");
+        if(ITDB.getEmptySpaces("1", dataBaseName).get(0).getID() != null){
+            fail("fail, empty space 1 has not been removed");
         }
-    }    
-}
+    }
 
-/*
-addOrderInformation
-getOrderInformationDisplay
-getExistingBoxes
-getSpecificExistingBoxDimensions
-blockRepeatingBoxEntry
-deleteStoredOrder
-getOrderBox
-addEmptySpace
-getEmptySpaces
-removeEmptySpace
-deleteBoxLocation
-addUnsorted
-clearBoxLocationData
-getUnsortedBoxDisplay
-emptyUnsortedTable
-*/
+    @Test
+    @Order(14)
+    public void testAddOrderInformation(){
+        ITDB.addBoxType(dataBaseName, "Radio", "Old radio", (float) 8, (float) 13.2, (float) 5,  "very fragile");
+        expectedBox4.setX(0);
+        expectedBox4.setY(0);
+        expectedBox4.setZ(0);
+        expectedBox4.setBin("1");
+        ITDB.addBoxLocation(expectedBox2, dataBaseName);
+        
+        order1.setID("3");
+        order1.setOrderID("1");
+        order1.setBin("1");
+        ITDB.addOrderInformation(dataBaseName, order1);
+        
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orderList WHERE order_ID = 1");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        if(!success){
+            fail("Order should have been added to table");
+        }
+    }
+    
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayBoxID(){
+        assertEquals(order1.getID(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getID(), "box ID's should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayOrderID(){
+        assertEquals(order1.getOrderID(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getOrderID(), "order ID's should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayName(){
+        assertEquals(order1.getCustName(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getCustName(), "customer names should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayAddress(){
+        assertEquals(order1.getCustAddress(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getCustAddress(), "custoemr addresses should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayX(){
+        assertEquals(order1.getX(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getX(), "X position should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayY(){
+        assertEquals(order1.getY(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getY(), "Y position should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayZ(){
+        assertEquals(order1.getZ(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getZ(), "custoemr addresses should match");
+    }
+    @Test
+    @Order(15)
+    public void testGetOrderInformationDisplayBin(){
+        assertEquals(order1.getBin(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getBin(), "custoemr addresses should match");
+    }
+    
+    @Test
+    @Order(16)
+    public void testGetExistingBoxes(){
+        expectedBox4.setX(8);
+        expectedBox4.setY(0);
+        expectedBox4.setZ(0);
+        expectedBox4.setBin("1");
+        expectedBox5.setX(0);
+        expectedBox5.setY(0);
+        expectedBox5.setZ(0);
+        expectedBox5.setBin("2");
+        ITDB.addBoxLocation(expectedBox4, dataBaseName);
+        ITDB.addBoxLocation(expectedBox5, dataBaseName);
+        
+        assertEquals(2, ITDB.getExistingBoxes(bin1, dataBaseName).size(), "There should be two boxes in the list");
+        assertEquals(1, ITDB.getExistingBoxes(bin2, dataBaseName).size(), "There should be two boxes in the list");
+        assertEquals(0, ITDB.getExistingBoxes(bin3, dataBaseName).size(), "There should be two boxes in the list");
+    }
+    
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesID(){
+        expectedBox2.setID("3");
+        assertEquals(expectedBox2.getID(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getID(), "Box 2 ID should match");
+        assertEquals(expectedBox4.getID(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getID(), "Box 3 ID should match");
+    }
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesWidth(){
+        assertEquals(expectedBox2.getWidth(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getWidth(), "Box 2 width should match");
+        assertEquals(expectedBox4.getWidth(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getWidth(), "Box 3 width should match");
+    }
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesLength(){
+        assertEquals(expectedBox2.getLength(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getLength(), "Box 2 length should match");
+        assertEquals(expectedBox4.getLength(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getLength(), "Box 3 length should match");
+    }
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesHeight(){
+        assertEquals(expectedBox2.getHeight(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getHeight(), "Box 2 height should match");
+        assertEquals(expectedBox4.getHeight(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getHeight(), "Box 3 height should match");
+    }
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesX(){
+        assertEquals(expectedBox2.getX(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getX(), "Box 2 X should match");
+        assertEquals(expectedBox4.getX(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getX(), "Box 3 X should match");
+    }
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesY(){
+        assertEquals(expectedBox2.getY(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getY(), "Box 2 Y should match");
+        assertEquals(expectedBox4.getY(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getY(), "Box 3 Y should match");
+    }
+    @Test
+    @Order(17)
+    public void TestgetExistingBoxesZ(){
+        assertEquals(expectedBox2.getZ(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getZ(), "Box 2 Z should match");
+        assertEquals(expectedBox4.getZ(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getZ(), "Box 3 Z should match");
+    }
+    
+    @Test
+    @Order(18)
+    public void testGetSpecificExistingBoxDimensionsWidth(){
+        assertEquals(expectedBox4.getWidth(), ITDB.getSpecificExistingBoxDimensions(expectedBox4, dataBaseName).getWidth(), "Box width should match");
+    }
+    @Test
+    @Order(18)
+    public void testGetSpecificExistingBoxDimensionsLength(){
+        assertEquals(expectedBox4.getLength(), ITDB.getSpecificExistingBoxDimensions(expectedBox4, dataBaseName).getLength(), "Box length should match");
+    }
+    @Test
+    @Order(18)
+    public void testGetSpecificExistingBoxDimensionsHeight(){
+        assertEquals(expectedBox4.getHeight(), ITDB.getSpecificExistingBoxDimensions(expectedBox4, dataBaseName).getHeight(), "Box height should match");
+    }
+    
+    @Test
+    @Order(19)
+    public void blockRepeatingBoxEntryExists(){
+        assertEquals(false, ITDB.blockRepeatingBoxEntry(expectedBox4, dataBaseName), "Should return that box exists");
+    }
+    @Test
+    @Order(19)
+    public void blockRepeatingBoxEntryNotExist(){
+        assertEquals(true, ITDB.blockRepeatingBoxEntry(expectedBox1, dataBaseName), "Should return that box dose not exists");
+    }
+    
+    @Test
+    @Order(20)
+    public void testGetOrderBoxBin(){
+        order1.setOrderID("1");
+        assertEquals(expectedBox2.getBin(), ITDB.getOrderBox("1", dataBaseName).getBin(), "Bins should match");
+    }
+    @Test
+    @Order(20)
+    public void testGetOrderBoxX(){
+        order1.setOrderID("1");
+        assertEquals(expectedBox2.getX(), ITDB.getOrderBox("1", dataBaseName).getX(), "X positions should match");
+    }
+    @Test
+    @Order(20)
+    public void testGetOrderBoxY(){
+        order1.setOrderID("1");
+        assertEquals(expectedBox2.getY(), ITDB.getOrderBox("1", dataBaseName).getY(), "Y positions should match");
+    }
+    @Test
+    @Order(20)
+    public void testGetOrderBoxZ(){
+        order1.setOrderID("1");
+        assertEquals(expectedBox2.getZ(), ITDB.getOrderBox("1", dataBaseName).getZ(), "Z positions should match");
+    }
+    @Test
+    @Order(20)
+    public void testGetOrderBoxID(){
+        order1.setOrderID("1");
+        assertEquals(expectedBox2.getID(), ITDB.getOrderBox("1", dataBaseName).getID(), "X positions should match");
+    }
+    
+    @Test
+    @Order(21)
+    public void testDeleteStoredOrder(){
+        ITDB.deleteStoredOrder(order1, dataBaseName);
+        
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orderList WHERE order_ID = 1");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        if(success){
+            fail("Order should have been removed");
+        }
+    }
+    
+    @Test
+    @Order(22)
+    public void testAddGetUnsortedID(){
+        List<Box> unsortedList = new ArrayList<>();
+        unsortedList.add(expectedBox1);
+        unsortedList.add(expectedBox1);
+        unsortedList.add(expectedBox2);
+
+        ITDB.addUnsorted(unsortedList, dataBaseName);
+        
+        assertEquals(expectedBox1.getID(), ITDB.getUnsortedBoxDisplay(dataBaseName).get(0).getID(), "ID should match");
+        assertEquals(expectedBox2.getID(), ITDB.getUnsortedBoxDisplay(dataBaseName).get(1).getID(), "ID should match");
+    }
+    
+    @Test
+    @Order(23)
+    public void testGetUnsortedBoxDisplay(){
+        assertEquals(2, ITDB.getUnsortedBoxDisplay(dataBaseName).get(0).getAmount(), "Amount should match");
+        assertEquals(1, ITDB.getUnsortedBoxDisplay(dataBaseName).get(1).getAmount(), "Amount should match");
+    }
+    
+    @Test
+    @Order(24)
+    public void testClearBoxLocationDataEmptySpace(){
+        ITDB.addEmptySpace(empty1, dataBaseName);
+        ITDB.clearBoxLocationData(dataBaseName);
+        
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM emptySpace");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        if(success){
+            fail("All feilds in empty space should be removed");
+        }
+    }
+    
+    @Test
+    @Order(25)
+    public void testClearBoxLocationDataLocation(){
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM boxLocation");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        if(success){
+            fail("All feilds in box location should be removed");
+        }
+    }
+    
+    @Test
+    @Order(26)
+    public void testEmptyUnsortedTable(){
+        ITDB.emptyUnsortedTable(dataBaseName);
+        
+        Connection c;
+        Statement stmt;
+        
+        boolean success = false;
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT * FROM unSortedBoxes");
+            success = rs.next();
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        if(success){
+            fail("All feilds in unsorted boxes should be removed");
+        }
+    }
+}
