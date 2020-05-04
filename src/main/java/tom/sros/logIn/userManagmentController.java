@@ -93,7 +93,7 @@ public class userManagmentController implements Initializable{
     //Method for populating table
     private void populateTable(){
         UserDatabase UDB = new UserDatabase();
-        List<user> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);
+        List<User> userInfoList = UDB.getAllUsersNoPassword(dataBaseName);
         
         userInfoList.forEach((currentUser) -> {
             userTable.getItems().add(currentUser);

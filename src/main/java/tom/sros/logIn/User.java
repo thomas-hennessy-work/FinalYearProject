@@ -1,6 +1,6 @@
 package tom.sros.logIn;
 
-public class user {
+public class User {
     
     String ID;
     String Password;
@@ -8,10 +8,14 @@ public class user {
     Boolean IsManager;
     
     //Constructor
-    public user(String id, String userName, Boolean managerStatus){
+    public User(String id, String userName, Boolean managerStatus){
         ID = id;
         UserName = userName;
         IsManager = managerStatus;
+    }
+    
+    public void setPassword(String password){
+        Password = password;
     }
     
     //Get methods

@@ -1,12 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: tom.sros.logIn.UserDatabaseJUnitTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.016 s <<< FAILURE! - in tom.sros.logIn.UserDatabaseJUnitTest
-logInCheckTestMatch  Time elapsed: 0.01 s  <<< ERROR!
-java.lang.NullPointerException
-	at tom.sros.logIn.UserDatabaseJUnitTest.logInCheckTestMatch(UserDatabaseJUnitTest.java:167)
-
-logInCheckTestMiss  Time elapsed: 0.002 s  <<< ERROR!
-java.lang.NullPointerException
-	at tom.sros.logIn.UserDatabaseJUnitTest.logInCheckTestMiss(UserDatabaseJUnitTest.java:176)
-
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.3 s - in tom.sros.logIn.UserDatabaseJUnitTest

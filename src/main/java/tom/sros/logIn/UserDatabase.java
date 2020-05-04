@@ -157,11 +157,11 @@ public class UserDatabase {
          * @param dataBaseName
          * @return List of user information without passwords
          */
-        public List<user> getAllUsersNoPassword(String dataBaseName){
+        public List<User> getAllUsersNoPassword(String dataBaseName){
             Connection c;
             Statement stmt;
             
-            List returnList = new ArrayList<user>();
+            List returnList = new ArrayList<User>();
             
             try{
                 //Connecting to database
@@ -171,7 +171,7 @@ public class UserDatabase {
                 ResultSet rs = stmt.executeQuery("SELECT user_ID, user_name, is_manager FROM user");
                 
                 while(rs.next()){
-                    returnList.add(new user(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager")));
+                    returnList.add(new User(rs.getString("user_ID"), rs.getString("user_name"), rs.getBoolean("is_manager")));
                     System.out.println(rs.getBoolean("is_manager"));
                 }
                 

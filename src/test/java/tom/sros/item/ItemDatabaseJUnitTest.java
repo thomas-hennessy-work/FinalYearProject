@@ -27,6 +27,7 @@ public class ItemDatabaseJUnitTest {
     
     static String dataBaseName = ("SROSTestData.db");
     static ItemDatabase ITDB = new ItemDatabase();
+    
     static Box expectedBox1 = new Box("1", "Mice", (float) 12.4, (float) 20.0, (float) 9.6, "15 Dell mice", "Fragile, do not turn upside down");
     static Box expectedBox2 = new Box("2", "Monitors", (float) 15, (float) 6.7, (float) 8.9, "2 HP monitors", "Glass, do not drop");
     static Box expectedBox3 = new Box("3", "Speakers", (float) 16, (float) 8.5, (float) 6, "one speaker", "hold uproght");
