@@ -78,6 +78,9 @@ public class Bin {
     public void setHeight(float height){
         Height = height;
     }
+    public void setAmount(int amount){
+        Amount = amount;
+    }
     
     //Box methods
     public void setBoxes(List<Box> Boxes){

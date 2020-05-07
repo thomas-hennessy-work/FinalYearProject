@@ -7,7 +7,6 @@ tom\sros\sorter\CustOrder.class
 tom\sros\storageRoom\StorageRoomManagmentController.class
 tom\sros\home\HomeScreenNonManagerController.class
 tom\sros\storageRoom\BinDataBase.class
-tom\sros\logIn\user.class
 tom\sros\sorter\Box.class
 tom\sros\logIn\LogInController.class
 tom\sros\home\HomeScreenController.class
@@ -17,6 +16,7 @@ tom\sros\App.class
 tom\sros\item\AddItemToDataBaseController.class
 tom\sros\item\ItemDatabase.class
 tom\sros\storageRoom\AddToStorageRoomNonManagerController.class
+tom\sros\logIn\User.class
 tom\sros\logIn\userManagmentController.class
 tom\sros\item\LocateItemController.class
 tom\sros\sorter\binaryTree.class

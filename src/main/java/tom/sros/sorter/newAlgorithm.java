@@ -45,7 +45,6 @@ public class newAlgorithm {
     */
     public void sortAndAddToDB(String dataBaseName, List<Box> IDAmountList, List<Bin> removedBins){
     
-    List<Box> returnBoxList = new ArrayList<>();
     List<Box> freshSortBoxes;
 
     //obtaining bin information
@@ -88,7 +87,6 @@ public class newAlgorithm {
                    //Remove any boxes that have been sorted from the unsorted list
                    if(IDB.blockRepeatingBoxEntry(currentBox, dataBaseName)){
                     IDB.addBoxLocation(currentBox, dataBaseName);
-                    returnBoxList.add(currentBox);
                    }
                    boxesAvailable.remove(currentBox);
                 }

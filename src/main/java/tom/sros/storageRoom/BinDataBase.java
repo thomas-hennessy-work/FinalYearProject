@@ -86,7 +86,8 @@ public class BinDataBase {
     }
     
     /**
-     * Gets the information of each bin stored in the database
+     * Gets the information of each individual bin stored in the database, based upon the bin
+     * types in the database
      * 
      * @param dataBaseName
      * @return List of bins and their information
@@ -130,7 +131,7 @@ public class BinDataBase {
      * 
      * @param availableBins
      * @param dataBaseName
-     * @return List of bins with their size information and stored bins information
+     * @return List of individual bins with their size information and stored bins information
      */
     public static List<Bin> convertGeneralBinToIndividual(List<Bin> availableBins, String dataBaseName){
         System.out.println("Starting getBinData");
@@ -301,7 +302,7 @@ public class BinDataBase {
     }
     
     /**
-     * Verifies if a bin already exists
+     * Verifies if a bin type already exists
      * 
      * @param binToCheck
      * @param dataBaseName
