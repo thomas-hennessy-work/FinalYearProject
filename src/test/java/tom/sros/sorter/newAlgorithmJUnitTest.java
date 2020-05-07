@@ -285,6 +285,15 @@ public class newAlgorithmJUnitTest {
     
     @Test
     @Order(7)
+    public void testAddOrdersToDBBin(){
+        List<CustOrder> returnedOrders = ITDB.getOrderInformationDisplay(dataBaseName);
+        
+        assertEquals("2", returnedOrders.get(0).getBin());
+        assertEquals("2", returnedOrders.get(1).getBin());
+    }
+    
+    @Test
+    @Order(7)
     public void testAddOrdersToDBAddress(){
         List<CustOrder> returnedOrders = ITDB.getOrderInformationDisplay(dataBaseName);
         
@@ -296,7 +305,34 @@ public class newAlgorithmJUnitTest {
     @Order(8)
     public void testRemoveStoredOrder(){
         List<CustOrder> returnedOrders = ITDB.getOrderInformationDisplay(dataBaseName);
-        
         ITDB.removeStoredOrder(returnedOrders.get(0), dataBaseName);
+        
+        returnedOrders = ITDB.getOrderInformationDisplay(dataBaseName);
+        
+        assertEquals(1, returnedOrders.size(), "Order should have been deleted");
+    }
+    
+    @Test
+    @Order(9)
+    public void testOrderEmptySpaceX(){
+        List<EmptySpace> availableSpaces = ITDB.getEmptySpaces("2", dataBaseName);
+        
+        assertEquals((float)5, availableSpaces.get(0).getX(), "X position should match");
+    }
+    
+    @Test
+    @Order(9)
+    public void testOrderEmptySpaceY(){
+        List<EmptySpace> availableSpaces = ITDB.getEmptySpaces("2", dataBaseName);
+        
+        assertEquals((float)0, availableSpaces.get(0).getY(), "Y position should match");
+    }
+    
+    @Test
+    @Order(9)
+    public void testOrderEmptySpaceZ(){
+        List<EmptySpace> availableSpaces = ITDB.getEmptySpaces("2", dataBaseName);
+        
+        assertEquals((float)0, availableSpaces.get(0).getZ(), "Z position should match");
     }
 }

@@ -65,51 +65,19 @@ public class Bin {
     }
     
     //Set methods
-    public void setName(String name){
-        Name = name;
-    }
-    
-    public void setWidth(float width){
-        Width = width;
-    }
-    public void setLength(float length){
-        Length = length;
-    }
-    public void setHeight(float height){
-        Height = height;
-    }
     public void setAmount(int amount){
         Amount = amount;
     }
     
     //Box methods
-    public void setBoxes(List<Box> Boxes){
-        StoredBoxes = Boxes;
-        Occupied = !StoredBoxes.isEmpty();
-    }
+
     public void addBox(Box item){
         StoredBoxes.add(item);
-        Occupied = !StoredBoxes.isEmpty();
-    }
-    public void addBoxes(List<Box> items){
-        items.forEach((boxes) -> {
-            StoredBoxes.add(boxes);
-        });
         Occupied = !StoredBoxes.isEmpty();
     }
     
     public boolean getOccupied(){
         return Occupied;
-    }
-    
-    //Removes a specified box from the bin
-    public void removeBox(String name){
-        StoredBoxes.forEach((item) -> {
-            if (item.getID().equals(name)){
-                StoredBoxes.remove(item);
-            }
-        });
-        Occupied = !StoredBoxes.isEmpty();
     }
     
     //gets floor space

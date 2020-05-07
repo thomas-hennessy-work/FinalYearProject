@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>userManagmentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.logIn</a> &gt; <span class="el_source">userManagmentController.java</span></div><h1>userManagmentController.java</h1><pre class="source lang-java linenums">package tom.sros.logIn;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import tom.sros.App;
+import javafx.scene.control.TextField;
+
+<span class="nc" id="L15">public class userManagmentController implements Initializable{</span>
+    
+<span class="nc" id="L17">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
+    
+<span class="nc" id="L19">    @FXML</span>
+    ListView&lt;String&gt; userList = new ListView&lt;String&gt;();
+<span class="nc" id="L21">    ObservableList&lt;String&gt; items = FXCollections.observableArrayList();</span>
+    
+    @FXML
+    private TextField userIDInput;
+    @FXML
+    private TextField userNameInput;
+    @FXML
+    private TextField passWordInput;
+    @FXML
+    private RadioButton radioManager;
+    @FXML 
+    private TextField deleteUserIDInput;
+    
+    @FXML
+    private TableView userTable;
+    
+    /**
+     * Populates the user table when initialized
+     * 
+     * @param location
+     * @param resources 
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+<span class="nc" id="L45">        populateTable();</span>
+<span class="nc" id="L46">    }</span>
+    
+    /**
+     * Gathers the information from the text feilds and uses them to create a user
+     * 
+     * @throws IOException 
+     */
+    @FXML
+    private void createUser() throws IOException {
+<span class="nc" id="L55">        UserDatabase UDB = new UserDatabase();</span>
+        
+<span class="nc" id="L57">        boolean isManager = radioManager.isSelected();</span>
+<span class="nc" id="L58">        UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());</span>
+        
+<span class="nc" id="L60">        userIDInput.setText(&quot;&quot;);</span>
+<span class="nc" id="L61">        userNameInput.setText(&quot;&quot;);</span>
+<span class="nc" id="L62">        passWordInput.setText(&quot;&quot;);</span>
+        
+<span class="nc" id="L64">        userTable.getItems().clear();</span>
+<span class="nc" id="L65">        populateTable();</span>
+<span class="nc" id="L66">    }</span>
+    
+    /**
+     * Removes a user from the user table
+     * 
+     * @throws IOException 
+     */
+    @FXML
+    private void removeUser() throws IOException {
+<span class="nc" id="L75">        UserDatabase UDB = new UserDatabase();</span>
+<span class="nc" id="L76">        UDB.removeUser(dataBaseName, deleteUserIDInput.getText());</span>
+<span class="nc" id="L77">        deleteUserIDInput.setText(&quot;&quot;);</span>
+        
+<span class="nc" id="L79">        userTable.getItems().clear();</span>
+<span class="nc" id="L80">        populateTable();</span>
+<span class="nc" id="L81">    }</span>
+
+    //Log out and home button
+    @FXML
+    private void logOut() throws IOException {
+<span class="nc" id="L86">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
+<span class="nc" id="L87">    }</span>
+    @FXML
+    private void home() throws IOException{
+<span class="nc" id="L90">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc" id="L91">    }</span>
+    
+    //Method for populating table
+    private void populateTable(){
+<span class="nc" id="L95">        UserDatabase UDB = new UserDatabase();</span>
+<span class="nc" id="L96">        List&lt;User&gt; userInfoList = UDB.getAllUsersNoPassword(dataBaseName);</span>
+        
+<span class="nc" id="L98">        userInfoList.forEach((currentUser) -&gt; {</span>
+<span class="nc" id="L99">            userTable.getItems().add(currentUser);</span>
+<span class="nc" id="L100">        });</span>
+<span class="nc" id="L101">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDatabase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.logIn</a> &gt; <span class="el_source">UserDatabase.java</span></div><h1>UserDatabase.java</h1><pre class="source lang-java linenums">package tom.sros.logIn;
+
+import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
+
+<span class="fc" id="L7">public class UserDatabase {</span>
+    
+        /**
+         * Creates the user table and inserts a default user if no user exists
+         * 
+         * @param dataBaseName 
+         */
+        public static void main(String dataBaseName){
+            Connection c;
+            Statement stmt;
+            
+            try{
+                //Conect to the database
+<span class="fc" id="L20">                c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+                
+                //Creates user table. If it already exists, it will not run
+<span class="fc" id="L23">                stmt = c.createStatement();</span>
+<span class="fc" id="L24">                String sql = &quot;CREATE TABLE IF NOT EXISTS user &quot; + </span>
+                                &quot;(user_ID   STRING  PRIMARY KEY     NOT NULL,&quot; +
+                                &quot;user_name  STRING    NOT NULL, &quot; +
+                                &quot;is_manager BOOL    NOT NULL, &quot; +
+                                &quot;password   STRING    NOT NULL)&quot;;
+<span class="fc" id="L29">                stmt.executeUpdate(sql);</span>
+<span class="fc" id="L30">                System.out.println(&quot;Table created if not already&quot;);</span>
+                
+                
+<span class="fc" id="L33">                ResultSet rs = stmt.executeQuery(&quot;SELECT * from user&quot;);         </span>
+                //Creating a default user if no users exist
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">                if (rs.next() == false){</span>
+<span class="fc" id="L36">                    try (Statement stmt1 = c.createStatement()) {</span>
+<span class="fc" id="L37">                        sql = &quot;INSERT INTO user (user_ID,user_name,is_manager,password) &quot; +</span>
+                                &quot;VALUES ('1', 'Default', true, 'password' );&quot;;
+<span class="fc" id="L39">                        System.out.println(&quot;Default user created&quot;);</span>
+<span class="fc" id="L40">                        stmt1.executeUpdate(sql);</span>
+                    }
+                }
+<span class="fc" id="L43">                stmt.close();</span>
+<span class="fc" id="L44">                c.close();</span>
+            }
+            //Exception catching
+<span class="nc" id="L47">            catch (SQLException e){</span>
+<span class="nc" id="L48">                System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L49">                System.exit(0);</span>
+<span class="fc" id="L50">            }</span>
+<span class="fc" id="L51">        }</span>
+        
+        /**
+         * Adds a user to the user table
+         * 
+         * @param dataBaseName
+         * @param user_ID
+         * @param user_name
+         * @param is_manager
+         * @param password 
+         */
+        public void populate(String dataBaseName, String user_ID, String user_name, Boolean is_manager, String password){
+            Connection c;
+            Statement stmt;
+            
+            try{
+                //connecting to database
+<span class="fc" id="L68">                c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+                
+                //Insert a new user in to the user database
+<span class="fc" id="L71">                stmt = c.createStatement();</span>
+<span class="fc" id="L72">                String sql = &quot;INSERT INTO user (user_ID,user_name,is_manager,password)&quot;</span>
+                        + &quot;VALUES ('&quot; + user_ID + &quot;', '&quot;+ user_name + &quot;', &quot;
+                        + is_manager + &quot;, '&quot; + password + &quot;' );&quot;;
+<span class="fc" id="L75">                stmt.executeUpdate(sql);</span>
+                
+<span class="fc" id="L77">                stmt.close();</span>
+<span class="fc" id="L78">                c.close();</span>
+            }
+<span class="nc" id="L80">            catch (SQLException e) {</span>
+                //Exception catching
+<span class="nc" id="L82">                System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L83">                System.exit(0);</span>
+<span class="fc" id="L84">            }</span>
+<span class="fc" id="L85">        }</span>
+        
+        /**
+         * Removes a user from the user table
+         * 
+         * @param dataBaseName
+         * @param ID 
+         */
+        public void removeUser(String dataBaseName, String ID){
+            Connection c;
+            Statement stmt;
+            
+            try{
+                //connecting to database
+<span class="fc" id="L99">                c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+                
+                //Delete a user where the ID matches the one given
+<span class="fc" id="L102">                stmt = c.createStatement();</span>
+<span class="fc" id="L103">                String sql = &quot;DELETE FROM user WHERE user_ID = &quot; + ID;</span>
+<span class="fc" id="L104">                stmt.executeUpdate(sql);</span>
+                
+<span class="fc" id="L106">                stmt.close();</span>
+<span class="fc" id="L107">                c.close();</span>
+            }
+<span class="nc" id="L109">            catch (SQLException e) {</span>
+                //Exception catching
+<span class="nc" id="L111">                System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L112">                System.exit(0);</span>
+<span class="fc" id="L113">            }</span>
+<span class="fc" id="L114">        }</span>
+        
+        /**
+         * Verifies the credentials of the user logging in
+         * 
+         * @param dataBaseName
+         * @param userName
+         * @param passWord
+         * @return Returns if the information presented is a user and if they are manager or not
+         */
+        public static Boolean logInCheck(String dataBaseName, String userName, String passWord){
+            Connection c;
+            Statement stmt;
+            
+<span class="fc" id="L128">            Boolean returnValue = null;</span>
+            
+            try{
+                //Connecting to database
+<span class="fc" id="L132">                c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+                
+                //Gather user information from dataBase
+<span class="fc" id="L135">                stmt = c.createStatement();</span>
+<span class="fc" id="L136">                ResultSet rs = stmt.executeQuery(&quot;SELECT is_manager FROM user WHERE user_name = '&quot; + userName + &quot;' AND password = '&quot; + passWord + &quot;';&quot;);</span>
+                
+                //If the user exists, check if they are manager
+<span class="fc bfc" id="L139" title="All 2 branches covered.">                while (rs.next()){</span>
+<span class="fc" id="L140">                    returnValue = rs.getBoolean(&quot;is_manager&quot;);</span>
+                }
+<span class="fc" id="L142">                stmt.close();</span>
+<span class="fc" id="L143">                c.close();</span>
+            }
+            //Exception catching
+<span class="nc" id="L146">            catch ( SQLException e ) {</span>
+<span class="nc" id="L147">                System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
+<span class="nc" id="L148">                System.exit(0);</span>
+<span class="fc" id="L149">   }</span>
+            //Will return null if the user dose not exist. If they do, the boolean value will indicate if they are a manager
+<span class="fc" id="L151">            return returnValue;</span>
+        }
+        
+        /**
+         * Gathers all users information without their password
+         * 
+         * @param dataBaseName
+         * @return List of user information without passwords
+         */
+        public List&lt;User&gt; getAllUsersNoPassword(String dataBaseName){
+            Connection c;
+            Statement stmt;
+            
+<span class="fc" id="L164">            List returnList = new ArrayList&lt;User&gt;();</span>
+            
+            try{
+                //Connecting to database
+<span class="fc" id="L168">                c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L169">                stmt = c.createStatement();</span>
+                
+<span class="fc" id="L171">                ResultSet rs = stmt.executeQuery(&quot;SELECT user_ID, user_name, is_manager FROM user&quot;);</span>
+                
+<span class="fc bfc" id="L173" title="All 2 branches covered.">                while(rs.next()){</span>
+<span class="fc" id="L174">                    returnList.add(new User(rs.getString(&quot;user_ID&quot;), rs.getString(&quot;user_name&quot;), rs.getBoolean(&quot;is_manager&quot;)));</span>
+<span class="fc" id="L175">                    System.out.println(rs.getBoolean(&quot;is_manager&quot;));</span>
+                }
+                
+<span class="fc" id="L178">                stmt.close();</span>
+<span class="fc" id="L179">                c.close();</span>
+            }
+            //Exception catching
+<span class="nc" id="L182">            catch ( SQLException e ) {</span>
+<span class="nc" id="L183">                System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
+<span class="nc" id="L184">                System.exit(0);</span>
+<span class="fc" id="L185">            }</span>
+<span class="fc" id="L186">            return returnList;</span>
+        }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

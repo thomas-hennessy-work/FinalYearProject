@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddToStorageRoomController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.storageRoom</a> &gt; <span class="el_source">AddToStorageRoomController.java</span></div><h1>AddToStorageRoomController.java</h1><pre class="source lang-java linenums">package tom.sros.storageRoom;
+
+import tom.sros.sorter.newAlgorithm;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.TextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import tom.sros.App;
+import tom.sros.item.ItemDatabase;
+import tom.sros.sorter.Bin;
+import tom.sros.sorter.Box;
+import tom.sros.sorter.CustOrder;
+
+<span class="nc" id="L19">public class AddToStorageRoomController {</span>
+    
+<span class="nc" id="L21">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
+    
+    boolean UserType;
+    
+    //Lists used to store box ID's as they are input
+<span class="nc" id="L26">    List&lt;Box&gt; BoxIDs = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L27">    List&lt;CustOrder&gt; OrderList = new ArrayList&lt;&gt;();</span>
+    
+    @FXML
+    private TextField IDBoxText;
+    @FXML
+    private TextField IDBoxAmount;
+    
+    @FXML
+    private TextField orderTypeID;
+    @FXML
+    private TextField addressText;
+    @FXML
+    private TextField custNameText;
+    
+    @FXML
+    private TableView itemTable;
+    @FXML
+    private TableView orderTable;
+    
+    
+    /**
+     * Gets the boxes in the list and puts them through the sorting algorithm
+     */
+    @FXML
+    private void sortBoxes() throws IOException{
+        //Sorting the list of items given to the system
+<span class="nc" id="L53">        newAlgorithm NA = new newAlgorithm();</span>
+<span class="nc" id="L54">        System.out.println(&quot;Adding item to storage room&quot;);</span>
+        
+        //Sorting and adding boxes to the storage room database
+<span class="nc" id="L57">        List&lt;Bin&gt; emptyBin = null;</span>
+<span class="nc" id="L58">        NA.sortAndAddToDB(dataBaseName, BoxIDs, emptyBin);</span>
+        
+        //Clearing the stored list of items
+<span class="nc" id="L61">        BoxIDs.clear();</span>
+<span class="nc" id="L62">        itemTable.getItems().clear();</span>
+<span class="nc" id="L63">        orderTable.getItems().clear();</span>
+<span class="nc" id="L64">    }</span>
+    
+    /**
+     * Adds a box (or boxes) to the list of boxes prepared to be added
+     * to the box location table.
+     */
+    @FXML
+    private void addToBoxList(){
+<span class="nc" id="L72">        ItemDatabase IDB = new ItemDatabase();</span>
+<span class="nc" id="L73">        JFrame boxExistanceWarning = new JFrame();</span>
+        
+        //Gather the information in the two text feilds
+<span class="nc" id="L76">        String inputID = IDBoxText.getText();</span>
+<span class="nc" id="L77">        int inputAmount = Integer.parseInt(IDBoxAmount.getText());</span>
+        
+        //Ensure that the ID exists in the item database
+        //If they do, pass them as a pair to a list in the backend to be temporeraly stored.
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if(IDB.IDCheckBoxType(dataBaseName,inputID) != false){</span>
+<span class="nc" id="L82">            Box inputBox = new Box(inputID, inputAmount);</span>
+<span class="nc" id="L83">            BoxIDs.add(inputBox);</span>
+<span class="nc" id="L84">            itemTable.getItems().add(inputBox);</span>
+            
+<span class="nc" id="L86">            IDBoxText.setText(&quot;&quot;);</span>
+<span class="nc" id="L87">            IDBoxAmount.setText(&quot;&quot;);</span>
+<span class="nc" id="L88">        }</span>
+        else{
+<span class="nc" id="L90">            JOptionPane.showMessageDialog(boxExistanceWarning, &quot;Box ID dose not exist.&quot;, &quot;Unrecognised box ID&quot;, 2);</span>
+        }
+<span class="nc" id="L92">    }</span>
+    
+    /**
+     * Removes a box from the list of boxes to be added
+     */
+    @FXML
+    private void removeBox(){
+<span class="nc" id="L99">        TableViewSelectionModel boxesSelection = itemTable.getSelectionModel();</span>
+<span class="nc" id="L100">        List&lt;Box&gt; selectedBoxes = boxesSelection.getSelectedItems();</span>
+        
+<span class="nc" id="L102">        selectedBoxes.forEach((currentBox) -&gt; {</span>
+<span class="nc" id="L103">            BoxIDs.remove(currentBox);</span>
+<span class="nc" id="L104">        });</span>
+        
+<span class="nc" id="L106">        itemTable.getItems().removeAll(selectedBoxes);</span>
+<span class="nc" id="L107">    }</span>
+    
+    /**
+     * Gets the orders in the list and puts them through the sorting algorithm
+     */
+    @FXML
+    private void sortOrders(){
+        //Sorting the list of items given to the system
+<span class="nc" id="L115">        ItemDatabase IDB = new ItemDatabase();</span>
+<span class="nc" id="L116">        System.out.println(&quot;Adding item to storage room&quot;);</span>
+        
+<span class="nc" id="L118">        IDB.addOrdersToDB(dataBaseName, OrderList);</span>
+        
+<span class="nc" id="L120">        OrderList.clear();</span>
+<span class="nc" id="L121">        orderTable.getItems().clear();</span>
+<span class="nc" id="L122">    }</span>
+    
+    /**
+     * Adds an order to the order list with the information provided by the user
+     */
+    @FXML
+    private void addToOrderList(){
+<span class="nc" id="L129">        ItemDatabase IDB = new ItemDatabase();</span>
+<span class="nc" id="L130">        JFrame boxExistanceWarning = new JFrame();</span>
+        
+<span class="nc" id="L132">        String boxTypeID = orderTypeID.getText();</span>
+<span class="nc" id="L133">        String address = addressText.getText();</span>
+<span class="nc" id="L134">        String custName = custNameText.getText();</span>
+        
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(IDB.IDCheckBoxType(dataBaseName, boxTypeID) != false){</span>
+<span class="nc" id="L137">            CustOrder inputOrder = new CustOrder(boxTypeID, address, custName);</span>
+<span class="nc" id="L138">            OrderList.add(inputOrder);</span>
+            
+<span class="nc" id="L140">            orderTable.getItems().add(inputOrder);</span>
+            
+<span class="nc" id="L142">            orderTypeID.setText(&quot;&quot;);</span>
+<span class="nc" id="L143">            addressText.setText(&quot;&quot;);</span>
+<span class="nc" id="L144">            custNameText.setText(&quot;&quot;);</span>
+<span class="nc" id="L145">        }</span>
+        else{
+<span class="nc" id="L147">            JOptionPane.showMessageDialog(boxExistanceWarning, &quot;Box ID dose not exist.&quot;, &quot;Unrecognised box ID&quot;, 2);</span>
+        }
+<span class="nc" id="L149">    }</span>
+    
+    /**
+     * Removes an order from the order list
+     */
+    @FXML
+    private void removeOrder(){
+<span class="nc" id="L156">        TableViewSelectionModel ordersSelection = orderTable.getSelectionModel();</span>
+<span class="nc" id="L157">        List&lt;CustOrder&gt; selectedOrders = ordersSelection.getSelectedItems();</span>
+
+<span class="nc" id="L159">        selectedOrders.forEach((currentOrder) -&gt; {</span>
+<span class="nc" id="L160">            OrderList.remove(currentOrder);</span>
+<span class="nc" id="L161">        });</span>
+        
+<span class="nc" id="L163">        orderTable.getItems().removeAll(selectedOrders);</span>
+<span class="nc" id="L164">    }</span>
+    
+    //Logout and home buttons
+    @FXML
+    private void logOut() throws IOException {
+<span class="nc" id="L169">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
+<span class="nc" id="L170">    }</span>
+    @FXML
+    private void home() throws IOException{
+<span class="nc" id="L173">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc" id="L174">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BinDataBase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.storageRoom</a> &gt; <span class="el_source">BinDataBase.java</span></div><h1>BinDataBase.java</h1><pre class="source lang-java linenums">package tom.sros.storageRoom;
+
+import tom.sros.sorter.Bin;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import tom.sros.sorter.Box;
+
+<span class="fc" id="L13">public class BinDataBase {</span>
+    
+    /**
+     * Creates the tables relating to bins if they do not exist in the specified database
+     * 
+     * @param dataBaseName 
+     */
+    public static void main(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            //Connect to database
+<span class="fc" id="L26">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+            //Create tables if they do not exist
+<span class="fc" id="L29">            stmt = c.createStatement();</span>
+<span class="fc" id="L30">            String sql = &quot;CREATE TABLE IF NOT EXISTS binType&quot; + </span>
+                            &quot;(type_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, &quot; +
+                            &quot;quantity INT  NOT NULL,&quot; +
+                            &quot;width   INT   NOT NULL, &quot; +
+                            &quot;length   INT   NOT NULL, &quot; +
+                            &quot;height   INT   NOT NULL)&quot;;
+<span class="fc" id="L36">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L38">             sql = &quot;CREATE TABLE IF NOT EXISTS binIndividual&quot; +</span>
+                    &quot;(bin_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, &quot; +
+                    &quot;type_ID   STRING   NOT NULL, &quot; +
+                    &quot;FOREIGN KEY(type_ID)   REFERENCES binType(type_ID))&quot;;
+<span class="fc" id="L42">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L44">            stmt.close();</span>
+<span class="fc" id="L45">            c.close();</span>
+        }
+<span class="nc" id="L47">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L49">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L50">            System.exit(0);</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">    }</span>
+    
+    /**
+     * Verifies if an ID provided matches a bin in the database
+     * 
+     * @param dataBaseName
+     * @param binID
+     * @return If the provided ID is linked to an existing bin
+     */
+    public static boolean binIDCheck(String dataBaseName, String binID){
+<span class="fc" id="L62">        System.out.println(&quot;Starting getAllBinInfo&quot;);</span>
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L66">        boolean returnValue = false;</span>
+        
+        try{
+<span class="fc" id="L69">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+            //Gather the bin ID's and their quantity
+<span class="fc" id="L72">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L74">            ResultSet rs = stmt.executeQuery(&quot;SELECT bin_ID FROM binIndividual WHERE bin_ID = '&quot; + binID +&quot;';&quot;);</span>
+<span class="fc" id="L75">            returnValue = rs.next();</span>
+            
+<span class="fc" id="L77">            stmt.close();</span>
+<span class="fc" id="L78">            c.close();</span>
+        }
+<span class="nc" id="L80">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L82">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L83">            System.exit(0);</span>
+<span class="fc" id="L84">        }</span>
+<span class="fc" id="L85">        return returnValue;</span>
+    }
+    
+    /**
+     * Gets the information of each individual bin stored in the database, based upon the bin
+     * types in the database
+     * 
+     * @param dataBaseName
+     * @return List of bins and their information
+     */
+    public static List&lt;Bin&gt; getBinInfo(String dataBaseName){
+<span class="fc" id="L96">        System.out.println(&quot;Starting getAllBinInfo&quot;);</span>
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L100">        List&lt;Bin&gt; availableBins = new ArrayList&lt;&gt;(); </span>
+        
+        try{
+            //Connect to database
+<span class="fc" id="L104">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+            //Gather the bin ID's and their quantity
+<span class="fc" id="L107">            stmt = c.createStatement();</span>
+<span class="fc" id="L108">            ResultSet rs = stmt.executeQuery(&quot;Select type_ID, quantity, width, length, height FROM binType&quot;);</span>
+            
+            //Using the resultset containing the bin information, link the ID and their
+            //ammount to a pair and add the pair to a list
+<span class="fc bfc" id="L112" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L113">                availableBins.add(new Bin(rs.getString(&quot;type_ID&quot;), rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;)));</span>
+            }
+
+<span class="fc" id="L116">            stmt.close();</span>
+<span class="fc" id="L117">            c.close();</span>
+        }
+<span class="nc" id="L119">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L121">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L122">            System.exit(0);</span>
+<span class="fc" id="L123">        }</span>
+<span class="fc" id="L124">        List&lt;Bin&gt; finalList = convertGeneralBinToIndividual(availableBins, dataBaseName);</span>
+<span class="fc" id="L125">        return finalList;</span>
+    }
+    
+    /**
+     * Converts the general bin types in to individual bins and inserts all boxes stored in that bin,
+     * in to the bin
+     * 
+     * @param availableBins
+     * @param dataBaseName
+     * @return List of individual bins with their size information and stored bins information
+     */
+    public static List&lt;Bin&gt; convertGeneralBinToIndividual(List&lt;Bin&gt; availableBins, String dataBaseName){
+<span class="fc" id="L137">        System.out.println(&quot;Starting getBinData&quot;);</span>
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L141">        List&lt;Bin&gt; specificBinList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+            //Connect to database
+<span class="fc" id="L145">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+<span class="fc" id="L147">            stmt = c.createStatement();</span>
+            //individual bins
+<span class="fc" id="L149">            ResultSet rs = stmt.executeQuery(&quot;Select bin_ID, type_ID FROM binIndividual&quot;);</span>
+            
+            //assigning bin dimensions to the bin
+<span class="fc bfc" id="L152" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">                for(Bin currentAvailableBin : availableBins){</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">                    if(currentAvailableBin.getName().equals(rs.getString(&quot;type_ID&quot;))){</span>
+<span class="fc" id="L155">                        specificBinList.add(new Bin(rs.getString(&quot;bin_ID&quot;), currentAvailableBin.getWidth(), currentAvailableBin.getLength(), currentAvailableBin.getHeight()));</span>
+<span class="fc" id="L156">                        break;</span>
+                    }
+<span class="fc" id="L158">                }</span>
+            }
+            
+<span class="fc" id="L161">            stmt.close();</span>
+<span class="fc" id="L162">            c.close();</span>
+        }
+<span class="nc" id="L164">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L166">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L167">            System.exit(0);</span>
+<span class="fc" id="L168">        }</span>
+        
+        //Assigning boxes stored in the bin to the bin
+<span class="fc" id="L171">        List&lt;Bin&gt; returnBinList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L172">        specificBinList.forEach((currentBin) -&gt; {</span>
+<span class="fc" id="L173">            returnBinList.add(getStoredBoxesAndIndividualize(dataBaseName, currentBin));</span>
+<span class="fc" id="L174">        });</span>
+        
+<span class="fc" id="L176">        return returnBinList;</span>
+    }
+    
+    /**
+     * Gathers a bin individual ID and obtains the mesurements of the bin
+     * 
+     * @param dataBaseName
+     * @param bin
+     * @return Bin with dimensions
+     */
+    public static Bin getStoredBoxesAndIndividualize(String dataBaseName, Bin bin){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            //Connect to database
+<span class="fc" id="L192">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+<span class="fc" id="L194">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L196">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxLocation.box_ID, boxType.width, boxType.length, boxType.height FROM boxLocation &quot;</span>
+<span class="fc" id="L197">                    + &quot;INNER JOIN boxType ON boxLocation.box_ID = boxType.box_ID WHERE boxLocation.bin_ID = '&quot; + bin.getName() + &quot;';&quot;);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L199">                bin.addBox(new Box(rs.getString(&quot;box_ID&quot;), rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;)));</span>
+            }
+            
+<span class="fc" id="L202">            stmt.close();</span>
+<span class="fc" id="L203">            c.close();</span>
+        }
+<span class="nc" id="L205">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L207">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L208">            System.exit(0);</span>
+<span class="fc" id="L209">        }</span>
+<span class="fc" id="L210">        return bin;</span>
+    }
+    
+    //
+    
+    /**
+     * Inserts bins to the users specifications. Creates a new bin type if the bin dose not exist.
+     * If it dose exist, adds to that bin type.
+     * 
+     * @param newBins
+     * @param dataBaseName 
+     */
+    public void insertBins(List&lt;Bin&gt; newBins,String dataBaseName){
+<span class="fc" id="L223">        newBins.forEach((currentBin) -&gt; {</span>
+<span class="fc" id="L224">            String existing = binExists(currentBin, dataBaseName);</span>
+            
+<span class="fc bfc" id="L226" title="All 2 branches covered.">            if(existing == null){</span>
+<span class="fc" id="L227">                String newIndividualID = addNewBinType(currentBin, dataBaseName);</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">                for(int i = 0; i &lt; currentBin.getAmount() ; i++){</span>
+<span class="fc" id="L229">                    addBinIndividual(newIndividualID, dataBaseName);</span>
+                }
+<span class="fc" id="L231">            }else{</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">                for(int i = 0; i &lt; currentBin.getAmount() ; i++){</span>
+<span class="fc" id="L233">                    addBinIndividual(existing, dataBaseName);</span>
+                }
+            }
+<span class="fc" id="L236">        });</span>
+<span class="fc" id="L237">    }</span>
+    
+    /**
+     * Creates a new bin type
+     * 
+     * @param newBintype
+     * @param dataBaseName
+     * @return The type ID of the new bin
+     */
+    public String addNewBinType(Bin newBintype, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L250">        String newTypeID = null;</span>
+
+        try{
+            //Connect to database
+<span class="fc" id="L254">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L255">            stmt = c.createStatement();</span>
+                
+<span class="fc" id="L257">            String sql = &quot;INSERT INTO binType (quantity, width, length, height) &quot;</span>
+<span class="fc" id="L258">                        + &quot;VALUES ('&quot; + newBintype.getAmount()+ &quot;', '&quot; + newBintype.getWidth() + &quot;', '&quot; + newBintype.getLength() + &quot;', '&quot; + newBintype.getHeight() + &quot;' );&quot;;</span>
+<span class="fc" id="L259">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L261">            ResultSet rs = stmt.executeQuery(&quot;Select type_ID FROM binType WHERE width = &quot; + newBintype.getWidth() + &quot; AND length = &quot; </span>
+<span class="fc" id="L262">                    + newBintype.getLength() + &quot; AND height = &quot; + newBintype.getHeight());</span>
+<span class="fc" id="L263">            newTypeID = rs.getString(&quot;type_ID&quot;);</span>
+                
+<span class="fc" id="L265">            stmt.close();</span>
+<span class="fc" id="L266">            c.close();</span>
+        }
+<span class="nc" id="L268">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L270">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L271">            System.exit(0);</span>
+<span class="fc" id="L272">        }</span>
+<span class="fc" id="L273">        return newTypeID;</span>
+    }
+    
+    /**
+     * Adds a bin in to the bin individual table
+     * 
+     * @param binTypeID
+     * @param dataBaseName 
+     */
+    public void addBinIndividual(String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+<span class="fc" id="L288">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L289">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L291">            String sql = &quot;INSERT INTO binIndividual (type_ID) VALUES ('&quot; + binTypeID + &quot;');&quot;;</span>
+<span class="fc" id="L292">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L294">            stmt.close();</span>
+<span class="fc" id="L295">            c.close();</span>
+        }
+<span class="nc" id="L297">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L299">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L300">            System.exit(0);</span>
+<span class="fc" id="L301">        }</span>
+<span class="fc" id="L302">    }</span>
+    
+    /**
+     * Verifies if a bin type already exists
+     * 
+     * @param binToCheck
+     * @param dataBaseName
+     * @return bin ID, if the bin is found
+     */
+    public String binExists(Bin binToCheck, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L315">        String returnVal = null;</span>
+        
+        try{
+            //Connect to database
+<span class="fc" id="L319">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+<span class="fc" id="L321">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L323">            ResultSet rs = stmt.executeQuery(&quot;SELECT type_ID FROM binType WHERE width = &quot; + binToCheck.getWidth() </span>
+<span class="fc" id="L324">                    + &quot; AND length = &quot; + binToCheck.getLength() + &quot; AND height = &quot; + binToCheck.getHeight() + &quot;;&quot;);</span>
+<span class="fc bfc" id="L325" title="All 2 branches covered.">            if(rs.next()){</span>
+<span class="fc" id="L326">                returnVal = rs.getString(&quot;type_ID&quot;);</span>
+            }
+            
+<span class="fc" id="L329">            stmt.close();</span>
+<span class="fc" id="L330">            c.close();</span>
+        }
+<span class="nc" id="L332">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L334">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L335">            System.exit(0);</span>
+<span class="fc" id="L336">        }</span>
+<span class="fc" id="L337">        return returnVal;</span>
+    }
+    
+    /**
+     * Deletes a bin
+     * 
+     * @param binID
+     * @param dataBaseName 
+     */
+    public static void deleteBin (String binID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            //Connect to database
+<span class="fc" id="L352">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L353">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L355">            String sql = &quot;DELETE FROM binIndividual WHERE bin_ID = &quot; + binID;</span>
+<span class="fc" id="L356">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L358">            stmt.close();</span>
+<span class="fc" id="L359">            c.close();</span>
+        }
+<span class="nc" id="L361">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L363">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L364">            System.exit(0);</span>
+<span class="fc" id="L365">        }</span>
+<span class="fc" id="L366">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

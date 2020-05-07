@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: tom.sros.sorter.newAlgorithmJUnitTest
 -------------------------------------------------------------------------------
-Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.427 s - in tom.sros.sorter.newAlgorithmJUnitTest
+Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.487 s - in tom.sros.sorter.newAlgorithmJUnitTest

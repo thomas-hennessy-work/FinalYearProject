@@ -1,0 +1,945 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemDatabase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.item</a> &gt; <span class="el_source">ItemDatabase.java</span></div><h1>ItemDatabase.java</h1><pre class="source lang-java linenums">package tom.sros.item;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import tom.sros.sorter.Bin;
+import tom.sros.sorter.Box;
+import tom.sros.sorter.EmptySpace;
+import tom.sros.sorter.CustOrder;
+import tom.sros.sorter.Space;
+import tom.sros.sorter.newAlgorithm;
+
+<span class="fc" id="L17">public class ItemDatabase {</span>
+    
+    /**
+     * Creates the tables relating to boxes and box types.
+     * @param dataBaseName 
+     */
+    
+    public static void main(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+            //Connect to database
+<span class="fc" id="L30">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+            
+            //Create tables if they do not exist
+            //Box type table
+<span class="fc" id="L34">            stmt = c.createStatement();</span>
+<span class="fc" id="L35">            String sql = &quot;CREATE TABLE IF NOT EXISTS boxType&quot; + </span>
+                            &quot;(box_ID   INTEGER   PRIMARY KEY   AUTOINCREMENT, &quot; +
+                            &quot;name   STRING   NOT NULL, &quot; +
+                            &quot;contents   TEXT, &quot; +
+                            &quot;width   FLOAT   NOT NULL, &quot; +
+                            &quot;length   FLOAT   NOT NULL, &quot; +
+                            &quot;height   FLOAT   NOT NULL, &quot; +
+                            &quot;quantity   INT   NOT NULL, &quot; +
+                            &quot;notes TEXT)&quot;;
+<span class="fc" id="L44">            stmt.executeUpdate(sql);</span>
+            
+            //orderlist table
+<span class="fc" id="L47">            sql = &quot;CREATE TABLE IF NOT EXISTS orderList&quot; +</span>
+                    &quot;(order_ID   INTEGER   PRIMARY KEY   AUTOINCREMENT, &quot; +
+                    &quot;box_ID   STRING   NOT NULL, &quot; +
+                    &quot;customer_name   STRING   NOT NULL, &quot; +
+                    &quot;customer_address   STRING   NOT NULL, &quot; + 
+                    &quot;FOREIGN KEY(box_ID)   REFERENCES boxLocation(individual_ID))&quot;;
+<span class="fc" id="L53">            stmt.executeUpdate(sql);</span>
+            
+            //box location table
+<span class="fc" id="L56">            sql = &quot;CREATE TABLE IF NOT EXISTS boxLocation&quot; +</span>
+                    &quot;(individual_ID   INTEGER   PRIMARY KEY  AUTOINCREMENT, &quot; +
+                    &quot;box_ID   STRING   NOT NULL, &quot; +
+                    &quot;bin_ID  STRING   NOT NULL, &quot; +
+                    &quot;corner_vertical_pos   FLOAT   NOT NULL, &quot; +
+                    &quot;corner_horizontal_pos   FLOAT   NOT NULL, &quot; +
+                    &quot;corner_depth_pos   FLOAT   NOT NULL, &quot; + 
+                    &quot;FOREIGN KEY(box_ID)   REFERENCES boxType(box_ID)&quot; +
+                    &quot;FOREIGN KEY(bin_ID)   REFERENCES binIndividual(bin_ID))&quot;;
+<span class="fc" id="L65">            stmt.executeUpdate(sql);</span>
+            
+            //empty spaces table
+<span class="fc" id="L68">            sql = &quot;CREATE TABLE IF NOT EXISTS emptySpace&quot; + </span>
+                    &quot;(space_ID INTEGER PRIMARY KEY AUTOINCREMENT, &quot; +
+                    &quot;bin_ID     STRING   NOT NULL, &quot; + 
+                    &quot;corner_vertical_pos   FLOAT   NOT NULL, &quot; +
+                    &quot;corner_horizontal_pos   FLOAT   NOT NULL, &quot; +
+                    &quot;corner_depth_pos   FLOAT   NOT NULL, &quot; +
+                    &quot;width   FLOAT   NOT NULL, &quot; +
+                    &quot;length   FLOAT   NOT NULL, &quot; +
+                    &quot;height   FLOAT   NOT NULL, &quot; +
+                    &quot;FOREIGN KEY(bin_ID)    REFERENCES binIndividual(bin_ID))&quot;;
+<span class="fc" id="L78">            stmt.executeUpdate(sql);</span>
+            
+            //Unsorted boxes table
+<span class="fc" id="L81">            sql = &quot;CREATE TABLE IF NOT EXISTS unSortedBoxes&quot; + </span>
+                    &quot;(unsorted_ID INTEGER PRIMARY KEY AUTOINCREMENT, &quot; +
+                    &quot;box_ID     STRING    NOT NULL, &quot; + 
+                    &quot;FOREIGN KEY(box_ID)    REFERENCES  boxType(box_ID))&quot;;
+<span class="fc" id="L85">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L86">            System.out.println(&quot;Tables created if not alredy&quot;);</span>
+            
+<span class="fc" id="L88">            stmt.close();</span>
+<span class="fc" id="L89">            c.close();</span>
+        }
+<span class="nc" id="L91">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L93">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L94">            System.exit(0);</span>
+<span class="fc" id="L95">        }</span>
+<span class="fc" id="L96">    }</span>
+    
+    /**
+     * Creates a new box type and adds it to the box type table
+     * 
+     * @param dataBaseName
+     * @param name
+     * @param contents
+     * @param width
+     * @param length
+     * @param height
+     * @param notes 
+     */
+    public void addBoxType(String dataBaseName,String name, String contents, float width, float length, float height, String notes){
+            
+            Statement stmt;
+            Connection c;
+            
+            try{
+                //connect to database
+<span class="fc" id="L116">                c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+                
+                //Insert into boxtype a new box type
+<span class="fc" id="L119">                stmt = c.createStatement();</span>
+<span class="fc" id="L120">                String sql = &quot;INSERT INTO boxType (name,contents,width,length,height,quantity,notes) &quot;</span>
+                        + &quot;VALUES ('&quot; + name + &quot;', '&quot; + contents + &quot;', &quot;
+                        + width + &quot;, &quot; + length + &quot;, &quot; + height + &quot;, 1, '&quot;
+                        + notes + &quot;' );&quot;;
+<span class="fc" id="L124">                stmt.executeUpdate(sql);</span>
+<span class="fc" id="L125">                System.out.println(&quot;Box added to database&quot;);</span>
+                
+<span class="fc" id="L127">                stmt.close();</span>
+<span class="fc" id="L128">                c.close();</span>
+            }
+<span class="nc" id="L130">            catch (SQLException e) {</span>
+                //Exception catching
+<span class="nc" id="L132">                System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L133">                System.exit(0);</span>
+<span class="fc" id="L134">            }</span>
+<span class="fc" id="L135">        }</span>
+    
+    /**
+     * Removes box type for the table
+     * 
+     * @param dataBaseName
+     * @param boxID 
+     */
+    public void removeBoxType(String dataBaseName, String boxID){
+        Statement stmt;
+        Connection c;
+            
+        try{
+            //connect to database
+<span class="fc" id="L149">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+                
+            //Insert into boxtype a new box
+<span class="fc" id="L152">            stmt = c.createStatement();</span>
+<span class="fc" id="L153">            String sql = &quot;DELETE FROM boxType WHERE box_ID = &quot; + boxID;</span>
+<span class="fc" id="L154">            stmt.executeUpdate(sql);</span>
+                
+<span class="fc" id="L156">            stmt.close();</span>
+<span class="fc" id="L157">            c.close();</span>
+        }
+<span class="nc" id="L159">        catch (SQLException e) {</span>
+            //Exception catching
+<span class="nc" id="L161">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L162">            System.exit(0);</span>
+<span class="fc" id="L163">        }</span>
+<span class="fc" id="L164">    }</span>
+    
+    /**
+     * Checks if a box type exists
+     * 
+     * @param dataBaseName
+     * @param boxID
+     * @return if the box exists
+     */
+    public boolean IDCheckBoxType(String dataBaseName, String boxID){
+        Statement stmt;
+        Connection c;
+        
+<span class="fc" id="L177">        Boolean IDExists = null;</span>
+        
+        try{
+            //Connect to database
+<span class="fc" id="L181">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L182">            stmt = c.createStatement();</span>
+            
+            //Gather the boxes ID if it exists
+<span class="fc" id="L185">            ResultSet rs = stmt.executeQuery(&quot;SELECT box_ID FROM boxType WHERE box_ID = &quot; + boxID + &quot;;&quot;);</span>
+<span class="fc" id="L186">            IDExists = rs.next();</span>
+            
+<span class="fc" id="L188">            stmt.close();</span>
+<span class="fc" id="L189">            c.close();</span>
+        }
+        //Exception catching
+<span class="nc" id="L192">        catch (SQLException e) {</span>
+<span class="nc" id="L193">                System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L194">                System.exit(0);</span>
+<span class="fc" id="L195">        }  </span>
+        
+        //If ID's dont match, return missing
+<span class="fc" id="L198">        System.out.println(&quot;ID exists = &quot; + IDExists);</span>
+<span class="fc" id="L199">        return IDExists;   </span>
+    }
+    
+    /**
+     * Takes an ID for a box type and gathers its dimensions
+     * 
+     * @param boxID
+     * @param dataBaseName
+     * @return The boxes dimensions
+     */
+    public Box getBoxTypeInformation (String boxID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L213">        Box returnBox = new Box(boxID);</span>
+        
+        try{
+<span class="fc" id="L216">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L217">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L219">            ResultSet rs = stmt.executeQuery(&quot;Select width, length, height FROM boxType WHERE box_ID = &quot; + boxID);</span>
+<span class="fc" id="L220">            returnBox.setID(boxID);</span>
+<span class="fc" id="L221">            returnBox.setWidth(rs.getFloat(&quot;width&quot;));</span>
+<span class="fc" id="L222">            returnBox.setLength(rs.getFloat(&quot;length&quot;));</span>
+<span class="fc" id="L223">            returnBox.setHeight(rs.getFloat(&quot;height&quot;));</span>
+            
+<span class="fc" id="L225">            stmt.close();</span>
+<span class="fc" id="L226">            c.close();</span>
+        }
+<span class="nc" id="L228">        catch (SQLException e){</span>
+        //Exception catching
+<span class="nc" id="L230">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L231">        System.exit(0);</span>
+<span class="fc" id="L232">        } </span>
+<span class="fc" id="L233">        return returnBox;</span>
+    }
+    
+    /**
+     * Gathers the information required for the box type table view 
+     * 
+     * @param dataBaseName
+     * @return a list of box types and information about the box types
+     */
+    public static List&lt;Box&gt; getDisplayBoxTypeInformation(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L246">        List&lt;Box&gt; returnBoxList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="fc" id="L249">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L250">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L252">            ResultSet rs = stmt.executeQuery(&quot;SELECT box_ID, name, contents, width, length, height, notes FROM boxType&quot;);</span>
+            
+<span class="fc bfc" id="L254" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L255">                returnBoxList.add(new Box(rs.getString(&quot;box_ID&quot;), rs.getString(&quot;name&quot;), rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), </span>
+<span class="fc" id="L256">                rs.getFloat(&quot;height&quot;), rs.getString(&quot;contents&quot;), rs.getString(&quot;notes&quot;)));</span>
+            }
+            
+<span class="fc" id="L259">            stmt.close();</span>
+<span class="fc" id="L260">            c.close();</span>
+        }
+<span class="nc" id="L262">        catch (SQLException e){</span>
+        //Error catching
+<span class="nc" id="L264">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L265">        System.exit(0);</span>
+<span class="fc" id="L266">        }</span>
+<span class="fc" id="L267">        return returnBoxList;</span>
+    }
+    
+    /**
+     * Gathers information about the location of indvidual boxes
+     * 
+     * @param dataBaseName
+     * @return list of information about box locations
+     */
+    public static List&lt;Box&gt; getBoxLocationDisplay(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L280">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="fc" id="L283">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L284">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L286">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxLocation.individual_ID, boxType.name, boxLocation.bin_ID, boxLocation.corner_vertical_pos, &quot;</span>
+                    + &quot;boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxLocation INNER JOIN boxType ON boxLocation.box_ID = boxType.box_ID&quot;);
+<span class="fc bfc" id="L288" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L289">                returnList.add(new Box(rs.getString(&quot;individual_ID&quot;), rs.getString(&quot;name&quot;), rs.getString(&quot;bin_ID&quot;), </span>
+<span class="fc" id="L290">                rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;)));</span>
+            }
+<span class="fc" id="L292">            stmt.close();</span>
+<span class="fc" id="L293">            c.close();</span>
+        }
+<span class="nc" id="L295">        catch (SQLException e){</span>
+        //Error catching
+<span class="nc" id="L297">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L298">        System.exit(0);</span>
+<span class="fc" id="L299">        }</span>
+<span class="fc" id="L300">        return returnList;</span>
+    }
+    
+    /**
+     * Inserts a new box in to the box location table
+     * 
+     * @param placedBox
+     * @param dataBaseName 
+     */
+    public void addBoxLocation(Box placedBox, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L314">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L315">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L317">            String sql = &quot;INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos) &quot;</span>
+<span class="fc" id="L318">                    + &quot;VALUES ('&quot; + placedBox.getID() + &quot;', '&quot; + placedBox.getBin() + &quot;', '&quot; + placedBox.getY() + &quot;', '&quot;</span>
+<span class="fc" id="L319">                    + placedBox.getX() + &quot;', '&quot; + placedBox.getZ() + &quot;' );&quot;;</span>
+<span class="fc" id="L320">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L321">            System.out.println(&quot;Box location added to data base&quot;);</span>
+            
+<span class="fc" id="L323">            stmt.close();</span>
+<span class="fc" id="L324">            c.close();</span>
+        }
+<span class="nc" id="L326">        catch (SQLException e){</span>
+        //Error catching
+<span class="nc" id="L328">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L329">        System.exit(0);</span>
+<span class="fc" id="L330">        }</span>
+<span class="fc" id="L331">    }</span>
+    
+    /**
+     * Takes a list of orders, runs them through the sorting algorithm and adds
+     * them to the storage room as well as the order list
+     * 
+     * @param dataBaseName
+     * @param orderList 
+     */
+    public void addOrdersToDB(String dataBaseName, List&lt;CustOrder&gt; orderList){
+<span class="fc" id="L341">        newAlgorithm NA = new newAlgorithm();</span>
+
+        //Go through each order
+<span class="fc" id="L344">        orderList.forEach((currentOrder) -&gt; {</span>
+            
+<span class="fc" id="L346">            List&lt;Box&gt; IDAmountList = new ArrayList();</span>
+<span class="fc" id="L347">            IDAmountList.add(new Box(currentOrder.getID(), 1));</span>
+            
+<span class="fc" id="L349">            List&lt;Bin&gt; emptyBin = null;</span>
+            //Runs algorithm
+<span class="fc" id="L351">            NA.sortAndAddToDB(dataBaseName, IDAmountList, emptyBin);</span>
+            //Gathers information about the box that has been placed. Used to link it
+            //to the order table
+<span class="fc" id="L354">            currentOrder.setID(getMostRecentSortedBox(dataBaseName));</span>
+<span class="fc" id="L355">            addOrderInformation(dataBaseName, currentOrder);</span>
+<span class="fc" id="L356">        });</span>
+<span class="fc" id="L357">    }</span>
+    
+    /**
+     * Gathers the ID of the most recently added box to the box location table
+     * 
+     * @param dataBaseName
+     * @return Box most recently added to storage room
+     */
+    public String getMostRecentSortedBox(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L369">        String returnValue = null;</span>
+        
+        try{
+<span class="fc" id="L372">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L373">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L375">            ResultSet rs = stmt.executeQuery(&quot;SELECT MAX(individual_ID) FROM boxLocation&quot;);</span>
+<span class="fc" id="L376">            returnValue = rs.getString(1);</span>
+            
+<span class="fc" id="L378">            stmt.close();</span>
+<span class="fc" id="L379">            c.close();</span>
+        }
+<span class="nc" id="L381">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L383">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L384">            System.exit(0);</span>
+<span class="fc" id="L385">        }</span>
+<span class="fc" id="L386">        return returnValue;</span>
+    }
+    
+    /**
+     * Adds order information to the order table
+     * 
+     * @param dataBaseName
+     * @param orderToAdd 
+     */
+    public void addOrderInformation(String dataBaseName, CustOrder orderToAdd){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L400">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L401">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L403">            String sql = &quot;INSERT INTO orderList (box_ID, customer_name, customer_address) &quot;</span>
+<span class="fc" id="L404">                    + &quot;VALUES ('&quot; + orderToAdd.getID() + &quot;', '&quot; + orderToAdd.getCustName() +  &quot;', '&quot; + orderToAdd.getCustAddress() + &quot;' );&quot;;</span>
+<span class="fc" id="L405">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L407">            stmt.close();</span>
+<span class="fc" id="L408">            c.close(); </span>
+        }
+<span class="nc" id="L410">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L412">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L413">            System.exit(0);</span>
+<span class="fc" id="L414">        }</span>
+<span class="fc" id="L415">    }</span>
+    
+    /**
+     * Gathers a list of orders stored in the database used for display
+     * 
+     * @param dataBaseName
+     * @return List of orders stored in the database
+     */
+    public List&lt;CustOrder&gt; getOrderInformationDisplay(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L427">        List&lt;CustOrder&gt; returnList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="fc" id="L430">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L431">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L433">            ResultSet rs = stmt.executeQuery(&quot;SELECT orderList.order_ID, orderList.box_ID, orderList.customer_name, orderList.customer_address, &quot;</span>
+                    + &quot;boxLocation.bin_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos &quot;
+                    + &quot;FROM orderList INNER JOIN boxLocation ON orderList.box_ID = boxLocation.individual_ID;&quot;);
+            
+<span class="fc bfc" id="L437" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L438">                returnList.add(new CustOrder(rs.getString(&quot;box_ID&quot;), rs.getString(&quot;order_ID&quot;), rs.getString(&quot;customer_address&quot;), rs.getString(&quot;customer_name&quot;),</span>
+<span class="fc" id="L439">                rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;), rs.getString(&quot;bin_ID&quot;)));</span>
+            }
+            
+<span class="fc" id="L442">            stmt.close();</span>
+<span class="fc" id="L443">            c.close();</span>
+        }
+<span class="nc" id="L445">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L447">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L448">            System.exit(0);</span>
+<span class="fc" id="L449">        }</span>
+<span class="fc" id="L450">        return returnList;</span>
+    }
+    
+    /**
+     * Gathers the locations and sizes of boxes that are already stored in a specified bin
+     * 
+     * @param binLocation
+     * @param dataBaseName
+     * @return list of boxes and their locations
+     */
+    public List&lt;Box&gt; getExistingBoxes(Bin binLocation, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L464">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="fc" id="L467">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L468">            stmt = c.createStatement();</span>
+
+<span class="fc" id="L470">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, &quot;</span>
+                    + &quot;boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos &quot;
+<span class="fc" id="L472">                    + &quot;FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '&quot; + binLocation.getName() + &quot;';&quot;);</span>
+            
+<span class="fc bfc" id="L474" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L475">                returnList.add(new Box(rs.getString(&quot;individual_ID&quot;), rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;),</span>
+<span class="fc" id="L476">                        rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;)));</span>
+            }
+            
+<span class="fc" id="L479">            stmt.close();</span>
+<span class="fc" id="L480">            c.close();</span>
+        }
+<span class="nc" id="L482">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L484">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L485">            System.exit(0);</span>
+<span class="fc" id="L486">        }</span>
+<span class="fc" id="L487">        return returnList;</span>
+    }
+    
+    /**
+     * Gathers the dimensions of a box in a specified location
+     * 
+     * @param boxPosition
+     * @param dataBaseName
+     * @return box dimensions
+     */
+    public Box getSpecificExistingBoxDimensions(Box boxPosition, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L501">        Box returnBox = boxPosition;</span>
+        
+        try{
+<span class="fc" id="L504">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L505">            stmt = c.createStatement();</span>
+
+<span class="fc" id="L507">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxType.width, boxType.length, boxType.height FROM boxType &quot;</span>
+<span class="fc" id="L508">                    + &quot;INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '&quot; + boxPosition.getBin() </span>
+<span class="fc" id="L509">                    + &quot;' AND boxLocation.corner_vertical_pos = '&quot; + boxPosition.getY() + &quot;' AND boxLocation.corner_horizontal_pos = '&quot; +  boxPosition.getX() </span>
+<span class="fc" id="L510">                    + &quot;' AND boxLocation.corner_depth_pos = '&quot; + boxPosition.getZ() + &quot;';&quot;);</span>
+            
+<span class="fc bfc" id="L512" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L513">                returnBox.setWidth(rs.getFloat(&quot;width&quot;));</span>
+<span class="fc" id="L514">                returnBox.setLength(rs.getFloat(&quot;length&quot;));</span>
+<span class="fc" id="L515">                returnBox.setHeight(rs.getFloat(&quot;height&quot;));</span>
+            }
+<span class="fc" id="L517">            stmt.close();</span>
+<span class="fc" id="L518">            c.close();</span>
+        }
+<span class="nc" id="L520">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L522">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L523">            System.exit(0);</span>
+<span class="fc" id="L524">        }</span>
+<span class="fc" id="L525">        return returnBox;</span>
+    }
+    
+    /**
+     * Checks if a box already exists within the box location table
+     * 
+     * @param placedBox
+     * @param dataBaseName
+     * @return true if there is a box in that location, false if there is not
+     */
+    public boolean blockRepeatingBoxEntry(Box placedBox, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L539">        Boolean returnValue = null;</span>
+        
+        try{
+<span class="fc" id="L542">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L543">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L545">            ResultSet rs = stmt.executeQuery(&quot;SELECT individual_ID FROM boxLocation WHERE bin_ID = &quot; + placedBox.getBin() </span>
+<span class="fc" id="L546">                    + &quot; AND corner_vertical_pos = &quot; + placedBox.getY() + &quot; AND corner_horizontal_pos = &quot; + placedBox.getX() </span>
+<span class="fc" id="L547">                    + &quot; AND corner_depth_pos = &quot; + placedBox.getZ());</span>
+            
+<span class="fc" id="L549">            returnValue = rs.next();</span>
+            
+<span class="fc" id="L551">            stmt.close();</span>
+<span class="fc" id="L552">            c.close();</span>
+        }
+<span class="nc" id="L554">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L556">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L557">            System.exit(0);</span>
+<span class="fc" id="L558">        }</span>
+        
+<span class="fc bfc" id="L560" title="All 2 branches covered.">        return !returnValue;</span>
+    }
+
+    /**
+     * Removes a box from the bin and replaces it with an empty space
+     * 
+     * @param boxToRemoved
+     * @param dataBaseName 
+     */
+    public void removeStoredBox(Box boxToRemoved, String dataBaseName){
+        //Creating an empty space object with the same dimensions and possion as the box and adding it
+<span class="fc" id="L571">        Box removedBox = getSpecificExistingBoxDimensions(boxToRemoved, dataBaseName);</span>
+<span class="fc" id="L572">        EmptySpace newSpace = new EmptySpace(removedBox.getWidth(), removedBox.getLength(), removedBox.getHeight(),</span>
+<span class="fc" id="L573">                removedBox.getX(), removedBox.getY(), removedBox.getZ(), removedBox.getBin());</span>
+        
+        //Adds the empty space, removes the box
+<span class="fc" id="L576">        addEmptySpace(newSpace, dataBaseName);</span>
+<span class="fc" id="L577">        deleteBoxLocation(boxToRemoved, dataBaseName);</span>
+<span class="fc" id="L578">    }</span>
+    
+    public void removeStoredOrder(CustOrder orderToRemove, String dataBasename){
+<span class="fc" id="L581">        Box linkedBox = getOrderBox(orderToRemove.getOrderID(), dataBasename);</span>
+<span class="fc" id="L582">        deleteStoredOrder(orderToRemove, dataBasename);</span>
+<span class="fc" id="L583">        removeStoredBox(linkedBox, dataBasename);</span>
+<span class="fc" id="L584">    }</span>
+    
+    /**
+     * Deletes a specified order from the order table 
+     * 
+     * @param orderToRemove
+     * @param dataBasename 
+     */
+    public void deleteStoredOrder(CustOrder orderToRemove, String dataBasename){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L597">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
+<span class="fc" id="L598">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L600">            String sql = &quot;DELETE FROM orderList WHERE order_ID = &quot; + orderToRemove.getOrderID();</span>
+<span class="fc" id="L601">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L603">            stmt.close();</span>
+<span class="fc" id="L604">            c.close();</span>
+        }
+<span class="nc" id="L606">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L608">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L609">            System.exit(0);</span>
+<span class="fc" id="L610">        }</span>
+<span class="fc" id="L611">    }</span>
+    
+    /**
+     * Gathers information regarding boxes linked to a specified order
+     * 
+     * @param orderID
+     * @param dataBasename
+     * @return Box and its associated information that is linked to an order
+     */
+    public Box getOrderBox(String orderID, String dataBasename){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L624">        Box returnBox = new Box();</span>
+        
+        try{
+<span class="fc" id="L627">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
+<span class="fc" id="L628">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L630">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxLocation.individual_ID, boxLocation.bin_ID, boxLocation.corner_vertical_pos, &quot;</span>
+                    + &quot;boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxLocation INNER JOIN orderList ON boxLocation.individual_ID = orderList.box_ID &quot;
+                    + &quot;WHERE orderList.order_ID = '&quot; + orderID + &quot;';&quot;);
+            
+<span class="fc" id="L634">            System.out.println(rs.next());</span>
+            
+<span class="fc" id="L636">            returnBox.setBin(rs.getString(&quot;bin_ID&quot;));</span>
+<span class="fc" id="L637">            returnBox.setX(rs.getFloat(&quot;corner_horizontal_pos&quot;));</span>
+<span class="fc" id="L638">            returnBox.setY(rs.getFloat(&quot;corner_vertical_pos&quot;));</span>
+<span class="fc" id="L639">            returnBox.setZ(rs.getFloat(&quot;corner_depth_pos&quot;));</span>
+<span class="fc" id="L640">            returnBox.setID(rs.getString(&quot;individual_ID&quot;));</span>
+            
+<span class="fc" id="L642">            stmt.close();</span>
+<span class="fc" id="L643">            c.close();</span>
+        }
+<span class="nc" id="L645">        catch (SQLException e){</span>
+        //Error catching
+<span class="nc" id="L647">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L648">        System.exit(0);</span>
+<span class="fc" id="L649">        }</span>
+        
+<span class="fc" id="L651">        return returnBox;</span>
+    }
+    
+    /**
+     * Adds an empty space object to the empty space table
+     * 
+     * @param newSpace
+     * @param dataBaseName 
+     */
+    public void addEmptySpace(EmptySpace newSpace, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L665">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L666">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L668">            String sql = &quot;INSERT INTO emptySpace (bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, height) &quot;</span>
+<span class="fc" id="L669">                    + &quot;VALUES ('&quot; + newSpace.getBin() + &quot;', '&quot; + newSpace.getY() +  &quot;', '&quot; + newSpace.getX() + &quot;', '&quot; + newSpace.getZ() +</span>
+<span class="fc" id="L670">                    &quot;', '&quot; + newSpace.getWidth() + &quot;', '&quot; + newSpace.getLength() + &quot;', '&quot; + newSpace.getHeight() + &quot;' );&quot;;</span>
+<span class="fc" id="L671">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L673">            stmt.close();</span>
+<span class="fc" id="L674">            c.close();</span>
+        }
+<span class="nc" id="L676">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L678">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L679">            System.exit(0);</span>
+<span class="fc" id="L680">        }</span>
+<span class="fc" id="L681">    }</span>
+    
+    /**
+     * Retreves the empty spaces in a specified bin
+     * 
+     * @param binID
+     * @param dataBaseName
+     * @return list of empty spaces
+     */
+    public List&lt;EmptySpace&gt; getEmptySpaces(String binID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L694">        List&lt;EmptySpace&gt; returnList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="fc" id="L697">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L698">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L700">            ResultSet rs = stmt.executeQuery(&quot;SELECT corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, &quot;</span>
+                    + &quot;height FROM emptySpace WHERE bin_ID = &quot; + binID);
+<span class="fc bfc" id="L702" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L703">                returnList.add(new EmptySpace(rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;), rs.getFloat(&quot;corner_horizontal_pos&quot;), </span>
+<span class="fc" id="L704">                        rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;), binID));</span>
+            }
+<span class="fc" id="L706">            stmt.close();</span>
+<span class="fc" id="L707">            c.close();</span>
+        }
+<span class="nc" id="L709">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L711">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L712">            System.exit(0);</span>
+<span class="fc" id="L713">        }</span>
+<span class="fc" id="L714">        return returnList;</span>
+    }
+    
+    /**
+     * Removes a specified empty space from the data base
+     * 
+     * @param spaceToRemove
+     * @param dataBaseName 
+     */
+    public void removeEmptySpace(EmptySpace spaceToRemove, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L728">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L729">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L731">            String sql = &quot;DELETE FROM emptySpace WHERE bin_ID = &quot; + spaceToRemove.getBin() + &quot; AND corner_horizontal_pos = &quot; </span>
+<span class="fc" id="L732">                    + spaceToRemove.getX() + &quot; AND corner_vertical_pos = &quot; + spaceToRemove.getY() + &quot; AND corner_depth_pos = &quot; + spaceToRemove.getZ();</span>
+<span class="fc" id="L733">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L735">            stmt.close();</span>
+<span class="fc" id="L736">            c.close();</span>
+        }
+<span class="nc" id="L738">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L740">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L741">            System.exit(0);</span>
+<span class="fc" id="L742">        }</span>
+<span class="fc" id="L743">    }</span>
+    
+    /**
+     * Removes a specific box from the box location table
+     * 
+     * @param boxToRemove
+     * @param dataBaseName 
+     */
+    public void deleteBoxLocation(Box boxToRemove, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L756">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L757">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L759">            String sql = &quot;DELETE FROM boxLocation WHERE individual_ID = &quot; + boxToRemove.getID();</span>
+<span class="fc" id="L760">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L762">            stmt.close();</span>
+<span class="fc" id="L763">            c.close();</span>
+        }
+<span class="nc" id="L765">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L767">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L768">            System.exit(0);</span>
+<span class="fc" id="L769">        }</span>
+<span class="fc" id="L770">    }</span>
+    
+    /**Takes the new box and the old empty space, places the box in the storage room, removes
+     * the original empty space object and creates two new empty spaces for the new item. The new empty space object
+     * are inserted in to the empty space table
+     * 
+     * @param spaceFilled
+     * @param itemFillingSpace
+     * @param dataBaseName
+     * @return list of the new empty space objects
+     */
+    public List&lt;EmptySpace&gt; fillEmptySpace(EmptySpace spaceFilled, Box itemFillingSpace, String dataBaseName){
+<span class="fc" id="L782">        List&lt;EmptySpace&gt; newEmptySpaces = new ArrayList&lt;&gt;();</span>
+        
+        //Calculate the area of the new empty spaces
+<span class="fc" id="L785">        Space bellowArea = spaceFilled.getArea().areaBellow(spaceFilled.getArea(), itemFillingSpace.getArea());</span>
+<span class="fc" id="L786">        Space rightArea = spaceFilled.getArea().areaRight(spaceFilled.getArea(), itemFillingSpace.getArea());</span>
+        
+<span class="fc" id="L788">        float BellowX = spaceFilled.getX();</span>
+<span class="fc" id="L789">        float BellowZ = spaceFilled.getLength() + spaceFilled.getZ();</span>
+<span class="fc" id="L790">        float BellowY = spaceFilled.getY();</span>
+        
+<span class="fc" id="L792">        float RightX = spaceFilled.getWidth() + spaceFilled.getX();</span>
+<span class="fc" id="L793">        float RightZ = spaceFilled.getZ();</span>
+<span class="fc" id="L794">        float RightY = spaceFilled.getY();</span>
+        
+        //Creating new space objects using the calculations above
+<span class="fc" id="L797">        EmptySpace bellowEmpty = new EmptySpace(bellowArea.getWidth(), bellowArea.getLength(), spaceFilled.getHeight(), BellowX, BellowY, BellowZ, spaceFilled.getBin());</span>
+<span class="fc" id="L798">        EmptySpace rightEmpty = new EmptySpace(rightArea.getWidth(), rightArea.getLength(), spaceFilled.getHeight(), RightX, RightY, RightZ, spaceFilled.getBin());</span>
+
+        //Adding new empty spaces to the database and to the return value
+        //Only creates the empty space if they have an area (e.g. no width or length of 0)
+<span class="pc bpc" id="L802" title="2 of 4 branches missed.">        if((bellowEmpty.getWidth() &gt; 0) &amp;&amp; (bellowEmpty.getLength() &gt; 0)){</span>
+<span class="nc" id="L803">            addEmptySpace(bellowEmpty, dataBaseName);</span>
+<span class="nc" id="L804">            newEmptySpaces.add(bellowEmpty);</span>
+        }
+<span class="pc bpc" id="L806" title="3 of 4 branches missed.">        if((rightEmpty.getWidth() &gt; 0) &amp;&amp; (rightEmpty.getLength() &gt; 0)){</span>
+<span class="nc" id="L807">            addEmptySpace(rightEmpty, dataBaseName);</span>
+<span class="nc" id="L808">            newEmptySpaces.add(rightEmpty);</span>
+        }
+        
+        //Removing the empty space that has been filled
+<span class="fc" id="L812">        removeEmptySpace(spaceFilled, dataBaseName);</span>
+                
+<span class="fc" id="L814">        return newEmptySpaces;</span>
+    }
+    
+    /**
+     * Adds unsorted boxes to the unsorted table
+     * 
+     * @param unsortedBoxes
+     * @param dataBaseName 
+     */
+    public void addUnsorted(List&lt;Box&gt; unsortedBoxes, String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L828">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L829">            stmt = c.createStatement();</span>
+            
+<span class="fc bfc" id="L831" title="All 2 branches covered.">            for(Box currentBox: unsortedBoxes){</span>
+<span class="fc" id="L832">                String sql = &quot;INSERT INTO unSortedBoxes (box_ID) &quot;</span>
+<span class="fc" id="L833">                            + &quot;VALUES ('&quot; + currentBox.getID()  + &quot;' );&quot;;</span>
+<span class="fc" id="L834">                stmt.executeUpdate(sql);</span>
+<span class="fc" id="L835">            }</span>
+            
+<span class="fc" id="L837">            stmt.close();</span>
+<span class="fc" id="L838">            c.close();</span>
+        }
+<span class="nc" id="L840">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L842">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L843">            System.exit(0);</span>
+<span class="fc" id="L844">        }</span>
+<span class="fc" id="L845">    }</span>
+    
+    /**
+     * Deletes all stored information in the box location and empty space tables
+     * 
+     * @param dataBaseName 
+     */
+    public void clearBoxLocationData(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L857">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L858">            stmt = c.createStatement();</span>
+            
+            //drops both tables relating to box information
+<span class="fc" id="L861">            String sql = (&quot;DELETE FROM boxLocation&quot;);</span>
+<span class="fc" id="L862">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L863">            sql = (&quot;DELETE FROM emptySpace&quot;);</span>
+<span class="fc" id="L864">            stmt.executeUpdate(sql);</span>
+            
+            //runs the main method, recreating the tables
+<span class="fc" id="L867">            main(dataBaseName);</span>
+            
+<span class="fc" id="L869">            stmt.close();</span>
+<span class="fc" id="L870">            c.close();</span>
+        }
+<span class="nc" id="L872">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L874">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L875">            System.exit(0);</span>
+<span class="fc" id="L876">        }</span>
+<span class="fc" id="L877">    }</span>
+    
+    /**
+     * Gathers the display information about unsorted boxes
+     * 
+     * @param dataBaseName
+     * @return amount and type of unsorted boxes
+     */
+    public List&lt;Box&gt; getUnsortedBoxDisplay(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L889">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="fc" id="L892">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L893">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L895">            ResultSet rs = stmt.executeQuery(&quot;SELECT * FROM unSortedBoxes&quot;);</span>
+<span class="fc bfc" id="L896" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L897">                boolean found = false;</span>
+<span class="fc bfc" id="L898" title="All 2 branches covered.">                for(Box currentBox : returnList){</span>
+<span class="fc bfc" id="L899" title="All 2 branches covered.">                    if(currentBox.getID().equals(rs.getString(&quot;box_ID&quot;))){</span>
+<span class="fc" id="L900">                        currentBox.setAmount(currentBox.getAmount() + 1);</span>
+<span class="fc" id="L901">                        found = true;</span>
+                    }
+<span class="fc" id="L903">                }</span>
+<span class="fc bfc" id="L904" title="All 2 branches covered.">                if(found == false){</span>
+<span class="fc" id="L905">                    returnList.add(new Box(rs.getString(&quot;box_ID&quot;), 1));</span>
+                }
+<span class="fc" id="L907">            }</span>
+<span class="fc" id="L908">            stmt.close();</span>
+<span class="fc" id="L909">            c.close();</span>
+        }
+<span class="nc" id="L911">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L913">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L914">            System.exit(0);</span>
+<span class="fc" id="L915">        }</span>
+<span class="fc" id="L916">        return returnList;</span>
+    }
+    
+    /**
+     * Empties all boxes stored in the unsorted boxes table
+     * 
+     * @param dataBasename 
+     */
+    public void emptyUnsortedTable(String dataBasename){
+        Connection c;
+        Statement stmt;
+        
+        try{
+<span class="fc" id="L929">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
+<span class="fc" id="L930">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L932">            String sql = &quot;DELETE FROM unSortedBoxes;&quot;;</span>
+<span class="fc" id="L933">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L935">            stmt.close();</span>
+<span class="fc" id="L936">            c.close();</span>
+        }
+<span class="nc" id="L938">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L940">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L941">            System.exit(0);</span>
+<span class="fc" id="L942">        }</span>
+<span class="fc" id="L943">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Box.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.sorter</a> &gt; <span class="el_source">Box.java</span></div><h1>Box.java</h1><pre class="source lang-java linenums">package tom.sros.sorter;
+
+public class Box {
+    //Box name
+    String ID;
+    String Name;
+    
+    //Box dimensions
+    float Width;
+    float Length;
+    float Height;
+    
+    //Box position
+    float X;
+    float Y;
+    float Z;
+    
+    String Location;
+    
+    String Contents;
+    String Notes;
+    
+    int Amount;
+    
+    //Constructors
+    
+<span class="fc" id="L27">    public Box(){</span>
+<span class="fc" id="L28">    }</span>
+    
+<span class="fc" id="L30">    public Box(String id, float width, float length, float height){</span>
+<span class="fc" id="L31">        ID = id;</span>
+<span class="fc" id="L32">        Width = width;</span>
+<span class="fc" id="L33">        Length = length;</span>
+<span class="fc" id="L34">        Height = height;</span>
+<span class="fc" id="L35">    }</span>
+    
+<span class="fc" id="L37">    public Box(String id, String name, float width, float length, float height, String contents, String notes){</span>
+<span class="fc" id="L38">        ID = id;</span>
+<span class="fc" id="L39">        Name = name;</span>
+<span class="fc" id="L40">        Width = width;</span>
+<span class="fc" id="L41">        Length = length;</span>
+<span class="fc" id="L42">        Height = height;</span>
+<span class="fc" id="L43">        Contents = contents;</span>
+<span class="fc" id="L44">        Notes = notes;</span>
+<span class="fc" id="L45">    }</span>
+    
+<span class="fc" id="L47">    public Box(String id, String name, String location, float x, float y, float z){</span>
+<span class="fc" id="L48">        ID = id;</span>
+<span class="fc" id="L49">        Name = name;</span>
+<span class="fc" id="L50">        Location = location;</span>
+<span class="fc" id="L51">        X = x;</span>
+<span class="fc" id="L52">        Y = y;</span>
+<span class="fc" id="L53">        Z = z;</span>
+<span class="fc" id="L54">    }</span>
+    
+<span class="fc" id="L56">    public Box(String id, String location, float x, float y, float z){</span>
+<span class="fc" id="L57">        ID = id;</span>
+<span class="fc" id="L58">        Location = location;</span>
+<span class="fc" id="L59">        X = x;</span>
+<span class="fc" id="L60">        Y = y;</span>
+<span class="fc" id="L61">        Z = z;</span>
+<span class="fc" id="L62">    }</span>
+    
+<span class="fc" id="L64">    public Box(String id, float width, float length, float height, float x, float y, float z){</span>
+<span class="fc" id="L65">        ID = id;</span>
+<span class="fc" id="L66">        Width = width;</span>
+<span class="fc" id="L67">        Length = length;</span>
+<span class="fc" id="L68">        Height = height;</span>
+<span class="fc" id="L69">        X = x;</span>
+<span class="fc" id="L70">        Y = y;</span>
+<span class="fc" id="L71">        Z = z;</span>
+<span class="fc" id="L72">    }</span>
+    
+<span class="fc" id="L74">    public Box(float width, float length, float height, float x, float y, float z, String location){</span>
+<span class="fc" id="L75">        Location = location;</span>
+<span class="fc" id="L76">        Width = width;</span>
+<span class="fc" id="L77">        Length = length;</span>
+<span class="fc" id="L78">        Height = height;</span>
+<span class="fc" id="L79">        X = x;</span>
+<span class="fc" id="L80">        Y = y;</span>
+<span class="fc" id="L81">        Z = z;</span>
+<span class="fc" id="L82">    }</span>
+    
+<span class="fc" id="L84">    public Box(String id, int amount){</span>
+<span class="fc" id="L85">        ID = id;</span>
+<span class="fc" id="L86">        Amount = amount;</span>
+<span class="fc" id="L87">    }</span>
+    
+<span class="fc" id="L89">    public Box(String id){</span>
+<span class="fc" id="L90">        ID = id;</span>
+<span class="fc" id="L91">        Width = 0;</span>
+<span class="fc" id="L92">        Length = 0;</span>
+<span class="fc" id="L93">        Height = 0;</span>
+<span class="fc" id="L94">    }</span>
+    
+    //get methods
+    public String getID(){
+<span class="fc" id="L98">        return ID;</span>
+    } 
+    public String getName(){
+<span class="fc" id="L101">        return Name;</span>
+    }
+    
+    public float getWidth(){
+<span class="fc" id="L105">        return Width;</span>
+    }
+    public float getLength(){
+<span class="fc" id="L108">        return Length;</span>
+    }
+    public float getHeight(){
+<span class="fc" id="L111">        return Height;</span>
+    }
+    
+    public float getX(){
+<span class="fc" id="L115">        return X;</span>
+    }
+    public float getY(){
+<span class="fc" id="L118">        return Y;</span>
+    }
+    public float getZ(){
+<span class="fc" id="L121">        return Z;</span>
+    }
+    
+    public String getBin(){
+<span class="fc" id="L125">        return Location;</span>
+    }
+    
+    public String getContents(){
+<span class="fc" id="L129">        return Contents;</span>
+    }
+    public String getNotes(){
+<span class="fc" id="L132">        return Notes;</span>
+    }
+    
+    public int getAmount(){
+<span class="fc" id="L136">        return Amount;</span>
+    }
+    
+    
+    //Set methods
+    public void setID(String id){
+<span class="fc" id="L142">        ID = id;</span>
+<span class="fc" id="L143">    }</span>
+    public void setName(String name){
+<span class="nc" id="L145">        Name = name;</span>
+<span class="nc" id="L146">    }</span>
+    
+    public void setWidth(float width){
+<span class="fc" id="L149">        Width = width;</span>
+<span class="fc" id="L150">    }</span>
+    public void setLength(float length){
+<span class="fc" id="L152">        Length = length;</span>
+<span class="fc" id="L153">    }</span>
+    public void setHeight(float height){
+<span class="fc" id="L155">        Height = height;</span>
+<span class="fc" id="L156">    }</span>
+    
+    public void setX(float x){
+<span class="fc" id="L159">        X = x;</span>
+<span class="fc" id="L160">    }</span>
+    public void setY(float y){
+<span class="fc" id="L162">        Y = y;</span>
+<span class="fc" id="L163">    }</span>
+    public void setZ(float z){
+<span class="fc" id="L165">        Z = z;</span>
+<span class="fc" id="L166">    }</span>
+    
+    public void setBin(String location){
+<span class="fc" id="L169">        Location = location;</span>
+<span class="fc" id="L170">    }</span>
+    
+    public void setContents(String contents){
+<span class="nc" id="L173">        Contents = contents;</span>
+<span class="nc" id="L174">    }</span>
+    public void setNotes(String notes){
+<span class="nc" id="L176">        Notes = notes;</span>
+<span class="nc" id="L177">    }</span>
+    
+    public void setAmount(int amount){
+<span class="fc" id="L180">        Amount = amount;</span>
+<span class="fc" id="L181">    }</span>
+    
+    
+    //geting calculations
+    public float getVolume(){
+<span class="nc" id="L186">        return Width*Length*Height;</span>
+    }
+    
+    public Space getArea(){
+<span class="fc" id="L190">        return new Space(Width, Length);</span>
+    }
+    
+    //To string method
+    @Override
+    public String toString(){
+<span class="fc" id="L196">        return(&quot;Name:&quot; + ID + &quot; Width:&quot; + Width + &quot; Length:&quot; + Length + &quot; Height:&quot; + Height + &quot; X position:&quot; + X + &quot; Y position:&quot; + Y + &quot; Z position:&quot; + Z);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
