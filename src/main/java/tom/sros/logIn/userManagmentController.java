@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import tom.sros.App;
 import javafx.scene.control.TextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class userManagmentController implements Initializable{
     
@@ -53,16 +55,22 @@ public class userManagmentController implements Initializable{
     @FXML
     private void createUser() throws IOException {
         UserDatabase UDB = new UserDatabase();
+        JFrame userIDWarning = new JFrame();
         
-        boolean isManager = radioManager.isSelected();
-        UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());
-        
-        userIDInput.setText("");
-        userNameInput.setText("");
-        passWordInput.setText("");
-        
-        userTable.getItems().clear();
-        populateTable();
+        if(UDB.userExists(dataBaseName, userIDInput.getText()) == false){
+            boolean isManager = radioManager.isSelected();
+            UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());
+
+            userIDInput.setText("");
+            userNameInput.setText("");
+            passWordInput.setText("");
+
+            userTable.getItems().clear();
+            populateTable();
+        } else {
+            JOptionPane.showMessageDialog(userIDWarning, "User with that ID already exists.", "Unrecognised user", 2);
+            userIDInput.setText("");
+        }
     }
     
     /**

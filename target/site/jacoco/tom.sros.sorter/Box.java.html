@@ -141,59 +141,46 @@ public class Box {
     public void setID(String id){
 <span class="fc" id="L142">        ID = id;</span>
 <span class="fc" id="L143">    }</span>
-    public void setName(String name){
-<span class="nc" id="L145">        Name = name;</span>
-<span class="nc" id="L146">    }</span>
     
     public void setWidth(float width){
-<span class="fc" id="L149">        Width = width;</span>
-<span class="fc" id="L150">    }</span>
+<span class="fc" id="L146">        Width = width;</span>
+<span class="fc" id="L147">    }</span>
     public void setLength(float length){
-<span class="fc" id="L152">        Length = length;</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L149">        Length = length;</span>
+<span class="fc" id="L150">    }</span>
     public void setHeight(float height){
-<span class="fc" id="L155">        Height = height;</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L152">        Height = height;</span>
+<span class="fc" id="L153">    }</span>
     
     public void setX(float x){
-<span class="fc" id="L159">        X = x;</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L156">        X = x;</span>
+<span class="fc" id="L157">    }</span>
     public void setY(float y){
-<span class="fc" id="L162">        Y = y;</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L159">        Y = y;</span>
+<span class="fc" id="L160">    }</span>
     public void setZ(float z){
-<span class="fc" id="L165">        Z = z;</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L162">        Z = z;</span>
+<span class="fc" id="L163">    }</span>
     
     public void setBin(String location){
-<span class="fc" id="L169">        Location = location;</span>
-<span class="fc" id="L170">    }</span>
-    
-    public void setContents(String contents){
-<span class="nc" id="L173">        Contents = contents;</span>
-<span class="nc" id="L174">    }</span>
-    public void setNotes(String notes){
-<span class="nc" id="L176">        Notes = notes;</span>
-<span class="nc" id="L177">    }</span>
+<span class="fc" id="L166">        Location = location;</span>
+<span class="fc" id="L167">    }</span>
     
     public void setAmount(int amount){
-<span class="fc" id="L180">        Amount = amount;</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L170">        Amount = amount;</span>
+<span class="fc" id="L171">    }</span>
     
     
     //geting calculations
-    public float getVolume(){
-<span class="nc" id="L186">        return Width*Length*Height;</span>
-    }
     
     public Space getArea(){
-<span class="fc" id="L190">        return new Space(Width, Length);</span>
+<span class="fc" id="L177">        return new Space(Width, Length);</span>
     }
     
     //To string method
     @Override
     public String toString(){
-<span class="fc" id="L196">        return(&quot;Name:&quot; + ID + &quot; Width:&quot; + Width + &quot; Length:&quot; + Length + &quot; Height:&quot; + Height + &quot; X position:&quot; + X + &quot; Y position:&quot; + Y + &quot; Z position:&quot; + Z);</span>
+<span class="fc" id="L183">        return(&quot;Name:&quot; + ID + &quot; Width:&quot; + Width + &quot; Length:&quot; + Length + &quot; Height:&quot; + Height + &quot; X position:&quot; + X + &quot; Y position:&quot; + Y + &quot; Z position:&quot; + Z);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

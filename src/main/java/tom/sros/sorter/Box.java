@@ -141,9 +141,6 @@ public class Box {
     public void setID(String id){
         ID = id;
     }
-    public void setName(String name){
-        Name = name;
-    }
     
     public void setWidth(float width){
         Width = width;
@@ -169,22 +166,12 @@ public class Box {
         Location = location;
     }
     
-    public void setContents(String contents){
-        Contents = contents;
-    }
-    public void setNotes(String notes){
-        Notes = notes;
-    }
-    
     public void setAmount(int amount){
         Amount = amount;
     }
     
     
     //geting calculations
-    public float getVolume(){
-        return Width*Length*Height;
-    }
     
     public Space getArea(){
         return new Space(Width, Length);
