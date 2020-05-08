@@ -1,8 +1,8 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 SROS,tom.sros.home,HomeScreenNonManagerController,19,0,0,0,11,0,6,0,6,0
 SROS,tom.sros.home,HomeScreenController,21,0,0,0,13,0,7,0,7,0
-SROS,tom.sros.logIn,UserDatabase,55,165,1,5,15,53,1,8,0,6
-SROS,tom.sros.logIn,userManagmentController,108,0,0,0,31,0,8,0,8,0
+SROS,tom.sros.logIn,UserDatabase,129,165,1,5,39,53,3,8,2,6
+SROS,tom.sros.logIn,userManagmentController,170,0,8,0,40,0,12,0,8,0
 SROS,tom.sros.logIn,LogInController,51,0,6,0,15,0,5,0,2,0
 SROS,tom.sros.logIn,User,0,29,0,0,0,11,0,6,0,6
 SROS,tom.sros,App,50,0,0,0,15,0,5,0,5,0
@@ -10,7 +10,7 @@ SROS,tom.sros.storageRoom,AddToStorageRoomController,237,0,4,0,64,0,13,0,11,0
 SROS,tom.sros.storageRoom,StorageRoomManagmentController,349,0,8,0,88,0,21,0,17,0
 SROS,tom.sros.storageRoom,BinDataBase,99,387,1,17,27,113,1,21,0,13
 SROS,tom.sros.storageRoom,AddToStorageRoomNonManagerController,237,0,4,0,64,0,13,0,11,0
-SROS,tom.sros.item,LocateItemNonManagerController,60,0,0,0,22,0,8,0,8,0
+SROS,tom.sros.item,LocateItemNonManagerController,137,0,4,0,44,0,15,0,13,0
 SROS,tom.sros.item,AddItemToDataBaseController,108,0,0,0,33,0,7,0,7,0
 SROS,tom.sros.item,ItemDatabase,285,1081,5,27,76,300,4,42,0,30
 SROS,tom.sros.item,LocateItemController,154,0,6,0,48,0,16,0,13,0

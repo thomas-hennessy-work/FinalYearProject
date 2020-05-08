@@ -11,14 +11,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import tom.sros.App;
 import javafx.scene.control.TextField;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-<span class="nc" id="L15">public class userManagmentController implements Initializable{</span>
+<span class="nc" id="L17">public class userManagmentController implements Initializable{</span>
     
-<span class="nc" id="L17">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
+<span class="nc" id="L19">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
     
-<span class="nc" id="L19">    @FXML</span>
+<span class="nc" id="L21">    @FXML</span>
     ListView&lt;String&gt; userList = new ListView&lt;String&gt;();
-<span class="nc" id="L21">    ObservableList&lt;String&gt; items = FXCollections.observableArrayList();</span>
+<span class="nc" id="L23">    ObservableList&lt;String&gt; items = FXCollections.observableArrayList();</span>
     
     @FXML
     private TextField userIDInput;
@@ -42,8 +44,8 @@ import javafx.scene.control.TextField;
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-<span class="nc" id="L45">        populateTable();</span>
-<span class="nc" id="L46">    }</span>
+<span class="nc" id="L47">        populateTable();</span>
+<span class="nc" id="L48">    }</span>
     
     /**
      * Gathers the information from the text feilds and uses them to create a user
@@ -52,18 +54,28 @@ import javafx.scene.control.TextField;
      */
     @FXML
     private void createUser() throws IOException {
-<span class="nc" id="L55">        UserDatabase UDB = new UserDatabase();</span>
+<span class="nc" id="L57">        UserDatabase UDB = new UserDatabase();</span>
+<span class="nc" id="L58">        JFrame userIDWarning = new JFrame();</span>
+<span class="nc" id="L59">        JFrame userNameWarning = new JFrame();</span>
         
-<span class="nc" id="L57">        boolean isManager = radioManager.isSelected();</span>
-<span class="nc" id="L58">        UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());</span>
-        
-<span class="nc" id="L60">        userIDInput.setText(&quot;&quot;);</span>
-<span class="nc" id="L61">        userNameInput.setText(&quot;&quot;);</span>
-<span class="nc" id="L62">        passWordInput.setText(&quot;&quot;);</span>
-        
-<span class="nc" id="L64">        userTable.getItems().clear();</span>
-<span class="nc" id="L65">        populateTable();</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc bnc" id="L61" title="All 4 branches missed.">        if((UDB.userIDExists(dataBaseName, userIDInput.getText()) == false) &amp;&amp; (UDB.userNameExists(dataBaseName, userNameInput.getText()) == false)){</span>
+<span class="nc" id="L62">            boolean isManager = radioManager.isSelected();</span>
+<span class="nc" id="L63">            UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());</span>
+
+<span class="nc" id="L65">            userIDInput.setText(&quot;&quot;);</span>
+<span class="nc" id="L66">            userNameInput.setText(&quot;&quot;);</span>
+<span class="nc" id="L67">            passWordInput.setText(&quot;&quot;);</span>
+
+<span class="nc" id="L69">            userTable.getItems().clear();</span>
+<span class="nc" id="L70">            populateTable();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        } else if(UDB.userIDExists(dataBaseName, userIDInput.getText()) == true) {</span>
+<span class="nc" id="L72">            JOptionPane.showMessageDialog(userIDWarning, &quot;User with that ID already exists.&quot;, &quot;ID exists&quot;, 2);</span>
+<span class="nc" id="L73">            userIDInput.setText(&quot;&quot;);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        } else if(UDB.userNameExists(dataBaseName, userNameInput.getText()) == true){</span>
+<span class="nc" id="L75">            JOptionPane.showMessageDialog(userNameWarning, &quot;User with that user name already exists.&quot;, &quot;Name esists&quot;, 2);</span>
+<span class="nc" id="L76">            userNameInput.setText(&quot;&quot;);</span>
+        }
+<span class="nc" id="L78">    }</span>
     
     /**
      * Removes a user from the user table
@@ -72,32 +84,32 @@ import javafx.scene.control.TextField;
      */
     @FXML
     private void removeUser() throws IOException {
-<span class="nc" id="L75">        UserDatabase UDB = new UserDatabase();</span>
-<span class="nc" id="L76">        UDB.removeUser(dataBaseName, deleteUserIDInput.getText());</span>
-<span class="nc" id="L77">        deleteUserIDInput.setText(&quot;&quot;);</span>
+<span class="nc" id="L87">        UserDatabase UDB = new UserDatabase();</span>
+<span class="nc" id="L88">        UDB.removeUser(dataBaseName, deleteUserIDInput.getText());</span>
+<span class="nc" id="L89">        deleteUserIDInput.setText(&quot;&quot;);</span>
         
-<span class="nc" id="L79">        userTable.getItems().clear();</span>
-<span class="nc" id="L80">        populateTable();</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L91">        userTable.getItems().clear();</span>
+<span class="nc" id="L92">        populateTable();</span>
+<span class="nc" id="L93">    }</span>
 
     //Log out and home button
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L86">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L98">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
+<span class="nc" id="L99">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L90">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L102">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc" id="L103">    }</span>
     
     //Method for populating table
     private void populateTable(){
-<span class="nc" id="L95">        UserDatabase UDB = new UserDatabase();</span>
-<span class="nc" id="L96">        List&lt;User&gt; userInfoList = UDB.getAllUsersNoPassword(dataBaseName);</span>
+<span class="nc" id="L107">        UserDatabase UDB = new UserDatabase();</span>
+<span class="nc" id="L108">        List&lt;User&gt; userInfoList = UDB.getAllUsersNoPassword(dataBaseName);</span>
         
-<span class="nc" id="L98">        userInfoList.forEach((currentUser) -&gt; {</span>
-<span class="nc" id="L99">            userTable.getItems().add(currentUser);</span>
-<span class="nc" id="L100">        });</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L110">        userInfoList.forEach((currentUser) -&gt; {</span>
+<span class="nc" id="L111">            userTable.getItems().add(currentUser);</span>
+<span class="nc" id="L112">        });</span>
+<span class="nc" id="L113">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

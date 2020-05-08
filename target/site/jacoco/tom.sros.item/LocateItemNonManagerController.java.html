@@ -10,51 +10,87 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import tom.sros.App;
 import tom.sros.sorter.Box;
+import tom.sros.sorter.CustOrder;
 
-<span class="nc" id="L14">public class LocateItemNonManagerController implements Initializable{</span>
-<span class="nc" id="L15">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
+<span class="nc" id="L15">public class LocateItemNonManagerController implements Initializable{</span>
+<span class="nc" id="L16">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
     
     @FXML
     private TableView boxTable;
+    @FXML
+    private TableView orderTable;
     
     //Populate the box location table
     @Override
     public void initialize(URL location, ResourceBundle resources){
-<span class="nc" id="L23">        populateBoxTable();</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L26">        populateBoxTable();</span>
+<span class="nc" id="L27">    }</span>
     
     //Removes a selected box from the storage room
     @FXML
     private void removeBox(){
-<span class="nc" id="L29">        TableViewSelectionModel boxesSelection = boxTable.getSelectionModel();</span>
-<span class="nc" id="L30">        List&lt;Box&gt; selectedBoxes = boxesSelection.getSelectedItems();</span>
-<span class="nc" id="L31">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L32">        TableViewSelectionModel boxesSelection = boxTable.getSelectionModel();</span>
+<span class="nc" id="L33">        List&lt;Box&gt; selectedBoxes = boxesSelection.getSelectedItems();</span>
+<span class="nc" id="L34">        ItemDatabase ITDB = new ItemDatabase();</span>
         
-<span class="nc" id="L33">        selectedBoxes.forEach((currentSelectedBox) -&gt; {</span>
-<span class="nc" id="L34">            ITDB.removeStoredBox(currentSelectedBox, dataBaseName);</span>
-<span class="nc" id="L35">        });</span>
+<span class="nc" id="L36">        selectedBoxes.forEach((currentSelectedBox) -&gt; {</span>
+<span class="nc" id="L37">            ITDB.removeStoredBox(currentSelectedBox, dataBaseName);</span>
+<span class="nc" id="L38">        });</span>
         
-<span class="nc" id="L37">        boxTable.getItems().clear();</span>
-<span class="nc" id="L38">        populateBoxTable();</span>
-<span class="nc" id="L39">    }</span>
+<span class="nc" id="L40">        boxTable.getItems().clear();</span>
+<span class="nc" id="L41">        populateBoxTable();</span>
+<span class="nc" id="L42">    }</span>
+    
+    @FXML
+    private void removeOrder(){
+<span class="nc" id="L46">        TableViewSelectionModel ordersSelected = orderTable.getSelectionModel();</span>
+<span class="nc" id="L47">        List&lt;CustOrder&gt; selectedOrders = ordersSelected.getSelectedItems();</span>
+<span class="nc" id="L48">        ItemDatabase ITDB = new ItemDatabase();</span>
+        
+<span class="nc" id="L50">        selectedOrders.forEach((currentSelectedOrder) -&gt; {</span>
+<span class="nc" id="L51">            System.out.println(currentSelectedOrder.getID());</span>
+<span class="nc" id="L52">            ITDB.removeStoredOrder(currentSelectedOrder, dataBaseName);</span>
+<span class="nc" id="L53">        });</span>
+        
+<span class="nc" id="L55">        orderTable.getItems().clear();</span>
+<span class="nc" id="L56">        populateOrderTable();</span>
+<span class="nc" id="L57">    }</span>
     
     //Logout and home buttons
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L44">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L62">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
+<span class="nc" id="L63">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L48">        App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L66">        App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
+<span class="nc" id="L67">    }</span>
     
     //Method for filling the box location table
     private void populateBoxTable(){
-<span class="nc" id="L53">        List&lt;Box&gt; boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);</span>
-<span class="nc" id="L54">        boxInformation.forEach((currentBox)-&gt; {</span>
-<span class="nc" id="L55">            boxTable.getItems().add(currentBox);</span>
-<span class="nc" id="L56">        });</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L71">        List&lt;Box&gt; boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);</span>
+<span class="nc" id="L72">        boxInformation.forEach((currentBox)-&gt; {</span>
+<span class="nc" id="L73">            boxTable.getItems().add(currentBox);</span>
+<span class="nc" id="L74">        });</span>
+<span class="nc" id="L75">    }</span>
     
+    private void populateOrderTable(){
+<span class="nc" id="L78">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L79">        List&lt;CustOrder&gt; orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);</span>
+<span class="nc" id="L80">        orderInformation.forEach((currentOrder) -&gt; {</span>
+<span class="nc" id="L81">            orderTable.getItems().add(currentOrder);</span>
+<span class="nc" id="L82">        });</span>
+<span class="nc" id="L83">    }</span>
+    
+    private boolean boxIsOrder(Box reviewedBox, List&lt;CustOrder&gt; orderList){
+<span class="nc" id="L86">        boolean returnValue = true;</span>
+        
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for(CustOrder currentOrder : orderList){</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (currentOrder.getID().equals(reviewedBox.getID())){</span>
+<span class="nc" id="L90">                returnValue = false;</span>
+            } 
+<span class="nc" id="L92">        }</span>
+<span class="nc" id="L93">        return returnValue;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

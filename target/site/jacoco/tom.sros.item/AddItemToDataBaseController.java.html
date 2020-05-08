@@ -54,43 +54,42 @@ import tom.sros.sorter.Box;
 <span class="nc" id="L54">        String inBoxContents = boxContents.getText();</span>
 <span class="nc" id="L55">        String inBoxNotes = boxNotes.getText();</span>
         
-        //whilst float has been depreciated, not sure if double can be used in a database (untested)
-        //converting string to float and adding the information to the database
-<span class="nc" id="L59">        float floatBoxWidth = Float.parseFloat(inBoxWidth);</span>
-<span class="nc" id="L60">        float floatBoxLength = Float.parseFloat(inBoxLength);</span>
-<span class="nc" id="L61">        float floatBoxHeight = Float.parseFloat(inBoxHeight);</span>
-<span class="nc" id="L62">        ItemDatabase ITDB = new ItemDatabase();</span>
-<span class="nc" id="L63">        System.out.println(&quot;Add box to database&quot;);</span>
-<span class="nc" id="L64">        ITDB.addBoxType(dataBaseName,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);</span>
+        
+<span class="nc" id="L58">        float floatBoxWidth = Float.parseFloat(inBoxWidth);</span>
+<span class="nc" id="L59">        float floatBoxLength = Float.parseFloat(inBoxLength);</span>
+<span class="nc" id="L60">        float floatBoxHeight = Float.parseFloat(inBoxHeight);</span>
+<span class="nc" id="L61">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L62">        System.out.println(&quot;Add box to database&quot;);</span>
+<span class="nc" id="L63">        ITDB.addBoxType(dataBaseName,inBoxName,inBoxContents,floatBoxWidth,floatBoxLength,floatBoxHeight,inBoxNotes);</span>
     
-<span class="nc" id="L66">        populateTable();</span>
+<span class="nc" id="L65">        populateTable();</span>
         
         //empty input boxes
-<span class="nc" id="L69">        boxName.setText(&quot;&quot;);</span>
-<span class="nc" id="L70">        boxWidth.setText(&quot;&quot;);</span>
-<span class="nc" id="L71">        boxLength.setText(&quot;&quot;);</span>
-<span class="nc" id="L72">        boxHeight.setText(&quot;&quot;);</span>
-<span class="nc" id="L73">        boxContents.setText(&quot;&quot;);</span>
-<span class="nc" id="L74">        boxNotes.setText(&quot;&quot;);</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L68">        boxName.setText(&quot;&quot;);</span>
+<span class="nc" id="L69">        boxWidth.setText(&quot;&quot;);</span>
+<span class="nc" id="L70">        boxLength.setText(&quot;&quot;);</span>
+<span class="nc" id="L71">        boxHeight.setText(&quot;&quot;);</span>
+<span class="nc" id="L72">        boxContents.setText(&quot;&quot;);</span>
+<span class="nc" id="L73">        boxNotes.setText(&quot;&quot;);</span>
+<span class="nc" id="L74">    }</span>
     
     //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L80">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L79">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
+<span class="nc" id="L80">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L84">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
-<span class="nc" id="L85">    }</span>
+<span class="nc" id="L83">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc" id="L84">    }</span>
     
     //method for populating box type table
     private void populateTable(){
-<span class="nc" id="L89">        List&lt;Box&gt; boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);</span>
-<span class="nc" id="L90">        boxInformation.forEach((currentBox)-&gt; {</span>
-<span class="nc" id="L91">            boxInfoTable.getItems().add(currentBox);</span>
-<span class="nc" id="L92">        });</span>
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L88">        List&lt;Box&gt; boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);</span>
+<span class="nc" id="L89">        boxInformation.forEach((currentBox)-&gt; {</span>
+<span class="nc" id="L90">            boxInfoTable.getItems().add(currentBox);</span>
+<span class="nc" id="L91">        });</span>
+<span class="nc" id="L92">    }</span>
     
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

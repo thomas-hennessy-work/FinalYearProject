@@ -56,8 +56,9 @@ public class userManagmentController implements Initializable{
     private void createUser() throws IOException {
         UserDatabase UDB = new UserDatabase();
         JFrame userIDWarning = new JFrame();
+        JFrame userNameWarning = new JFrame();
         
-        if(UDB.userExists(dataBaseName, userIDInput.getText()) == false){
+        if((UDB.userIDExists(dataBaseName, userIDInput.getText()) == false) && (UDB.userNameExists(dataBaseName, userNameInput.getText()) == false)){
             boolean isManager = radioManager.isSelected();
             UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());
 
@@ -67,9 +68,12 @@ public class userManagmentController implements Initializable{
 
             userTable.getItems().clear();
             populateTable();
-        } else {
-            JOptionPane.showMessageDialog(userIDWarning, "User with that ID already exists.", "Unrecognised user", 2);
+        } else if(UDB.userIDExists(dataBaseName, userIDInput.getText()) == true) {
+            JOptionPane.showMessageDialog(userIDWarning, "User with that ID already exists.", "ID exists", 2);
             userIDInput.setText("");
+        } else if(UDB.userNameExists(dataBaseName, userNameInput.getText()) == true){
+            JOptionPane.showMessageDialog(userNameWarning, "User with that user name already exists.", "Name esists", 2);
+            userNameInput.setText("");
         }
     }
     

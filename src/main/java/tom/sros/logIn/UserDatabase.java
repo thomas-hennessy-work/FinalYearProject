@@ -193,7 +193,7 @@ public class UserDatabase {
      * @param userID
      * @return true if user exists, false if they do not
      */    
-    public boolean userExists(String dataBaseName, String userID){
+    public boolean userIDExists(String dataBaseName, String userID){
         Connection c;
         Statement stmt;
         
@@ -206,6 +206,40 @@ public class UserDatabase {
             //Gather user information from dataBase
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT user_ID FROM user WHERE user_ID = '" + userID + "';");
+
+            exists = rs.next();
+                
+            stmt.close();
+            c.close();
+        }
+        //Exception catching
+        catch ( SQLException e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return exists;
+    }
+    
+    /**
+     * Verifies if the user name already exists
+     * 
+     * @param dataBaseName
+     * @param userName
+     * @return true if the user name exists, false if it dose not
+     */
+    public boolean userNameExists(String dataBaseName, String userName){
+        Connection c;
+        Statement stmt;
+        
+        Boolean exists = null;
+
+        try{
+            //Connecting to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+
+            //Gather user information from dataBase
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT user_name FROM user WHERE user_name = '" + userName + "';");
 
             exists = rs.next();
                 
