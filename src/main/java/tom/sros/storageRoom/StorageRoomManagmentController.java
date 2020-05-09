@@ -75,20 +75,38 @@ public class StorageRoomManagmentController implements Initializable{
      */
     @FXML
     private void addToList(){
-        int amount = Integer.parseInt(addAmount.getText());
-        float width = Float.parseFloat(addWidth.getText());
-        float length = Float.parseFloat(addLength.getText());
-        float height = Float.parseFloat(addHeight.getText());
-        System.out.println("Amount: " + amount + " Width: " + width + " Length: " + length + " Height: " + height);
+        String inAmount = addAmount.getText();
+        String inWidth = addWidth.getText();
+        String inLength = addLength.getText();
+        String inHeight = addHeight.getText();
         
-        Bin binToAdd = new Bin(amount, width, length, height);
-        newBinTable.getItems().add(binToAdd);
-        toAddList.add(binToAdd);
+        JFrame inputDimensionWarning = new JFrame();
+        JFrame inputAmoutnWarning = new JFrame();
         
-        addAmount.setText("");
-        addWidth.setText("");
-        addLength.setText("");
-        addHeight.setText("");
+        boolean dimensionValid = dimensionsValidation(inWidth, inLength, inHeight);
+        boolean amountValid = amountValidation(inAmount);
+
+        if(dimensionValid == true && amountValid == true){
+            int amount = Integer.parseInt(inAmount);
+            float width = Float.parseFloat(inWidth);
+            float length = Float.parseFloat(inLength);
+            float height = Float.parseFloat(inHeight);
+            
+            Bin binToAdd = new Bin(amount, width, length, height);
+            newBinTable.getItems().add(binToAdd);
+            toAddList.add(binToAdd);
+
+            addAmount.setText("");
+            addWidth.setText("");
+            addLength.setText("");
+            addHeight.setText("");
+        }
+        else if(dimensionValid == false){
+            JOptionPane.showMessageDialog(inputDimensionWarning, "Dimensions are not valid, please enter valid dimensions", "Invalid dimensions", 1);
+        }
+        else if(amountValid == false){
+            JOptionPane.showMessageDialog(inputAmoutnWarning, "Amount is not valid, please enter a valid amount", "Invalid amount", 1);
+        }
     }
     
     /**
@@ -219,5 +237,51 @@ public class StorageRoomManagmentController implements Initializable{
         boxInfoList.forEach((currentBox) -> {
             unsortedTable.getItems().add(currentBox);
         });
+    }
+    
+     private boolean dimensionsValidation(String width, String length, String height){
+        boolean valid = true;
+        
+        //Validating dimensions are boolean values and are larger than 0
+        try{
+            Float f = Float.parseFloat(width);
+            if(f <= 0){
+                valid = false;
+            }
+        } catch (NumberFormatException NFE){
+            valid = false;
+        }
+        try{
+            Float f = Float.parseFloat(length);
+            if(f <= 0){
+                valid = false;
+            }
+        } catch (NumberFormatException NFE){
+            valid = false;
+        }
+        try{
+            Float f = Float.parseFloat(height);
+            if(f <= 0){
+                valid = false;
+            }
+        } catch (NumberFormatException NFE){
+            valid = false;
+        }
+        return valid;
+    }
+     
+     private boolean amountValidation(String amount){
+        boolean valid = true;
+        
+        //Validating dimensions are boolean values and are larger than 0
+        try{
+            int i = Integer.parseInt(amount);
+            if(i <= 0){
+                valid = false;
+            }
+        } catch (NumberFormatException NFE){
+            valid = false;
+        }
+        return valid;
     }
 }

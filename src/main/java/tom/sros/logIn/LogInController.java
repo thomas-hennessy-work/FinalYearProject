@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
 
+import java.text.DecimalFormat;
+
 public class LogInController {
     
     String dataBaseName = ("SROSData.db");

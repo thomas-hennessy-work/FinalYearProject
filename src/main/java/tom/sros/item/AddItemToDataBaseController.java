@@ -100,6 +100,7 @@ public class AddItemToDataBaseController implements Initializable{
     //method for populating box type table
     private void populateTable(){
         List<Box> boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);
+        boxInfoTable.getItems().clear();
         boxInformation.forEach((currentBox)-> {
             boxInfoTable.getItems().add(currentBox);
         });
@@ -111,7 +112,7 @@ public class AddItemToDataBaseController implements Initializable{
         //Validating dimensions are boolean values and are larger than 0
         try{
             Float f = Float.parseFloat(width);
-            if(f < 0){
+            if(f <= 0){
                 valid = false;
             }
         } catch (NumberFormatException NFE){
@@ -119,7 +120,7 @@ public class AddItemToDataBaseController implements Initializable{
         }
         try{
             Float f = Float.parseFloat(length);
-            if(f < 0){
+            if(f <= 0){
                 valid = false;
             }
         } catch (NumberFormatException NFE){
@@ -127,7 +128,7 @@ public class AddItemToDataBaseController implements Initializable{
         }
         try{
             Float f = Float.parseFloat(height);
-            if(f < 0){
+            if(f <= 0){
                 valid = false;
             }
         } catch (NumberFormatException NFE){
@@ -135,5 +136,4 @@ public class AddItemToDataBaseController implements Initializable{
         }
         return valid;
     }
-    
 }
