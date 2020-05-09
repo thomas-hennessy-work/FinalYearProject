@@ -82,7 +82,6 @@ public class newAlgorithm {
             ItemDatabase IDB = new ItemDatabase();
             for (Bin currentBin: tallestBins){
                 freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable, dataBaseName);
-                System.out.println("Size of freshSortBoxes = " + freshSortBoxes.size());
                 for(Box currentBox: freshSortBoxes){
                    //Remove any boxes that have been sorted from the unsorted list
                    if(IDB.blockRepeatingBoxEntry(currentBox, dataBaseName)){

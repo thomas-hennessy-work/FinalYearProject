@@ -1,5 +1,6 @@
 package tom.sros.sorter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import tom.sros.item.ItemDatabase;
@@ -76,8 +77,7 @@ public class binaryTree {
      * @param dataBaseName
      * @return Node with location information and whit is placed in that location, this could be either a box, an empty space or nothing.
      */
-    private Node addBoxRecursive(Node currentNode, Box item, Space binSpace, String dataBaseName){
-        System.out.println("Values provided" + "\nNode: " + currentNode + "\nBox: " + item.toString() + "\nSpace: " + binSpace.toString() + "\nPlaced: ");        
+    private Node addBoxRecursive(Node currentNode, Box item, Space binSpace, String dataBaseName){      
         //The box checks if it is able to fit in the boxes bellow, even if they fit. This
         //is due to the space constantly becoming smaller as boxes are added. If it is unable
         //to fit in the space that is already taken, it will not fit in a smaller space. This
@@ -89,8 +89,6 @@ public class binaryTree {
             Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getZ());
             EmptySpace placedSpace = findEmptySpace(unocupiedSpace, item.getX(), item.getZ());
             if(placedBox != null){
-                System.out.println("Current node is null, pre-existing box placed here, box being placed");
-                System.out.println(placedBox.getX() + " " + placedBox.getZ());
                 return new Node(binSpace, placedBox);
             }
             //If an empty space is located in the current node. Tries to place the new box within the empty space
@@ -99,7 +97,6 @@ public class binaryTree {
                 ItemDatabase ITDB = new ItemDatabase();
                 
                 if(placedSpace.getArea().canFit(item.getArea())){
-                    System.out.println("Box can fit in empty space");
                     //Removes old empty space and regesteres new empty spaces. The new empty spaces are then
                     //each added to the empty space list in the binary tree
                     (ITDB.fillEmptySpace(placedSpace, item, dataBaseName)).forEach((currentEmptySpace) -> {
@@ -109,13 +106,11 @@ public class binaryTree {
                     item.setBin(currentBin.getName());
                     return new Node(binSpace, item);
                 }else{
-                    System.out.println("Box cannot fit in empty space");
                     return new Node(binSpace, placedSpace);
                 }
             }
             if(placedSpace == null && placedBox == null){
             //Provides information about where the bin is stored and also prevents it from being re-sorted
-                System.out.println("Current node is null, no preexisting boxes, box being placed");
                 item.setBin(currentBin.getName());
                 unplaced = false;
                 return new Node(binSpace, item);
@@ -125,48 +120,44 @@ public class binaryTree {
         //If the box can fit in the node to the right, but there is no node right, move to the node right
         //The comparison to current bin is used to check if the box has been placed
         if ((currentNode.getPlacedBox() != null) && (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
-            System.out.println("Going right, box stored");
             //itterativly adding to the position of the item
-            item.setX(item.getX() + currentNode.getPlacedBox().getWidth());
+            item.setX(roundFloat(item.getX() + currentNode.getPlacedBox().getWidth()));
             //continuing recursion
             currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()), dataBaseName);
             
             //If the box is not placed and it comes back through the binary tree, the itterative position is undone
             if(item.getBin() != (currentBin.getName())){
-                item.setX(item.getX() - currentNode.getPlacedBox().getWidth());
+                item.setX(roundFloat(item.getX() - currentNode.getPlacedBox().getWidth()));
             }
         } 
         //Same as the initial if statement, only it executes on empty spaces rather than stored boxes
         else if((currentNode.getEmptySpace()!= null) && (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
-            System.out.println("Going right, empty space");
             //itterativly adding to the position of the item
-            item.setX(item.getX() + currentNode.getEmptySpace().getWidth());
+            item.setX(roundFloat(item.getX() + currentNode.getEmptySpace().getWidth()));
             //continuing recursion
             currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()), dataBaseName);
             
             //If the box is not placed and it comes back through the binary tree, the itterative position is undone
             if(item.getBin() != (currentBin.getName())){
-                item.setX(item.getX() - currentNode.getEmptySpace().getWidth());
+                item.setX(roundFloat(item.getX() - currentNode.getEmptySpace().getWidth()));
             }
         }
         
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
         if ((currentNode.getPlacedBox() != null) && (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
-            System.out.println("Going bellow, box stored");
-            item.setZ(item.getZ() + currentNode.getPlacedBox().getLength());
+            item.setZ(roundFloat(item.getZ() + currentNode.getPlacedBox().getLength()));
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()), dataBaseName);
             
             if(item.getBin() != (currentBin.getName())){
-                item.setZ(item.getZ() - currentNode.getPlacedBox().getWidth());
+                item.setZ(roundFloat(item.getZ() - currentNode.getPlacedBox().getLength()));
             }
         }
         else if((currentNode.getEmptySpace()!= null) && (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) && (item.getBin() != (currentBin.getName()))){
-            System.out.println("Going bellow, empty space");
-            item.setZ(item.getZ() + currentNode.getEmptySpace().getLength());
+            item.setZ(roundFloat(item.getZ() + currentNode.getEmptySpace().getLength()));
             currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()), dataBaseName);
             
             if(item.getBin() != (currentBin.getName())){
-                item.setZ(item.getZ() - currentNode.getEmptySpace().getWidth());
+                item.setZ(roundFloat(item.getZ() - currentNode.getEmptySpace().getLength()));
             }
         }
         
@@ -220,7 +211,6 @@ public class binaryTree {
         boxes.forEach((curentBox) -> {
             while(unplaced == true){
                 binTree.add(curentBox, binSpace, dataBaseName);
-                System.out.println("Looping and unplaced = " + unplaced);
             }
             unplaced = true;
         });
@@ -255,7 +245,6 @@ public class binaryTree {
                 returnValue = currentPlacedBox;
             }
         }
-        System.out.println("Box found in this position: " + returnValue);
         return returnValue;
     }
     
@@ -275,7 +264,13 @@ public class binaryTree {
                 returnValue = currentSpace;
             }
         }
-        System.out.println("Space found in this position: " + returnValue);
         return returnValue;
+    }
+    
+    private static float roundFloat(float floatToReound){
+        DecimalFormat DF = new DecimalFormat("0000.0");
+        String formattedWidth = DF.format(floatToReound);
+        Float returnFloat = Float.parseFloat(formattedWidth);
+        return returnFloat;
     }
 }

@@ -1,5 +1,6 @@
-
 package tom.sros.sorter;
+
+import java.text.DecimalFormat;
 
 public class Space {
     
@@ -34,18 +35,36 @@ public class Space {
     //Methods relating to calculating the space to the right and bellow a box once it
     //has been placed
     public Space areaBellow(Space binArea, Space boxArea){
-        float bellowWidth = binArea.getWidth();
-        float bellowLength = ((binArea.getLength()) - (boxArea.getLength()));
+        float bellowWidth = (float)binArea.getWidth();
+        float bellowLength = ((float)(binArea.getLength()) - ((float)boxArea.getLength()));
         
-        Space bellowArea = new Space(bellowWidth, bellowLength);
+        //Rounding
+        DecimalFormat DFW = new DecimalFormat("0000.0");
+        String formattedWidth = DFW.format(bellowWidth);
+        Float returnWidth = Float.parseFloat(formattedWidth);
+        
+        DecimalFormat DFL = new DecimalFormat("0000.0");
+        String formattedLength = DFL.format(bellowLength);
+        Float returnLength = Float.parseFloat(formattedLength);
+        
+        Space bellowArea = new Space(returnWidth, returnLength);
         return bellowArea;
     }
     
     public Space areaRight(Space binArea, Space boxArea){
-        float rightWidth = ((binArea.getWidth()) - (boxArea.getWidth()));
-        float rightLength = (boxArea.getLength());
+        float rightWidth = (((float)binArea.getWidth()) - ((float)boxArea.getWidth()));
+        float rightLength = ((float)boxArea.getLength());
         
-        Space rightArea = new Space(rightWidth, rightLength);
+        //Rounding
+        DecimalFormat DFW = new DecimalFormat("0000.0");
+        String formattedWidth = DFW.format(rightWidth);
+        Float returnWidth = Float.parseFloat(formattedWidth);
+        
+        DecimalFormat DFL = new DecimalFormat("0000.0");
+        String formattedLength = DFL.format(rightLength);
+        Float returnLength = Float.parseFloat(formattedLength);
+
+        Space rightArea = new Space(returnWidth, returnLength);
         return rightArea;
     }
     
