@@ -239,7 +239,7 @@ public class StorageRoomManagmentController implements Initializable{
         });
     }
     
-     private boolean dimensionsValidation(String width, String length, String height){
+    private boolean dimensionsValidation(String width, String length, String height){
         boolean valid = true;
         
         //Validating dimensions are boolean values and are larger than 0

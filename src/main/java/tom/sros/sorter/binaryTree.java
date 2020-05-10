@@ -268,7 +268,7 @@ public class binaryTree {
     }
     
     private static float roundFloat(float floatToReound){
-        DecimalFormat DF = new DecimalFormat("0000.0");
+        DecimalFormat DF = new DecimalFormat("0000000000.0");
         String formattedWidth = DF.format(floatToReound);
         Float returnFloat = Float.parseFloat(formattedWidth);
         return returnFloat;

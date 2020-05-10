@@ -56,11 +56,11 @@ public class Space {
         float rightLength = ((float)boxArea.getLength());
         
         //Rounding
-        DecimalFormat DFW = new DecimalFormat("0000.0");
+        DecimalFormat DFW = new DecimalFormat("0000000000.0");
         String formattedWidth = DFW.format(rightWidth);
         Float returnWidth = Float.parseFloat(formattedWidth);
         
-        DecimalFormat DFL = new DecimalFormat("0000.0");
+        DecimalFormat DFL = new DecimalFormat("0000000000.0");
         String formattedLength = DFL.format(rightLength);
         Float returnLength = Float.parseFloat(formattedLength);
 

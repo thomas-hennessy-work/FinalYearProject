@@ -69,24 +69,35 @@ public class AddToStorageRoomNonManagerController {
     @FXML
     private void addToBoxList(){
         ItemDatabase IDB = new ItemDatabase();
+        
         JFrame boxExistanceWarning = new JFrame();
+        JFrame boxAmountWarning = new JFrame();
         
         //Gather the information in the two text feilds
         String inputID = IDBoxText.getText();
-        int inputAmount = Integer.parseInt(IDBoxAmount.getText());
+        String Amount = IDBoxAmount.getText();
         
         //Ensure that the ID exists in the item database
         //If they do, pass them as a pair to a list in the backend to be temporeraly stored.
-        if(IDB.IDCheckBoxType(dataBaseName,inputID) != false){
-            Box inputBox = new Box(inputID, inputAmount);
-            BoxIDs.add(inputBox);
-            itemTable.getItems().add(inputBox);
-            
-            IDBoxText.setText("");
-            IDBoxAmount.setText("");
+        if(IDValidation(inputID)){
+            if(IDB.IDCheckBoxType(dataBaseName,inputID) && amountValidation(Amount)){
+                int inputAmount = Integer.parseInt(IDBoxAmount.getText());
+                Box inputBox = new Box(inputID, inputAmount);
+                BoxIDs.add(inputBox);
+                itemTable.getItems().add(inputBox);
+
+                IDBoxText.setText("");
+                IDBoxAmount.setText("");
+            }
+            else if(IDB.IDCheckBoxType(dataBaseName,inputID) == false){
+                JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID dose not exist.", "Unrecognised box ID", 2);
+            }
+            else if(amountValidation(Amount) == false){
+                JOptionPane.showMessageDialog(boxAmountWarning, "Box amount is invalid.", "Invalid box amount", 2);            
+            }
         }
         else{
-            JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID dose not exist.", "Unrecognised box ID", 2);
+            JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID is invalid.", "Unrecognised box ID", 2);
         }
     }
     
@@ -132,20 +143,25 @@ public class AddToStorageRoomNonManagerController {
         String address = addressText.getText();
         String custName = custNameText.getText();
         
-        if(IDB.IDCheckBoxType(dataBaseName, boxTypeID) != false){
-            CustOrder inputOrder = new CustOrder(boxTypeID, address, custName);
-            OrderList.add(inputOrder);
-            
-            orderTable.getItems().add(inputOrder);
-            
-            orderTypeID.setText("");
-            addressText.setText("");
-            custNameText.setText("");
+        if(IDValidation(boxTypeID)){
+            if(IDB.IDCheckBoxType(dataBaseName, boxTypeID)){
+                CustOrder inputOrder = new CustOrder(boxTypeID, address, custName);
+                OrderList.add(inputOrder);
+
+                orderTable.getItems().add(inputOrder);
+
+                orderTypeID.setText("");
+                addressText.setText("");
+                custNameText.setText("");
+            }
+            else{
+                JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID dose not exist.", "Unrecognised box ID", 2);
+            }
         }
         else{
-            JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID dose not exist.", "Unrecognised box ID", 2);
+            JOptionPane.showMessageDialog(boxExistanceWarning, "Box ID is invalid.", "Unrecognised box ID", 2);
         }
-    }
+    }   
     
     /**
      * Removes an order from the order list
@@ -170,5 +186,33 @@ public class AddToStorageRoomNonManagerController {
     @FXML
     private void home() throws IOException{
         App.setRoot("/tom/sros/home/homeScreenNonManager");
+    }
+    
+    private boolean amountValidation(String amount){
+        boolean valid = true;
+        
+        try{
+            int i = Integer.parseInt(amount);
+            if(i <= 0){
+                valid = false;
+            }
+        } catch (NumberFormatException NFE){
+            valid = false;
+        }
+        return valid;
+    }
+    
+    private boolean IDValidation(String ID){
+        boolean valid = true;
+        
+        try{
+            int i = Integer.parseInt(ID);
+            if(i <= 0){
+                valid = false;
+            }
+        } catch (NumberFormatException NFE){
+            valid = false;
+        }
+        return valid;
     }
 }
