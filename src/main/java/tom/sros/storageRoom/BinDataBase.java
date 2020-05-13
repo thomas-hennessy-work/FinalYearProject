@@ -231,6 +231,7 @@ public class BinDataBase {
             }else{
                 for(int i = 0; i < currentBin.getAmount() ; i++){
                     addBinIndividual(existing, dataBaseName);
+                    increaseAmount(existing, dataBaseName);
                 }
             }
         });
@@ -302,6 +303,62 @@ public class BinDataBase {
     }
     
     /**
+     * Increases the amount of a bin type by 1
+     * 
+     * @param binTypeID
+     * @param dataBaseName 
+     */
+    public void increaseAmount(String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            String sql = "UPDATE binType SET quantity = quantity + 1 WHERE type_ID = " + binTypeID + ";";
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    /**
+     * Decreases the amount of a bin type by 1
+     * 
+     * @param binTypeID
+     * @param dataBaseName 
+     */
+    public static void decreaseAmount(String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            String sql = "UPDATE binType SET quantity = quantity - 1 WHERE type_ID = " + binTypeID + ";";
+            stmt.executeUpdate(sql);
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    
+    /**
      * Verifies if a bin type already exists
      * 
      * @param binToCheck
@@ -338,12 +395,15 @@ public class BinDataBase {
     }
     
     /**
-     * Deletes a bin
+     * Deletes an individual bin
      * 
      * @param binID
      * @param dataBaseName 
      */
-    public static void deleteBin (String binID, String dataBaseName){
+    public static void deleteBin(String binID, String dataBaseName){
+        String binType = getIndiBinType(binID, dataBaseName);
+        decreaseAmount(binType, dataBaseName);
+        
         Connection c;
         Statement stmt;
         
@@ -363,5 +423,38 @@ public class BinDataBase {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    
+    /**
+     * Gathers the bin type of an individual bin
+     * 
+     * @param binID
+     * @param databaseName
+     * @return bin type
+     */
+    public static String getIndiBinType(String binID, String databaseName){
+        Connection c;
+        Statement stmt;
+        
+        String returnValue = "";
+        
+        try{
+            //Connect to database
+            c = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
+            
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT type_ID FROM binIndividual WHERE bin_ID = " + binID + ";");
+            returnValue = rs.getString("type_ID");
+            
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+            //Error catching
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return returnValue;
     }
 }

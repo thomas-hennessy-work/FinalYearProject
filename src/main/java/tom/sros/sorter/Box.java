@@ -176,10 +176,4 @@ public class Box {
     public Space getArea(){
         return new Space(Width, Length);
     }
-    
-    //To string method
-    @Override
-    public String toString(){
-        return("Name:" + ID + " Width:" + Width + " Length:" + Length + " Height:" + Height + " X position:" + X + " Y position:" + Y + " Z position:" + Z);
-    }
 }

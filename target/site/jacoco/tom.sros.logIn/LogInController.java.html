@@ -8,9 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
 
-<span class="nc" id="L11">public class LogInController {</span>
+import java.text.DecimalFormat;
+
+<span class="nc" id="L13">public class LogInController {</span>
     
-<span class="nc" id="L13">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
+<span class="nc" id="L15">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
     
     @FXML
     private TextField userNameText;
@@ -25,30 +27,30 @@ import tom.sros.App;
     @FXML
     public void logInButton() throws IOException{
         //Gather text box inputs
-<span class="nc" id="L28">        String userNameIn = userNameText.getText();</span>
-<span class="nc" id="L29">        String passWordIn = passWordText.getText();</span>
+<span class="nc" id="L30">        String userNameIn = userNameText.getText();</span>
+<span class="nc" id="L31">        String passWordIn = passWordText.getText();</span>
         
-<span class="nc" id="L31">        JFrame passwordWarning = new JFrame();</span>
+<span class="nc" id="L33">        JFrame passwordWarning = new JFrame();</span>
         
         //Check if they match any on record accounts
-<span class="nc" id="L34">        System.out.println(&quot;Check if credentials are valid&quot;);</span>
+<span class="nc" id="L36">        System.out.println(&quot;Check if credentials are valid&quot;);</span>
         
-<span class="nc" id="L36">        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn);</span>
+<span class="nc" id="L38">        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn);</span>
         
         //Log in check
         //Incorect log in details
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        if(loginValue == null){</span>
-<span class="nc" id="L41">            passWordText.setText(&quot;&quot;);</span>
-<span class="nc" id="L42">            JOptionPane.showMessageDialog(passwordWarning, &quot;User name or password not recognised.&quot;, &quot;Unrecognised user&quot;, 2);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if(loginValue == null){</span>
+<span class="nc" id="L43">            passWordText.setText(&quot;&quot;);</span>
+<span class="nc" id="L44">            JOptionPane.showMessageDialog(passwordWarning, &quot;User name or password not recognised.&quot;, &quot;Unrecognised user&quot;, 2);</span>
         }
         //Manager log in
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        else if (loginValue){</span>
-<span class="nc" id="L46">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        else if (loginValue){</span>
+<span class="nc" id="L48">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
         }
         //employee log in
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        else if(!loginValue){</span>
-<span class="nc" id="L50">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        else if(!loginValue){</span>
+<span class="nc" id="L52">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
         }
-<span class="nc" id="L52">    }</span>
+<span class="nc" id="L54">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

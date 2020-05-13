@@ -32,13 +32,6 @@ public class binaryTree {
             below = null;
             right = null;
         }
-        Node(Space binArea, EmptySpace emptySpace){
-            this.binArea = binArea;
-            storedBox = null;
-            unusedSpace = emptySpace;
-            below = null;
-            right = null;
-        }
         
         //Get methods
         private Space getBinArea(){
@@ -96,7 +89,8 @@ public class binaryTree {
             if(placedSpace != null){
                 ItemDatabase ITDB = new ItemDatabase();
                 
-                if(placedSpace.getArea().canFit(item.getArea())){
+                //if(placedSpace.getArea().canFit(item.getArea())){
+                if(item.getArea().canFit(binSpace)){
                     //Removes old empty space and regesteres new empty spaces. The new empty spaces are then
                     //each added to the empty space list in the binary tree
                     (ITDB.fillEmptySpace(placedSpace, item, dataBaseName)).forEach((currentEmptySpace) -> {
@@ -207,12 +201,16 @@ public class binaryTree {
         Space binSpace = storingBin.getArea();
         List<Box> boxList = new ArrayList<>();
         
+        //boxes = sortBySize(boxes);
+        
         //Adding each box provided to the binary tree
         boxes.forEach((curentBox) -> {
-            while(unplaced == true){
-                binTree.add(curentBox, binSpace, dataBaseName);
+            if(curentBox.getHeight() <= storingBin.getHeight()){
+                while(unplaced == true){
+                        binTree.add(curentBox, binSpace, dataBaseName);
+                }
+                unplaced = true;
             }
-            unplaced = true;
         });
         
         //Obtaining a list of the nodes
@@ -267,10 +265,43 @@ public class binaryTree {
         return returnValue;
     }
     
+    private static List<Box> sortBySize(List<Box> boxesAvaialble){
+        List<Box> returnList = new ArrayList<>();
+        
+        while(!boxesAvaialble.isEmpty()){
+            
+            List<Box> largestBoxes = new ArrayList<>();
+            
+            //Finding the boxes that take the most surface area out of the current tallest boxes
+            boxesAvaialble.forEach((currentBox) -> {
+                if (largestBoxes.isEmpty()){
+                    largestBoxes.add(currentBox);
+                }
+                else if (largestBoxes.get(0).getArea().getArea() < currentBox.getArea().getArea()){
+                    largestBoxes.clear();
+                    largestBoxes.add(currentBox);
+                }
+                else if(largestBoxes.get(0).getArea().getArea() == currentBox.getArea().getArea())
+                    largestBoxes.add(currentBox);
+            });
+            for(Box currentBox : boxesAvaialble){
+                System.out.println("Initial list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
+            }
+            
+            for(Box currentBox : largestBoxes){
+                System.out.println("fianl list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
+            }
+            
+            returnList.addAll(largestBoxes);
+            boxesAvaialble.removeAll(largestBoxes);
+        }
+        return returnList;
+    }
+    
     private static float roundFloat(float floatToReound){
         DecimalFormat DF = new DecimalFormat("0000000000.0");
-        String formattedWidth = DF.format(floatToReound);
-        Float returnFloat = Float.parseFloat(formattedWidth);
+        String formattedFloat = DF.format(floatToReound);
+        Float returnFloat = Float.parseFloat(formattedFloat);
         return returnFloat;
     }
 }

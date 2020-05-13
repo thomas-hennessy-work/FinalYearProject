@@ -13,17 +13,17 @@ public class Space {
         Length = length;
     }
     
-    @Override
-    public String toString(){
-        return("Width: " + Width + ", Length: " + Length);
-    }
-    
     //Geth mothods
     public float getLength(){
         return Length;
     }
     public float getWidth(){
         return Width;
+    }
+    
+    public float getArea(){
+        float returnValue = roundFloat(Width*Length);
+        return returnValue;
     }
     
     //Checked area = the area this space object is trying to be fit in to
@@ -38,14 +38,8 @@ public class Space {
         float bellowWidth = (float)binArea.getWidth();
         float bellowLength = ((float)(binArea.getLength()) - ((float)boxArea.getLength()));
         
-        //Rounding
-        DecimalFormat DFW = new DecimalFormat("0000.0");
-        String formattedWidth = DFW.format(bellowWidth);
-        Float returnWidth = Float.parseFloat(formattedWidth);
-        
-        DecimalFormat DFL = new DecimalFormat("0000.0");
-        String formattedLength = DFL.format(bellowLength);
-        Float returnLength = Float.parseFloat(formattedLength);
+        float returnWidth = roundFloat(bellowWidth);
+        float returnLength = roundFloat(bellowLength);
         
         Space bellowArea = new Space(returnWidth, returnLength);
         return bellowArea;
@@ -56,16 +50,18 @@ public class Space {
         float rightLength = ((float)boxArea.getLength());
         
         //Rounding
-        DecimalFormat DFW = new DecimalFormat("0000000000.0");
-        String formattedWidth = DFW.format(rightWidth);
-        Float returnWidth = Float.parseFloat(formattedWidth);
-        
-        DecimalFormat DFL = new DecimalFormat("0000000000.0");
-        String formattedLength = DFL.format(rightLength);
-        Float returnLength = Float.parseFloat(formattedLength);
+        float returnWidth = roundFloat(rightWidth);
+        float returnLength = roundFloat(rightLength);
 
         Space rightArea = new Space(returnWidth, returnLength);
         return rightArea;
+    }
+    
+    private static float roundFloat(float floatToReound){
+        DecimalFormat DF = new DecimalFormat("0000000000.0");
+        String formattedFloat = DF.format(floatToReound);
+        Float returnFloat = Float.parseFloat(formattedFloat);
+        return returnFloat;
     }
     
 }

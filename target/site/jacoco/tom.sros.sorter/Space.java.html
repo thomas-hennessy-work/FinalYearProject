@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Space.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.sorter</a> &gt; <span class="el_source">Space.java</span></div><h1>Space.java</h1><pre class="source lang-java linenums">
-package tom.sros.sorter;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Space.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.sorter</a> &gt; <span class="el_source">Space.java</span></div><h1>Space.java</h1><pre class="source lang-java linenums">package tom.sros.sorter;
+
+import java.text.DecimalFormat;
 
 public class Space {
     
@@ -7,46 +8,59 @@ public class Space {
     float Length;
     
     //Constructor
-<span class="fc" id="L10">    public Space(float width, float length){</span>
-<span class="fc" id="L11">        this.Width = width;</span>
-<span class="fc" id="L12">        Length = length;</span>
-<span class="fc" id="L13">    }</span>
-    
-    @Override
-    public String toString(){
-<span class="fc" id="L17">        return(&quot;Width: &quot; + Width + &quot;, Length: &quot; + Length);</span>
-    }
+<span class="fc" id="L11">    public Space(float width, float length){</span>
+<span class="fc" id="L12">        this.Width = width;</span>
+<span class="fc" id="L13">        Length = length;</span>
+<span class="fc" id="L14">    }</span>
     
     //Geth mothods
     public float getLength(){
-<span class="fc" id="L22">        return Length;</span>
+<span class="fc" id="L18">        return Length;</span>
     }
     public float getWidth(){
-<span class="fc" id="L25">        return Width;</span>
+<span class="fc" id="L21">        return Width;</span>
     }
     
     //Checked area = the area this space object is trying to be fit in to
     public boolean canFit(Space checkedArea){
-<span class="fc bfc" id="L30" title="All 4 branches covered.">        return (checkedArea.getWidth() &gt;= Width &amp;&amp; checkedArea.getLength() &gt;= Length);</span>
+<span class="fc bfc" id="L26" title="All 4 branches covered.">        return (checkedArea.getWidth() &gt;= Width &amp;&amp; checkedArea.getLength() &gt;= Length);</span>
     }
     
     
     //Methods relating to calculating the space to the right and bellow a box once it
     //has been placed
     public Space areaBellow(Space binArea, Space boxArea){
-<span class="fc" id="L37">        float bellowWidth = binArea.getWidth();</span>
-<span class="fc" id="L38">        float bellowLength = ((binArea.getLength()) - (boxArea.getLength()));</span>
+<span class="fc" id="L33">        float bellowWidth = (float)binArea.getWidth();</span>
+<span class="fc" id="L34">        float bellowLength = ((float)(binArea.getLength()) - ((float)boxArea.getLength()));</span>
         
-<span class="fc" id="L40">        Space bellowArea = new Space(bellowWidth, bellowLength);</span>
-<span class="fc" id="L41">        return bellowArea;</span>
+        //Rounding
+<span class="fc" id="L37">        DecimalFormat DFW = new DecimalFormat(&quot;0000.0&quot;);</span>
+<span class="fc" id="L38">        String formattedWidth = DFW.format(bellowWidth);</span>
+<span class="fc" id="L39">        Float returnWidth = Float.parseFloat(formattedWidth);</span>
+        
+<span class="fc" id="L41">        DecimalFormat DFL = new DecimalFormat(&quot;0000.0&quot;);</span>
+<span class="fc" id="L42">        String formattedLength = DFL.format(bellowLength);</span>
+<span class="fc" id="L43">        Float returnLength = Float.parseFloat(formattedLength);</span>
+        
+<span class="fc" id="L45">        Space bellowArea = new Space(returnWidth, returnLength);</span>
+<span class="fc" id="L46">        return bellowArea;</span>
     }
     
     public Space areaRight(Space binArea, Space boxArea){
-<span class="fc" id="L45">        float rightWidth = ((binArea.getWidth()) - (boxArea.getWidth()));</span>
-<span class="fc" id="L46">        float rightLength = (boxArea.getLength());</span>
+<span class="fc" id="L50">        float rightWidth = (((float)binArea.getWidth()) - ((float)boxArea.getWidth()));</span>
+<span class="fc" id="L51">        float rightLength = ((float)boxArea.getLength());</span>
         
-<span class="fc" id="L48">        Space rightArea = new Space(rightWidth, rightLength);</span>
-<span class="fc" id="L49">        return rightArea;</span>
+        //Rounding
+<span class="fc" id="L54">        DecimalFormat DFW = new DecimalFormat(&quot;0000000000.0&quot;);</span>
+<span class="fc" id="L55">        String formattedWidth = DFW.format(rightWidth);</span>
+<span class="fc" id="L56">        Float returnWidth = Float.parseFloat(formattedWidth);</span>
+        
+<span class="fc" id="L58">        DecimalFormat DFL = new DecimalFormat(&quot;0000000000.0&quot;);</span>
+<span class="fc" id="L59">        String formattedLength = DFL.format(rightLength);</span>
+<span class="fc" id="L60">        Float returnLength = Float.parseFloat(formattedLength);</span>
+
+<span class="fc" id="L62">        Space rightArea = new Space(returnWidth, returnLength);</span>
+<span class="fc" id="L63">        return rightArea;</span>
     }
     
 }

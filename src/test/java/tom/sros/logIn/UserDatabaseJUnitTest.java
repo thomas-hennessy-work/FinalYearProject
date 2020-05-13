@@ -226,12 +226,18 @@ public class UserDatabaseJUnitTest {
             fail("User should not have been removed");
         }
     }
+    
+    @Test
+    @Order(7)
+    public void testUserNameExists(){
+        assertEquals(false, UDB.userNameExists(dataBaseName, user1.getUserName()));
+        assertEquals(true, UDB.userNameExists(dataBaseName, user2.getUserName()));
+    }
+    
+    @Test
+    @Order(7)
+    public void testUserIDExists(){
+        assertEquals(false, UDB.userIDExists(dataBaseName, user1.getID()));
+        assertEquals(true, UDB.userIDExists(dataBaseName, user2.getID()));
+    }
 }
-
-/*
-
-
-removeUser
-
-
-*/

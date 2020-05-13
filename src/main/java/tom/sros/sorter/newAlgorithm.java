@@ -64,31 +64,34 @@ public class newAlgorithm {
     }
     
         while(!boxesAvailable.isEmpty() && !binsAvailable.isEmpty()){
-            List<Bin> tallestBins = new ArrayList<>();
+            List<Bin> largestBins = new ArrayList<>();
             //obtaining a list of the tallest bins available
             binsAvailable.forEach((currentBin) -> {
-                if (tallestBins.isEmpty()){
-                    tallestBins.add(currentBin);
+                if (largestBins.isEmpty()){
+                    largestBins.add(currentBin);
                 }
-                else if (tallestBins.get(0).getHeight() < currentBin.getHeight()){
-                    tallestBins.clear();
-                    tallestBins.add(currentBin);
+                else if (largestBins.get(0).getArea().getArea() < currentBin.getArea().getArea()){
+                    largestBins.clear();
+                    largestBins.add(currentBin);
                 }
-                else if(tallestBins.get(0).getHeight() == currentBin.getHeight())
-                    tallestBins.add(currentBin);
+                else if(largestBins.get(0).getArea().getArea() == currentBin.getArea().getArea())
+                    largestBins.add(currentBin);
             });
 
             //Sort the boxes available in to the curent talest bin
             ItemDatabase IDB = new ItemDatabase();
-            for (Bin currentBin: tallestBins){
+            for (Bin currentBin: largestBins){
+                
                 freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable, dataBaseName);
+                
                 for(Box currentBox: freshSortBoxes){
                    //Remove any boxes that have been sorted from the unsorted list
                    if(IDB.blockRepeatingBoxEntry(currentBox, dataBaseName)){
-                    IDB.addBoxLocation(currentBox, dataBaseName);
+                   IDB.addBoxLocation(currentBox, dataBaseName);
                    }
                    boxesAvailable.remove(currentBox);
                 }
+                
                 binsAvailable.remove(currentBin);
             }
         }

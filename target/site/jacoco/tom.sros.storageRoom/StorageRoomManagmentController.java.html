@@ -75,150 +75,228 @@ import tom.sros.sorter.newAlgorithm;
      */
     @FXML
     private void addToList(){
-<span class="nc" id="L78">        int amount = Integer.parseInt(addAmount.getText());</span>
-<span class="nc" id="L79">        float width = Float.parseFloat(addWidth.getText());</span>
-<span class="nc" id="L80">        float length = Float.parseFloat(addLength.getText());</span>
-<span class="nc" id="L81">        float height = Float.parseFloat(addHeight.getText());</span>
-<span class="nc" id="L82">        System.out.println(&quot;Amount: &quot; + amount + &quot; Width: &quot; + width + &quot; Length: &quot; + length + &quot; Height: &quot; + height);</span>
+<span class="nc" id="L78">        String inAmount = addAmount.getText();</span>
+<span class="nc" id="L79">        String inWidth = addWidth.getText();</span>
+<span class="nc" id="L80">        String inLength = addLength.getText();</span>
+<span class="nc" id="L81">        String inHeight = addHeight.getText();</span>
         
-<span class="nc" id="L84">        Bin binToAdd = new Bin(amount, width, length, height);</span>
-<span class="nc" id="L85">        newBinTable.getItems().add(binToAdd);</span>
-<span class="nc" id="L86">        toAddList.add(binToAdd);</span>
+<span class="nc" id="L83">        JFrame inputDimensionWarning = new JFrame();</span>
+<span class="nc" id="L84">        JFrame inputAmoutnWarning = new JFrame();</span>
         
-<span class="nc" id="L88">        addAmount.setText(&quot;&quot;);</span>
-<span class="nc" id="L89">        addWidth.setText(&quot;&quot;);</span>
-<span class="nc" id="L90">        addLength.setText(&quot;&quot;);</span>
-<span class="nc" id="L91">        addHeight.setText(&quot;&quot;);</span>
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L86">        boolean dimensionValid = dimensionsValidation(inWidth, inLength, inHeight);</span>
+<span class="nc" id="L87">        boolean amountValid = amountValidation(inAmount);</span>
+
+<span class="nc bnc" id="L89" title="All 4 branches missed.">        if(dimensionValid == true &amp;&amp; amountValid == true){</span>
+<span class="nc" id="L90">            int amount = Integer.parseInt(inAmount);</span>
+<span class="nc" id="L91">            float width = Float.parseFloat(inWidth);</span>
+<span class="nc" id="L92">            float length = Float.parseFloat(inLength);</span>
+<span class="nc" id="L93">            float height = Float.parseFloat(inHeight);</span>
+            
+<span class="nc" id="L95">            Bin binToAdd = new Bin(amount, width, length, height);</span>
+<span class="nc" id="L96">            newBinTable.getItems().add(binToAdd);</span>
+<span class="nc" id="L97">            toAddList.add(binToAdd);</span>
+
+<span class="nc" id="L99">            addAmount.setText(&quot;&quot;);</span>
+<span class="nc" id="L100">            addWidth.setText(&quot;&quot;);</span>
+<span class="nc" id="L101">            addLength.setText(&quot;&quot;);</span>
+<span class="nc" id="L102">            addHeight.setText(&quot;&quot;);</span>
+<span class="nc" id="L103">        }</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        else if(dimensionValid == false){</span>
+<span class="nc" id="L105">            JOptionPane.showMessageDialog(inputDimensionWarning, &quot;Dimensions are not valid, please enter valid dimensions&quot;, &quot;Invalid dimensions&quot;, 1);</span>
+        }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        else if(amountValid == false){</span>
+<span class="nc" id="L108">            JOptionPane.showMessageDialog(inputAmoutnWarning, &quot;Amount is not valid, please enter a valid amount&quot;, &quot;Invalid amount&quot;, 1);</span>
+        }
+<span class="nc" id="L110">    }</span>
     
     /**
      * Removes a bin from the list of bins ready to be added
      */
     @FXML
     private void removeBin(){
-<span class="nc" id="L99">        TableViewSelectionModel binSelection = newBinTable.getSelectionModel();</span>
-<span class="nc" id="L100">        List&lt;Bin&gt; binsToRemove = binSelection.getSelectedItems();</span>
+<span class="nc" id="L117">        TableViewSelectionModel binSelection = newBinTable.getSelectionModel();</span>
+<span class="nc" id="L118">        List&lt;Bin&gt; binsToRemove = binSelection.getSelectedItems();</span>
         
-<span class="nc" id="L102">        binsToRemove.forEach((currentBin) -&gt; {</span>
-<span class="nc" id="L103">            toAddList.remove(currentBin);</span>
-<span class="nc" id="L104">        });</span>
+<span class="nc" id="L120">        binsToRemove.forEach((currentBin) -&gt; {</span>
+<span class="nc" id="L121">            toAddList.remove(currentBin);</span>
+<span class="nc" id="L122">        });</span>
         
-<span class="nc" id="L106">        newBinTable.getItems().removeAll(binsToRemove);</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L124">        newBinTable.getItems().removeAll(binsToRemove);</span>
+<span class="nc" id="L125">    }</span>
     
     /**
      * Deletes a bin from the din individual table, only if the bin is empty
      */
     @FXML 
     private void deleteBin(){
-<span class="nc" id="L114">        String deleteID = deleteBinText.getText();</span>
+<span class="nc" id="L132">        String deleteID = deleteBinText.getText();</span>
         
-<span class="nc" id="L116">        JFrame binExistanceWarning = new JFrame();</span>
-<span class="nc" id="L117">        JFrame binOccupiedWarning = new JFrame();</span>
+<span class="nc" id="L134">        JFrame binExistanceWarning = new JFrame();</span>
+<span class="nc" id="L135">        JFrame binOccupiedWarning = new JFrame();</span>
         
         //Checks the existance of the bin
-<span class="nc bnc" id="L120" title="All 2 branches missed.">        if(BinDataBase.binIDCheck(dataBaseName, deleteID) == false){</span>
-<span class="nc" id="L121">            JOptionPane.showMessageDialog(binExistanceWarning, &quot;Bin with that ID dose not exist.&quot;, &quot;Unrecognised bin&quot;, 2);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if(BinDataBase.binIDCheck(dataBaseName, deleteID) == false){</span>
+<span class="nc" id="L139">            JOptionPane.showMessageDialog(binExistanceWarning, &quot;Bin with that ID dose not exist.&quot;, &quot;Unrecognised bin&quot;, 2);</span>
         }
         //Checks if the bin is occupied
-<span class="nc bnc" id="L124" title="All 2 branches missed.">        else if(BinDataBase.getStoredBoxesAndIndividualize(dataBaseName, (new Bin(deleteID))).getOccupied()){</span>
-<span class="nc" id="L125">            JOptionPane.showMessageDialog(binOccupiedWarning, &quot;The bin selected for deletion is occupied.&quot;, &quot;Occupied bin&quot;, 2);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        else if(BinDataBase.getStoredBoxesAndIndividualize(dataBaseName, (new Bin(deleteID))).getOccupied()){</span>
+<span class="nc" id="L143">            JOptionPane.showMessageDialog(binOccupiedWarning, &quot;The bin selected for deletion is occupied.&quot;, &quot;Occupied bin&quot;, 2);</span>
         }
         else{
-<span class="nc" id="L128">            BinDataBase.deleteBin(deleteID, dataBaseName);</span>
+<span class="nc" id="L146">            BinDataBase.deleteBin(deleteID, dataBaseName);</span>
         }
         
-<span class="nc" id="L131">        existingBinTable.getItems().clear();</span>
+<span class="nc" id="L149">        existingBinTable.getItems().clear();</span>
         
-<span class="nc" id="L133">        populateBinTable();</span>
-<span class="nc" id="L134">    }</span>
+<span class="nc" id="L151">        populateBinTable();</span>
+<span class="nc" id="L152">    }</span>
     
     /**
      * Adds a bin to the list of bins to be removed when the full storage room sort is executed
      */
     @FXML
     private void addDeleteSortTable(){
-<span class="nc" id="L141">        String deleteSortID = deleteSortText.getText();</span>
+<span class="nc" id="L159">        String deleteSortID = deleteSortText.getText();</span>
         
-<span class="nc" id="L143">        JFrame binExistanceWarning = new JFrame();</span>
-<span class="nc" id="L144">        JFrame binNotOccupiedWarning = new JFrame();</span>
+<span class="nc" id="L161">        JFrame binExistanceWarning = new JFrame();</span>
+<span class="nc" id="L162">        JFrame binNotOccupiedWarning = new JFrame();</span>
         
         //Checks the existance of the bin
-<span class="nc bnc" id="L147" title="All 2 branches missed.">        if(BinDataBase.binIDCheck(dataBaseName, deleteSortID) == false){</span>
-<span class="nc" id="L148">            JOptionPane.showMessageDialog(binExistanceWarning, &quot;Bin with that ID dose not exist.&quot;, &quot;Unrecognised bin&quot;, 2);</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if(BinDataBase.binIDCheck(dataBaseName, deleteSortID) == false){</span>
+<span class="nc" id="L166">            JOptionPane.showMessageDialog(binExistanceWarning, &quot;Bin with that ID dose not exist.&quot;, &quot;Unrecognised bin&quot;, 2);</span>
         }
         //Checks if the bin is occupied, if not, it is recomended to delete it from the remove bins tab
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        else if(!(BinDataBase.getStoredBoxesAndIndividualize(dataBaseName, (new Bin(deleteSortID))).getOccupied())){</span>
-<span class="nc" id="L152">            JOptionPane.showMessageDialog(binNotOccupiedWarning, &quot;The bin selected for deletion is not occupied. It can be deleted from the remove bins tab.&quot;, &quot;Occupied bin&quot;, 2);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        else if(!(BinDataBase.getStoredBoxesAndIndividualize(dataBaseName, (new Bin(deleteSortID))).getOccupied())){</span>
+<span class="nc" id="L170">            JOptionPane.showMessageDialog(binNotOccupiedWarning, &quot;The bin selected for deletion is not occupied. It can be deleted from the remove bins tab.&quot;, &quot;Occupied bin&quot;, 2);</span>
         }
         else{
-<span class="nc" id="L155">            sortDeleteTable.getItems().add(new Bin(deleteSortID));</span>
-<span class="nc" id="L156">            toRemoveList.add(new Bin(deleteSortID));</span>
+<span class="nc" id="L173">            sortDeleteTable.getItems().add(new Bin(deleteSortID));</span>
+<span class="nc" id="L174">            toRemoveList.add(new Bin(deleteSortID));</span>
         }
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L176">    }</span>
     
     /**
      * Resorts all the bins within the system, removing any specified bins
      */
     @FXML
     private void reSortBins(){
-<span class="nc" id="L165">        newAlgorithm NA = new newAlgorithm();</span>
-<span class="nc" id="L166">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L183">        newAlgorithm NA = new newAlgorithm();</span>
+<span class="nc" id="L184">        ItemDatabase ITDB = new ItemDatabase();</span>
         
         //Obtains the information about all boxes
-<span class="nc" id="L169">        List&lt;Box&gt; allBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);</span>
-<span class="nc" id="L170">        ITDB.clearBoxLocationData(dataBaseName);</span>
+<span class="nc" id="L187">        List&lt;Box&gt; allBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);</span>
+<span class="nc" id="L188">        ITDB.clearBoxLocationData(dataBaseName);</span>
         
         //Puts all boxes through the sorting algorithm, minus the bins specified
-<span class="nc" id="L173">        NA.sortAndAddToDB(dataBaseName, allBoxes, toRemoveList);</span>
+<span class="nc" id="L191">        NA.sortAndAddToDB(dataBaseName, allBoxes, toRemoveList);</span>
         
         //Removes any bins from the database that were specified
-<span class="nc" id="L176">        toRemoveList.forEach((currentBin) -&gt; {</span>
-<span class="nc" id="L177">            BinDataBase.deleteBin(currentBin.getName(), dataBaseName);</span>
-<span class="nc" id="L178">        });</span>
-<span class="nc" id="L179">    }</span>
+<span class="nc" id="L194">        toRemoveList.forEach((currentBin) -&gt; {</span>
+<span class="nc" id="L195">            BinDataBase.deleteBin(currentBin.getName(), dataBaseName);</span>
+<span class="nc" id="L196">        });</span>
+<span class="nc" id="L197">    }</span>
     
     @FXML
     private void addUnsortedBoxes(){
-<span class="nc" id="L183">        ItemDatabase ITDB = new ItemDatabase();</span>
-<span class="nc" id="L184">        newAlgorithm NA = new newAlgorithm();</span>
+<span class="nc" id="L201">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L202">        newAlgorithm NA = new newAlgorithm();</span>
         
-<span class="nc" id="L186">        List&lt;Box&gt; boxUnsortedList = ITDB.getUnsortedBoxDisplay(dataBaseName);</span>
-<span class="nc" id="L187">        List&lt;Bin&gt; emptyLisy = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L204">        List&lt;Box&gt; boxUnsortedList = ITDB.getUnsortedBoxDisplay(dataBaseName);</span>
+<span class="nc" id="L205">        List&lt;Bin&gt; emptyLisy = new ArrayList&lt;&gt;();</span>
         
-<span class="nc" id="L189">        ITDB.emptyUnsortedTable(dataBaseName);</span>
-<span class="nc" id="L190">        NA.sortAndAddToDB(dataBaseName, boxUnsortedList, emptyLisy);</span>
+<span class="nc" id="L207">        ITDB.emptyUnsortedTable(dataBaseName);</span>
+<span class="nc" id="L208">        NA.sortAndAddToDB(dataBaseName, boxUnsortedList, emptyLisy);</span>
         
-<span class="nc" id="L192">        unsortedTable.getItems().clear();</span>
-<span class="nc" id="L193">        populateUnsortedTable();</span>
-<span class="nc" id="L194">    }</span>
+<span class="nc" id="L210">        unsortedTable.getItems().clear();</span>
+<span class="nc" id="L211">        populateUnsortedTable();</span>
+<span class="nc" id="L212">    }</span>
     
     //Logout and home buttons
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L199">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
-<span class="nc" id="L200">    }</span>
+<span class="nc" id="L217">        App.setRoot(&quot;/tom/sros/logIn/logInScreen&quot;);</span>
+<span class="nc" id="L218">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L203">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
-<span class="nc" id="L204">    }</span>
+<span class="nc" id="L221">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc" id="L222">    }</span>
     
     /**
      * Populates the table of existing bins
      */
     private void populateBinTable(){
-<span class="nc" id="L210">        List&lt;Bin&gt; binInfoList = BinDataBase.getBinInfo(dataBaseName);</span>
-<span class="nc" id="L211">        binInfoList.forEach((currentBin) -&gt; {</span>
-<span class="nc" id="L212">            existingBinTable.getItems().add(currentBin);</span>
-<span class="nc" id="L213">        });</span>
-<span class="nc" id="L214">    }</span>
+<span class="nc" id="L228">        List&lt;Bin&gt; binInfoList = BinDataBase.getBinInfo(dataBaseName);</span>
+<span class="nc" id="L229">        binInfoList.forEach((currentBin) -&gt; {</span>
+<span class="nc" id="L230">            existingBinTable.getItems().add(currentBin);</span>
+<span class="nc" id="L231">        });</span>
+<span class="nc" id="L232">    }</span>
     
     private void populateUnsortedTable(){
-<span class="nc" id="L217">        ItemDatabase ITDB = new ItemDatabase();</span>
-<span class="nc" id="L218">        List&lt;Box&gt; boxInfoList =  ITDB.getUnsortedBoxDisplay(dataBaseName);</span>
-<span class="nc" id="L219">        boxInfoList.forEach((currentBox) -&gt; {</span>
-<span class="nc" id="L220">            unsortedTable.getItems().add(currentBox);</span>
-<span class="nc" id="L221">        });</span>
-<span class="nc" id="L222">    }</span>
+<span class="nc" id="L235">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L236">        List&lt;Box&gt; boxInfoList =  ITDB.getUnsortedBoxDisplay(dataBaseName);</span>
+<span class="nc" id="L237">        boxInfoList.forEach((currentBox) -&gt; {</span>
+<span class="nc" id="L238">            unsortedTable.getItems().add(currentBox);</span>
+<span class="nc" id="L239">        });</span>
+<span class="nc" id="L240">    }</span>
+    
+    private boolean dimensionsValidation(String width, String length, String height){
+<span class="nc" id="L243">        boolean valid = true;</span>
+        
+        //Validating dimensions are boolean values and are larger than 0
+        try{
+<span class="nc" id="L247">            int widthDecPos = width.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L248" title="All 4 branches missed.">            if(widthDecPos != -1 &amp;&amp; (width.length() - widthDecPos) != 2){</span>
+<span class="nc" id="L249">                valid = false;</span>
+            }
+<span class="nc" id="L251">            Float f = Float.parseFloat(width);</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L253">                valid = false;</span>
+            }
+<span class="nc" id="L255">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L256">            valid = false;</span>
+<span class="nc" id="L257">        }</span>
+        
+        try{
+<span class="nc" id="L260">            int lengthDecPos = length.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L261" title="All 4 branches missed.">            if(lengthDecPos != -1 &amp;&amp; (length.length() - lengthDecPos) != 2){</span>
+<span class="nc" id="L262">                valid = false;</span>
+            }
+<span class="nc" id="L264">            Float f = Float.parseFloat(length);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L266">                valid = false;</span>
+            }
+<span class="nc" id="L268">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L269">            valid = false;</span>
+<span class="nc" id="L270">        }</span>
+        
+        try{
+<span class="nc" id="L273">            int heightDecPos = height.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L274" title="All 4 branches missed.">            if(heightDecPos != -1 &amp;&amp; (height.length() - heightDecPos) != 2){</span>
+<span class="nc" id="L275">                valid = false;</span>
+            }
+<span class="nc" id="L277">            Float f = Float.parseFloat(height);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L279">                valid = false;</span>
+            }
+<span class="nc" id="L281">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L282">            valid = false;</span>
+<span class="nc" id="L283">        }</span>
+<span class="nc" id="L284">        return valid;</span>
+    }
+     
+     private boolean amountValidation(String amount){
+<span class="nc" id="L288">        boolean valid = true;</span>
+        
+        //Validating dimensions are boolean values and are larger than 0
+        try{
+<span class="nc" id="L292">            int i = Integer.parseInt(amount);</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">            if(i &lt;= 0){</span>
+<span class="nc" id="L294">                valid = false;</span>
+            }
+<span class="nc" id="L296">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L297">            valid = false;</span>
+<span class="nc" id="L298">        }</span>
+<span class="nc" id="L299">        return valid;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

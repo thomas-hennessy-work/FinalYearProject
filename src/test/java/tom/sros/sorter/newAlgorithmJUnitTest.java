@@ -335,4 +335,19 @@ public class newAlgorithmJUnitTest {
         
         assertEquals((float)0, availableSpaces.get(0).getZ(), "Z position should match");
     }
+    
+    @Test
+    @Order(10)
+    public void testUnsortedBoxList(){
+        addBox1.setAmount(11);
+        List<Bin> emptyList = new ArrayList<>();
+        List<Box> addBoxes = new ArrayList<>();
+        
+        addBoxes.add(addBox1);
+        
+        NA.sortAndAddToDB(dataBaseName, addBoxes, emptyList);
+        
+        assertEquals(addBox1.getID(), ITDB.getUnsortedBoxDisplay(dataBaseName).get(0).getID());
+        assertEquals(1, ITDB.getUnsortedBoxDisplay(dataBaseName).get(0).getAmount());
+    }
 }

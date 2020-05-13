@@ -112,24 +112,38 @@ public class AddItemToDataBaseNonManagerController implements Initializable{
         
         //Validating dimensions are boolean values and are larger than 0
         try{
+            int widthDecPos = width.indexOf(".");
+            if(widthDecPos != -1 && (width.length() - widthDecPos) != 2){
+                valid = false;
+            }
             Float f = Float.parseFloat(width);
-            if(f < 0){
+            if(f <= 0){
                 valid = false;
             }
         } catch (NumberFormatException NFE){
             valid = false;
         }
+        
         try{
+            int lengthDecPos = length.indexOf(".");
+            if(lengthDecPos != -1 && (length.length() - lengthDecPos) != 2){
+                valid = false;
+            }
             Float f = Float.parseFloat(length);
-            if(f < 0){
+            if(f <= 0){
                 valid = false;
             }
         } catch (NumberFormatException NFE){
             valid = false;
         }
+        
         try{
+            int heightDecPos = height.indexOf(".");
+            if(heightDecPos != -1 && (height.length() - heightDecPos) != 2){
+                valid = false;
+            }
             Float f = Float.parseFloat(height);
-            if(f < 0){
+            if(f <= 0){
                 valid = false;
             }
         } catch (NumberFormatException NFE){
