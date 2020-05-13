@@ -10,12 +10,12 @@ public class HomeScreenController {
     //in the system.
     @FXML
     private void logOut() throws IOException{
-        App.setRoot("/tom/sros/logIn/logInScreen");
+        App.setRoot("/tom/sros/login/logInScreen");
     }
     
     @FXML
     private void userManagmentBtn() throws IOException{
-        App.setRoot("/tom/sros/logIn/userManagment");
+        App.setRoot("/tom/sros/login/userManagment");
     }
     
     @FXML
@@ -25,7 +25,7 @@ public class HomeScreenController {
     
     @FXML
     private void addToStrgRoom() throws IOException{
-        App.setRoot("/tom/sros/storageRoom/AddToStorageRoomScreen");
+        App.setRoot("/tom/sros/storageRoom/addToStorageRoomScreen");
     }
     
     @FXML

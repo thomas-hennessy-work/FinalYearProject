@@ -21,46 +21,47 @@ public class Space {
 <span class="fc" id="L21">        return Width;</span>
     }
     
+    public float getArea(){
+<span class="fc" id="L25">        float returnValue = roundFloat(Width*Length);</span>
+<span class="fc" id="L26">        return returnValue;</span>
+    }
+    
     //Checked area = the area this space object is trying to be fit in to
     public boolean canFit(Space checkedArea){
-<span class="fc bfc" id="L26" title="All 4 branches covered.">        return (checkedArea.getWidth() &gt;= Width &amp;&amp; checkedArea.getLength() &gt;= Length);</span>
+<span class="fc bfc" id="L31" title="All 4 branches covered.">        return (checkedArea.getWidth() &gt;= Width &amp;&amp; checkedArea.getLength() &gt;= Length);</span>
     }
     
     
     //Methods relating to calculating the space to the right and bellow a box once it
     //has been placed
     public Space areaBellow(Space binArea, Space boxArea){
-<span class="fc" id="L33">        float bellowWidth = (float)binArea.getWidth();</span>
-<span class="fc" id="L34">        float bellowLength = ((float)(binArea.getLength()) - ((float)boxArea.getLength()));</span>
+<span class="fc" id="L38">        float bellowWidth = (float)binArea.getWidth();</span>
+<span class="fc" id="L39">        float bellowLength = ((float)(binArea.getLength()) - ((float)boxArea.getLength()));</span>
         
-        //Rounding
-<span class="fc" id="L37">        DecimalFormat DFW = new DecimalFormat(&quot;0000.0&quot;);</span>
-<span class="fc" id="L38">        String formattedWidth = DFW.format(bellowWidth);</span>
-<span class="fc" id="L39">        Float returnWidth = Float.parseFloat(formattedWidth);</span>
+<span class="fc" id="L41">        float returnWidth = roundFloat(bellowWidth);</span>
+<span class="fc" id="L42">        float returnLength = roundFloat(bellowLength);</span>
         
-<span class="fc" id="L41">        DecimalFormat DFL = new DecimalFormat(&quot;0000.0&quot;);</span>
-<span class="fc" id="L42">        String formattedLength = DFL.format(bellowLength);</span>
-<span class="fc" id="L43">        Float returnLength = Float.parseFloat(formattedLength);</span>
-        
-<span class="fc" id="L45">        Space bellowArea = new Space(returnWidth, returnLength);</span>
-<span class="fc" id="L46">        return bellowArea;</span>
+<span class="fc" id="L44">        Space bellowArea = new Space(returnWidth, returnLength);</span>
+<span class="fc" id="L45">        return bellowArea;</span>
     }
     
     public Space areaRight(Space binArea, Space boxArea){
-<span class="fc" id="L50">        float rightWidth = (((float)binArea.getWidth()) - ((float)boxArea.getWidth()));</span>
-<span class="fc" id="L51">        float rightLength = ((float)boxArea.getLength());</span>
+<span class="fc" id="L49">        float rightWidth = (((float)binArea.getWidth()) - ((float)boxArea.getWidth()));</span>
+<span class="fc" id="L50">        float rightLength = ((float)boxArea.getLength());</span>
         
         //Rounding
-<span class="fc" id="L54">        DecimalFormat DFW = new DecimalFormat(&quot;0000000000.0&quot;);</span>
-<span class="fc" id="L55">        String formattedWidth = DFW.format(rightWidth);</span>
-<span class="fc" id="L56">        Float returnWidth = Float.parseFloat(formattedWidth);</span>
-        
-<span class="fc" id="L58">        DecimalFormat DFL = new DecimalFormat(&quot;0000000000.0&quot;);</span>
-<span class="fc" id="L59">        String formattedLength = DFL.format(rightLength);</span>
-<span class="fc" id="L60">        Float returnLength = Float.parseFloat(formattedLength);</span>
+<span class="fc" id="L53">        float returnWidth = roundFloat(rightWidth);</span>
+<span class="fc" id="L54">        float returnLength = roundFloat(rightLength);</span>
 
-<span class="fc" id="L62">        Space rightArea = new Space(returnWidth, returnLength);</span>
-<span class="fc" id="L63">        return rightArea;</span>
+<span class="fc" id="L56">        Space rightArea = new Space(returnWidth, returnLength);</span>
+<span class="fc" id="L57">        return rightArea;</span>
+    }
+    
+    private static float roundFloat(float floatToReound){
+<span class="fc" id="L61">        DecimalFormat DF = new DecimalFormat(&quot;0000000000.0&quot;);</span>
+<span class="fc" id="L62">        String formattedFloat = DF.format(floatToReound);</span>
+<span class="fc" id="L63">        Float returnFloat = Float.parseFloat(formattedFloat);</span>
+<span class="fc" id="L64">        return returnFloat;</span>
     }
     
 }

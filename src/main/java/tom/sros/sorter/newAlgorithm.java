@@ -51,6 +51,7 @@ public class newAlgorithm {
     List<Bin> binsAvailable = BinDataBase.getBinInfo(dataBaseName);
     //obtaining box information
     List<Box> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
+    List<Box> boxAvailableSorted = sortBySize(boxesAvailable);
     
     //Removing any bins from the algorithm that have been specified (if any have been specified)
     if(removedBins != null){
@@ -63,7 +64,7 @@ public class newAlgorithm {
         });
     }
     
-        while(!boxesAvailable.isEmpty() && !binsAvailable.isEmpty()){
+        while(!boxAvailableSorted.isEmpty() && !binsAvailable.isEmpty()){
             List<Bin> largestBins = new ArrayList<>();
             //obtaining a list of the tallest bins available
             binsAvailable.forEach((currentBin) -> {
@@ -82,14 +83,14 @@ public class newAlgorithm {
             ItemDatabase IDB = new ItemDatabase();
             for (Bin currentBin: largestBins){
                 
-                freshSortBoxes = binaryTree.sort2DBP(currentBin, boxesAvailable, dataBaseName);
+                freshSortBoxes = binaryTree.sort2DBP(currentBin, boxAvailableSorted, dataBaseName);
                 
                 for(Box currentBox: freshSortBoxes){
                    //Remove any boxes that have been sorted from the unsorted list
                    if(IDB.blockRepeatingBoxEntry(currentBox, dataBaseName)){
                    IDB.addBoxLocation(currentBox, dataBaseName);
                    }
-                   boxesAvailable.remove(currentBox);
+                   boxAvailableSorted.remove(currentBox);
                 }
                 
                 binsAvailable.remove(currentBin);
@@ -97,12 +98,48 @@ public class newAlgorithm {
         }
         
         //Used if there are unsorted boxes once the algorithm is completed. Places the bins in the unsorted table
-        if(!boxesAvailable.isEmpty()){
+        if(!boxAvailableSorted.isEmpty()){
             JFrame unsortedWarning = new JFrame();
             JOptionPane.showMessageDialog(unsortedWarning, "Not all the boxes were able to fit in the bins provided. The unsorted boxes have been added to the unsorted boxes tab in storage room managment.", "Unsorted boxes", 2);
             
             ItemDatabase ITDB = new ItemDatabase();
-            ITDB.addUnsorted(boxesAvailable, dataBaseName);
+            ITDB.addUnsorted(boxAvailableSorted, dataBaseName);
         }
+    }
+    
+    private static List<Box> sortBySize(List<Box> boxesAvaialble){
+        List<Box> tempList = boxesAvaialble;
+        List<Box> returnList = new ArrayList<>();
+        
+        for(Box currentBox : tempList){
+            System.out.println("Initial list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
+        }
+        
+        while(!tempList.isEmpty()){
+            
+            List<Box> largestBoxes = new ArrayList<>();
+            
+            //Finding the boxes that take the most surface area out of the current tallest boxes
+            tempList.forEach((currentBox) -> {
+                if (largestBoxes.isEmpty()){
+                    largestBoxes.add(currentBox);
+                }
+                else if (largestBoxes.get(0).getArea().getArea() < currentBox.getArea().getArea()){
+                    largestBoxes.clear();
+                    largestBoxes.add(currentBox);
+                }
+                else if(largestBoxes.get(0).getArea().getArea() == currentBox.getArea().getArea())
+                    largestBoxes.add(currentBox);
+            });
+            
+            
+            
+            returnList.addAll(largestBoxes);
+            tempList.removeAll(largestBoxes);
+        }
+        for(Box currentBox : returnList){
+                System.out.println("fianl list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
+            }
+        return returnList;
     }
 }

@@ -89,73 +89,74 @@ import tom.sros.item.ItemDatabase;
 <span class="fc bfc" id="L89" title="All 2 branches covered.">            if(placedSpace != null){</span>
 <span class="fc" id="L90">                ItemDatabase ITDB = new ItemDatabase();</span>
                 
-<span class="pc bpc" id="L92" title="1 of 2 branches missed.">                if(placedSpace.getArea().canFit(item.getArea())){</span>
+                //if(placedSpace.getArea().canFit(item.getArea())){
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">                if(item.getArea().canFit(binSpace)){</span>
                     //Removes old empty space and regesteres new empty spaces. The new empty spaces are then
                     //each added to the empty space list in the binary tree
-<span class="fc" id="L95">                    (ITDB.fillEmptySpace(placedSpace, item, dataBaseName)).forEach((currentEmptySpace) -&gt; {</span>
-<span class="nc" id="L96">                        unocupiedSpace.add(currentEmptySpace);</span>
-<span class="nc" id="L97">                    });</span>
-<span class="fc" id="L98">                    unplaced = false;</span>
-<span class="fc" id="L99">                    item.setBin(currentBin.getName());</span>
-<span class="fc" id="L100">                    return new Node(binSpace, item);</span>
+<span class="fc" id="L96">                    (ITDB.fillEmptySpace(placedSpace, item, dataBaseName)).forEach((currentEmptySpace) -&gt; {</span>
+<span class="nc" id="L97">                        unocupiedSpace.add(currentEmptySpace);</span>
+<span class="nc" id="L98">                    });</span>
+<span class="fc" id="L99">                    unplaced = false;</span>
+<span class="fc" id="L100">                    item.setBin(currentBin.getName());</span>
+<span class="fc" id="L101">                    return new Node(binSpace, item);</span>
                 }else{
-<span class="nc" id="L102">                    return new Node(binSpace, placedSpace);</span>
+<span class="nc" id="L103">                    return new Node(binSpace, placedSpace);</span>
                 }
             }
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">            if(placedSpace == null &amp;&amp; placedBox == null){</span>
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">            if(placedSpace == null &amp;&amp; placedBox == null){</span>
             //Provides information about where the bin is stored and also prevents it from being re-sorted
-<span class="fc" id="L107">                item.setBin(currentBin.getName());</span>
-<span class="fc" id="L108">                unplaced = false;</span>
-<span class="fc" id="L109">                return new Node(binSpace, item);</span>
+<span class="fc" id="L108">                item.setBin(currentBin.getName());</span>
+<span class="fc" id="L109">                unplaced = false;</span>
+<span class="fc" id="L110">                return new Node(binSpace, item);</span>
             }
         }
 
         //If the box can fit in the node to the right, but there is no node right, move to the node right
         //The comparison to current bin is used to check if the box has been placed
-<span class="pc bpc" id="L115" title="2 of 6 branches missed.">        if ((currentNode.getPlacedBox() != null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
+<span class="pc bpc" id="L116" title="2 of 6 branches missed.">        if ((currentNode.getPlacedBox() != null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
             //itterativly adding to the position of the item
-<span class="fc" id="L117">            item.setX(roundFloat(item.getX() + currentNode.getPlacedBox().getWidth()));</span>
+<span class="fc" id="L118">            item.setX(roundFloat(item.getX() + currentNode.getPlacedBox().getWidth()));</span>
             //continuing recursion
-<span class="fc" id="L119">            currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()), dataBaseName);</span>
+<span class="fc" id="L120">            currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()), dataBaseName);</span>
             
             //If the box is not placed and it comes back through the binary tree, the itterative position is undone
-<span class="fc bfc" id="L122" title="All 2 branches covered.">            if(item.getBin() != (currentBin.getName())){</span>
-<span class="fc" id="L123">                item.setX(roundFloat(item.getX() - currentNode.getPlacedBox().getWidth()));</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if(item.getBin() != (currentBin.getName())){</span>
+<span class="fc" id="L124">                item.setX(roundFloat(item.getX() - currentNode.getPlacedBox().getWidth()));</span>
             }
         } 
         //Same as the initial if statement, only it executes on empty spaces rather than stored boxes
-<span class="pc bpc" id="L127" title="5 of 6 branches missed.">        else if((currentNode.getEmptySpace()!= null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
+<span class="pc bpc" id="L128" title="5 of 6 branches missed.">        else if((currentNode.getEmptySpace()!= null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaRight(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
             //itterativly adding to the position of the item
-<span class="nc" id="L129">            item.setX(roundFloat(item.getX() + currentNode.getEmptySpace().getWidth()));</span>
+<span class="nc" id="L130">            item.setX(roundFloat(item.getX() + currentNode.getEmptySpace().getWidth()));</span>
             //continuing recursion
-<span class="nc" id="L131">            currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()), dataBaseName);</span>
+<span class="nc" id="L132">            currentNode.right = addBoxRecursive(currentNode.right, item, currentNode.getBinArea().areaRight(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()), dataBaseName);</span>
             
             //If the box is not placed and it comes back through the binary tree, the itterative position is undone
-<span class="nc bnc" id="L134" title="All 2 branches missed.">            if(item.getBin() != (currentBin.getName())){</span>
-<span class="nc" id="L135">                item.setX(roundFloat(item.getX() - currentNode.getEmptySpace().getWidth()));</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if(item.getBin() != (currentBin.getName())){</span>
+<span class="nc" id="L136">                item.setX(roundFloat(item.getX() - currentNode.getEmptySpace().getWidth()));</span>
             }
         }
         
         //If the box can fit in the node bellow, but there is no node already bellow, move to the node bellow
-<span class="pc bpc" id="L140" title="1 of 6 branches missed.">        if ((currentNode.getPlacedBox() != null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
-<span class="fc" id="L141">            item.setZ(roundFloat(item.getZ() + currentNode.getPlacedBox().getLength()));</span>
-<span class="fc" id="L142">            currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()), dataBaseName);</span>
+<span class="pc bpc" id="L141" title="1 of 6 branches missed.">        if ((currentNode.getPlacedBox() != null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
+<span class="fc" id="L142">            item.setZ(roundFloat(item.getZ() + currentNode.getPlacedBox().getLength()));</span>
+<span class="fc" id="L143">            currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getPlacedBox().getArea()), dataBaseName);</span>
             
-<span class="fc bfc" id="L144" title="All 2 branches covered.">            if(item.getBin() != (currentBin.getName())){</span>
-<span class="fc" id="L145">                item.setZ(roundFloat(item.getZ() - currentNode.getPlacedBox().getLength()));</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if(item.getBin() != (currentBin.getName())){</span>
+<span class="fc" id="L146">                item.setZ(roundFloat(item.getZ() - currentNode.getPlacedBox().getLength()));</span>
             }
         }
-<span class="pc bpc" id="L148" title="5 of 6 branches missed.">        else if((currentNode.getEmptySpace()!= null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
-<span class="nc" id="L149">            item.setZ(roundFloat(item.getZ() + currentNode.getEmptySpace().getLength()));</span>
-<span class="nc" id="L150">            currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()), dataBaseName);</span>
+<span class="pc bpc" id="L149" title="5 of 6 branches missed.">        else if((currentNode.getEmptySpace()!= null) &amp;&amp; (item.getArea().canFit(currentNode.getBinArea().areaBellow(currentNode.getBinArea(), item.getArea()))) &amp;&amp; (item.getBin() != (currentBin.getName()))){</span>
+<span class="nc" id="L150">            item.setZ(roundFloat(item.getZ() + currentNode.getEmptySpace().getLength()));</span>
+<span class="nc" id="L151">            currentNode.below = addBoxRecursive(currentNode.below, item, currentNode.getBinArea().areaBellow(currentNode.getBinArea(), currentNode.getEmptySpace().getArea()), dataBaseName);</span>
             
-<span class="nc bnc" id="L152" title="All 2 branches missed.">            if(item.getBin() != (currentBin.getName())){</span>
-<span class="nc" id="L153">                item.setZ(roundFloat(item.getZ() - currentNode.getEmptySpace().getLength()));</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            if(item.getBin() != (currentBin.getName())){</span>
+<span class="nc" id="L154">                item.setZ(roundFloat(item.getZ() - currentNode.getEmptySpace().getLength()));</span>
             }
         }
         
-<span class="fc" id="L157">        unplaced = false;</span>
-<span class="fc" id="L158">        return currentNode;</span>
+<span class="fc" id="L158">        unplaced = false;</span>
+<span class="fc" id="L159">        return currentNode;</span>
     }
     
     /**
@@ -165,14 +166,14 @@ import tom.sros.item.ItemDatabase;
      * @return list of nodes with boxes stored in them
      */
     private List&lt;Node&gt; traversePreOrder(Node node){
-<span class="fc" id="L168">        List&lt;Node&gt; nodeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L169">        List&lt;Node&gt; nodeList = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (node != null){</span>
-<span class="fc" id="L171">            nodeList.addAll(traversePreOrder(node.below));</span>
-<span class="fc" id="L172">            nodeList.addAll(traversePreOrder(node.right));</span>
-<span class="fc" id="L173">            nodeList.add(node);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (node != null){</span>
+<span class="fc" id="L172">            nodeList.addAll(traversePreOrder(node.below));</span>
+<span class="fc" id="L173">            nodeList.addAll(traversePreOrder(node.right));</span>
+<span class="fc" id="L174">            nodeList.add(node);</span>
         }
-<span class="fc" id="L175">        return nodeList;</span>
+<span class="fc" id="L176">        return nodeList;</span>
     }
     
     /**
@@ -186,42 +187,42 @@ import tom.sros.item.ItemDatabase;
      */
     public static List&lt;Box&gt; sort2DBP(Bin storingBin, List&lt;Box&gt; boxes, String dataBaseName){
         //Creating the binary tree
-<span class="fc" id="L189">        binaryTree binTree = new binaryTree();</span>
-<span class="fc" id="L190">        binTree.currentBin = storingBin;</span>
+<span class="fc" id="L190">        binaryTree binTree = new binaryTree();</span>
+<span class="fc" id="L191">        binTree.currentBin = storingBin;</span>
         
         //Gathering pre-existing boxes from the item database
-<span class="fc" id="L193">        ItemDatabase ITDB = new ItemDatabase();</span>
-<span class="fc" id="L194">        existingBoxes = ITDB.getExistingBoxes(storingBin, dataBaseName);</span>
+<span class="fc" id="L194">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="fc" id="L195">        existingBoxes = ITDB.getExistingBoxes(storingBin, dataBaseName);</span>
         
         //Gathering empty spaces in the bin
-<span class="fc" id="L197">        unocupiedSpace = ITDB.getEmptySpaces(storingBin.getName(), dataBaseName);</span>
+<span class="fc" id="L198">        unocupiedSpace = ITDB.getEmptySpaces(storingBin.getName(), dataBaseName);</span>
         
         //Gathering information about the bin that will be storing the boxes and the boxes that will be placed
-<span class="fc" id="L200">        Space binSpace = storingBin.getArea();</span>
-<span class="fc" id="L201">        List&lt;Box&gt; boxList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L201">        Space binSpace = storingBin.getArea();</span>
+<span class="fc" id="L202">        List&lt;Box&gt; boxList = new ArrayList&lt;&gt;();</span>
         
         //Adding each box provided to the binary tree
-<span class="fc" id="L204">        boxes.forEach((curentBox) -&gt; {</span>
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">            if(curentBox.getHeight() &lt;= storingBin.getHeight()){</span>
-<span class="fc bfc" id="L206" title="All 2 branches covered.">                while(unplaced == true){</span>
-<span class="fc" id="L207">                        binTree.add(curentBox, binSpace, dataBaseName);</span>
+<span class="fc" id="L205">        boxes.forEach((curentBox) -&gt; {</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            if(curentBox.getHeight() &lt;= storingBin.getHeight()){</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">                while(unplaced == true){</span>
+<span class="fc" id="L208">                        binTree.add(curentBox, binSpace, dataBaseName);</span>
                 }
-<span class="fc" id="L209">                unplaced = true;</span>
+<span class="fc" id="L210">                unplaced = true;</span>
             }
-<span class="fc" id="L211">        });</span>
+<span class="fc" id="L212">        });</span>
         
         //Obtaining a list of the nodes
-<span class="fc" id="L214">        List&lt;Node&gt; nodeList = binTree.traversePreOrder(binTree.root);</span>
+<span class="fc" id="L215">        List&lt;Node&gt; nodeList = binTree.traversePreOrder(binTree.root);</span>
         
         //Extracting box information about the sorted boxes from the nodes
-<span class="fc" id="L217">        nodeList.forEach((currentNode) -&gt; {</span>
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            if(currentNode.getPlacedBox() != null){</span>
-<span class="fc" id="L219">                currentNode.getPlacedBox().setBin(storingBin.getName());</span>
-<span class="fc" id="L220">                boxList.add(currentNode.getPlacedBox());</span>
+<span class="fc" id="L218">        nodeList.forEach((currentNode) -&gt; {</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">            if(currentNode.getPlacedBox() != null){</span>
+<span class="fc" id="L220">                currentNode.getPlacedBox().setBin(storingBin.getName());</span>
+<span class="fc" id="L221">                boxList.add(currentNode.getPlacedBox());</span>
             }
-<span class="fc" id="L222">        });</span>
+<span class="fc" id="L223">        });</span>
         
-<span class="fc" id="L224">        return boxList;</span>
+<span class="fc" id="L225">        return boxList;</span>
     }
     
     /**
@@ -233,14 +234,14 @@ import tom.sros.item.ItemDatabase;
      * @return The box (if there is one) stored in that location
      */
     private static Box findPlacedBox(List&lt;Box&gt; placedBoxes, float x, float z){
-<span class="fc" id="L236">        Box returnValue = null;</span>
+<span class="fc" id="L237">        Box returnValue = null;</span>
         
-<span class="fc bfc" id="L238" title="All 2 branches covered.">        for(Box currentPlacedBox: placedBoxes){</span>
-<span class="fc bfc" id="L239" title="All 4 branches covered.">            if((currentPlacedBox.getX() == x) &amp;&amp; (currentPlacedBox.getZ() == z)){</span>
-<span class="fc" id="L240">                returnValue = currentPlacedBox;</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        for(Box currentPlacedBox: placedBoxes){</span>
+<span class="fc bfc" id="L240" title="All 4 branches covered.">            if((currentPlacedBox.getX() == x) &amp;&amp; (currentPlacedBox.getZ() == z)){</span>
+<span class="fc" id="L241">                returnValue = currentPlacedBox;</span>
             }
-<span class="fc" id="L242">        }</span>
-<span class="fc" id="L243">        return returnValue;</span>
+<span class="fc" id="L243">        }</span>
+<span class="fc" id="L244">        return returnValue;</span>
     }
     
     /**
@@ -252,21 +253,21 @@ import tom.sros.item.ItemDatabase;
      * @return The empty space (if there is one) stored in that location
      */
     private static EmptySpace findEmptySpace(List&lt;EmptySpace&gt; emptySpaces, float x, float z){
-<span class="fc" id="L255">        EmptySpace returnValue = null;</span>
+<span class="fc" id="L256">        EmptySpace returnValue = null;</span>
         
-<span class="fc bfc" id="L257" title="All 2 branches covered.">        for(EmptySpace currentSpace: emptySpaces){</span>
-<span class="fc bfc" id="L258" title="All 4 branches covered.">            if((currentSpace.getX() == x) &amp;&amp; (currentSpace.getZ() == z)){</span>
-<span class="fc" id="L259">                returnValue = currentSpace;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        for(EmptySpace currentSpace: emptySpaces){</span>
+<span class="fc bfc" id="L259" title="All 4 branches covered.">            if((currentSpace.getX() == x) &amp;&amp; (currentSpace.getZ() == z)){</span>
+<span class="fc" id="L260">                returnValue = currentSpace;</span>
             }
-<span class="fc" id="L261">        }</span>
-<span class="fc" id="L262">        return returnValue;</span>
+<span class="fc" id="L262">        }</span>
+<span class="fc" id="L263">        return returnValue;</span>
     }
     
     private static float roundFloat(float floatToReound){
-<span class="fc" id="L266">        DecimalFormat DF = new DecimalFormat(&quot;0000000000.0&quot;);</span>
-<span class="fc" id="L267">        String formattedWidth = DF.format(floatToReound);</span>
-<span class="fc" id="L268">        Float returnFloat = Float.parseFloat(formattedWidth);</span>
-<span class="fc" id="L269">        return returnFloat;</span>
+<span class="fc" id="L267">        DecimalFormat DF = new DecimalFormat(&quot;0000000000.0&quot;);</span>
+<span class="fc" id="L268">        String formattedFloat = DF.format(floatToReound);</span>
+<span class="fc" id="L269">        Float returnFloat = Float.parseFloat(formattedFloat);</span>
+<span class="fc" id="L270">        return returnFloat;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

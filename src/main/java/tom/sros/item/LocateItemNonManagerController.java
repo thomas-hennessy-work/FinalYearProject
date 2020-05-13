@@ -59,7 +59,7 @@ public class LocateItemNonManagerController implements Initializable{
     //Logout and home buttons
     @FXML
     private void logOut() throws IOException {
-        App.setRoot("/tom/sros/logIn/logInScreen");
+        App.setRoot("/tom/sros/login/logInScreen");
     }
     @FXML
     private void home() throws IOException{

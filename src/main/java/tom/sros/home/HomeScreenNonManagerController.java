@@ -16,7 +16,7 @@ public class HomeScreenNonManagerController {
     //in the system.
     @FXML
     private void logOut() throws IOException{
-        App.setRoot("/tom/sros/logIn/logInScreen");
+        App.setRoot("/tom/sros/login/logInScreen");
     }
     
     @FXML
@@ -26,7 +26,7 @@ public class HomeScreenNonManagerController {
     
     @FXML
     private void addToStrgRoom() throws IOException{
-        App.setRoot("/tom/sros/storageRoom/AddToStorageRoomScreenNonManager");
+        App.setRoot("/tom/sros/storageRoom/addToStorageRoomScreenNonManager");
     }
     
     @FXML

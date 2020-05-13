@@ -1,4 +1,4 @@
 tom\sros\item\ItemDatabaseJUnitTest.class
+tom\sros\login\UserDatabaseJUnitTest.class
 tom\sros\storageRoom\BinDataBaseJUnitTest.class
-tom\sros\logIn\UserDatabaseJUnitTest.class
 tom\sros\sorter\newAlgorithmJUnitTest.class

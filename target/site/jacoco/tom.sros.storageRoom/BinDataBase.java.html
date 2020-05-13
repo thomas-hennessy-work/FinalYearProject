@@ -231,10 +231,11 @@ import tom.sros.sorter.Box;
 <span class="fc" id="L231">            }else{</span>
 <span class="fc bfc" id="L232" title="All 2 branches covered.">                for(int i = 0; i &lt; currentBin.getAmount() ; i++){</span>
 <span class="fc" id="L233">                    addBinIndividual(existing, dataBaseName);</span>
+<span class="fc" id="L234">                    increaseAmount(existing, dataBaseName);</span>
                 }
             }
-<span class="fc" id="L236">        });</span>
-<span class="fc" id="L237">    }</span>
+<span class="fc" id="L237">        });</span>
+<span class="fc" id="L238">    }</span>
     
     /**
      * Creates a new bin type
@@ -247,30 +248,30 @@ import tom.sros.sorter.Box;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L250">        String newTypeID = null;</span>
+<span class="fc" id="L251">        String newTypeID = null;</span>
 
         try{
             //Connect to database
-<span class="fc" id="L254">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L255">            stmt = c.createStatement();</span>
+<span class="fc" id="L255">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L256">            stmt = c.createStatement();</span>
                 
-<span class="fc" id="L257">            String sql = &quot;INSERT INTO binType (quantity, width, length, height) &quot;</span>
-<span class="fc" id="L258">                        + &quot;VALUES ('&quot; + newBintype.getAmount()+ &quot;', '&quot; + newBintype.getWidth() + &quot;', '&quot; + newBintype.getLength() + &quot;', '&quot; + newBintype.getHeight() + &quot;' );&quot;;</span>
-<span class="fc" id="L259">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L258">            String sql = &quot;INSERT INTO binType (quantity, width, length, height) &quot;</span>
+<span class="fc" id="L259">                        + &quot;VALUES ('&quot; + newBintype.getAmount()+ &quot;', '&quot; + newBintype.getWidth() + &quot;', '&quot; + newBintype.getLength() + &quot;', '&quot; + newBintype.getHeight() + &quot;' );&quot;;</span>
+<span class="fc" id="L260">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L261">            ResultSet rs = stmt.executeQuery(&quot;Select type_ID FROM binType WHERE width = &quot; + newBintype.getWidth() + &quot; AND length = &quot; </span>
-<span class="fc" id="L262">                    + newBintype.getLength() + &quot; AND height = &quot; + newBintype.getHeight());</span>
-<span class="fc" id="L263">            newTypeID = rs.getString(&quot;type_ID&quot;);</span>
+<span class="fc" id="L262">            ResultSet rs = stmt.executeQuery(&quot;Select type_ID FROM binType WHERE width = &quot; + newBintype.getWidth() + &quot; AND length = &quot; </span>
+<span class="fc" id="L263">                    + newBintype.getLength() + &quot; AND height = &quot; + newBintype.getHeight());</span>
+<span class="fc" id="L264">            newTypeID = rs.getString(&quot;type_ID&quot;);</span>
                 
-<span class="fc" id="L265">            stmt.close();</span>
-<span class="fc" id="L266">            c.close();</span>
+<span class="fc" id="L266">            stmt.close();</span>
+<span class="fc" id="L267">            c.close();</span>
         }
-<span class="nc" id="L268">        catch (SQLException e){</span>
+<span class="nc" id="L269">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L270">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L271">            System.exit(0);</span>
-<span class="fc" id="L272">        }</span>
-<span class="fc" id="L273">        return newTypeID;</span>
+<span class="nc" id="L271">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L272">            System.exit(0);</span>
+<span class="fc" id="L273">        }</span>
+<span class="fc" id="L274">        return newTypeID;</span>
     }
     
     /**
@@ -285,21 +286,77 @@ import tom.sros.sorter.Box;
 
         try{
             //Connect to database
-<span class="fc" id="L288">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L289">            stmt = c.createStatement();</span>
+<span class="fc" id="L289">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L290">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L291">            String sql = &quot;INSERT INTO binIndividual (type_ID) VALUES ('&quot; + binTypeID + &quot;');&quot;;</span>
-<span class="fc" id="L292">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L292">            String sql = &quot;INSERT INTO binIndividual (type_ID) VALUES ('&quot; + binTypeID + &quot;');&quot;;</span>
+<span class="fc" id="L293">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L294">            stmt.close();</span>
-<span class="fc" id="L295">            c.close();</span>
+<span class="fc" id="L295">            stmt.close();</span>
+<span class="fc" id="L296">            c.close();</span>
         }
-<span class="nc" id="L297">        catch (SQLException e){</span>
+<span class="nc" id="L298">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L299">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L300">            System.exit(0);</span>
-<span class="fc" id="L301">        }</span>
-<span class="fc" id="L302">    }</span>
+<span class="nc" id="L300">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L301">            System.exit(0);</span>
+<span class="fc" id="L302">        }</span>
+<span class="fc" id="L303">    }</span>
+    
+    /**
+     * Increases the amount of a bin type by 1
+     * 
+     * @param binTypeID
+     * @param dataBaseName 
+     */
+    public void increaseAmount(String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+<span class="fc" id="L317">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L318">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L320">            String sql = &quot;UPDATE binType SET quantity = quantity + 1 WHERE type_ID = &quot; + binTypeID + &quot;;&quot;;</span>
+<span class="fc" id="L321">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L323">            stmt.close();</span>
+<span class="fc" id="L324">            c.close();</span>
+        }
+<span class="nc" id="L326">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L328">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L329">            System.exit(0);</span>
+<span class="fc" id="L330">        }</span>
+<span class="fc" id="L331">    }</span>
+    
+    /**
+     * Decreases the amount of a bin type by 1
+     * 
+     * @param binTypeID
+     * @param dataBaseName 
+     */
+    public static void decreaseAmount(String binTypeID, String dataBaseName){
+        Connection c;
+        Statement stmt;
+
+        try{
+            //Connect to database
+<span class="fc" id="L345">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L346">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L348">            String sql = &quot;UPDATE binType SET quantity = quantity - 1 WHERE type_ID = &quot; + binTypeID + &quot;;&quot;;</span>
+<span class="fc" id="L349">            stmt.executeUpdate(sql);</span>
+            
+<span class="fc" id="L351">            stmt.close();</span>
+<span class="fc" id="L352">            c.close();</span>
+        }
+<span class="nc" id="L354">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L356">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L357">            System.exit(0);</span>
+<span class="fc" id="L358">        }</span>
+<span class="fc" id="L359">    }</span>
     
     /**
      * Verifies if a bin type already exists
@@ -312,57 +369,93 @@ import tom.sros.sorter.Box;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L315">        String returnVal = null;</span>
+<span class="fc" id="L372">        String returnVal = null;</span>
         
         try{
             //Connect to database
-<span class="fc" id="L319">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L376">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
             
-<span class="fc" id="L321">            stmt = c.createStatement();</span>
+<span class="fc" id="L378">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L323">            ResultSet rs = stmt.executeQuery(&quot;SELECT type_ID FROM binType WHERE width = &quot; + binToCheck.getWidth() </span>
-<span class="fc" id="L324">                    + &quot; AND length = &quot; + binToCheck.getLength() + &quot; AND height = &quot; + binToCheck.getHeight() + &quot;;&quot;);</span>
-<span class="fc bfc" id="L325" title="All 2 branches covered.">            if(rs.next()){</span>
-<span class="fc" id="L326">                returnVal = rs.getString(&quot;type_ID&quot;);</span>
+<span class="fc" id="L380">            ResultSet rs = stmt.executeQuery(&quot;SELECT type_ID FROM binType WHERE width = &quot; + binToCheck.getWidth() </span>
+<span class="fc" id="L381">                    + &quot; AND length = &quot; + binToCheck.getLength() + &quot; AND height = &quot; + binToCheck.getHeight() + &quot;;&quot;);</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">            if(rs.next()){</span>
+<span class="fc" id="L383">                returnVal = rs.getString(&quot;type_ID&quot;);</span>
             }
             
-<span class="fc" id="L329">            stmt.close();</span>
-<span class="fc" id="L330">            c.close();</span>
+<span class="fc" id="L386">            stmt.close();</span>
+<span class="fc" id="L387">            c.close();</span>
         }
-<span class="nc" id="L332">        catch (SQLException e){</span>
+<span class="nc" id="L389">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L334">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L335">            System.exit(0);</span>
-<span class="fc" id="L336">        }</span>
-<span class="fc" id="L337">        return returnVal;</span>
+<span class="nc" id="L391">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L392">            System.exit(0);</span>
+<span class="fc" id="L393">        }</span>
+<span class="fc" id="L394">        return returnVal;</span>
     }
     
     /**
-     * Deletes a bin
+     * Deletes an individual bin
      * 
      * @param binID
      * @param dataBaseName 
      */
-    public static void deleteBin (String binID, String dataBaseName){
+    public static void deleteBin(String binID, String dataBaseName){
+<span class="fc" id="L404">        String binType = getIndiBinType(binID, dataBaseName);</span>
+<span class="fc" id="L405">        decreaseAmount(binType, dataBaseName);</span>
+        
         Connection c;
         Statement stmt;
         
         try{
             //Connect to database
-<span class="fc" id="L352">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L353">            stmt = c.createStatement();</span>
+<span class="fc" id="L412">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L413">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L355">            String sql = &quot;DELETE FROM binIndividual WHERE bin_ID = &quot; + binID;</span>
-<span class="fc" id="L356">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L415">            String sql = &quot;DELETE FROM binIndividual WHERE bin_ID = &quot; + binID;</span>
+<span class="fc" id="L416">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L358">            stmt.close();</span>
-<span class="fc" id="L359">            c.close();</span>
+<span class="fc" id="L418">            stmt.close();</span>
+<span class="fc" id="L419">            c.close();</span>
         }
-<span class="nc" id="L361">        catch (SQLException e){</span>
+<span class="nc" id="L421">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L363">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L364">            System.exit(0);</span>
-<span class="fc" id="L365">        }</span>
-<span class="fc" id="L366">    }</span>
+<span class="nc" id="L423">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L424">            System.exit(0);</span>
+<span class="fc" id="L425">        }</span>
+<span class="fc" id="L426">    }</span>
+    
+    /**
+     * Gathers the bin type of an individual bin
+     * 
+     * @param binID
+     * @param databaseName
+     * @return bin type
+     */
+    public static String getIndiBinType(String binID, String databaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="fc" id="L439">        String returnValue = &quot;&quot;;</span>
+        
+        try{
+            //Connect to database
+<span class="fc" id="L443">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + databaseName);</span>
+            
+<span class="fc" id="L445">            stmt = c.createStatement();</span>
+            
+<span class="fc" id="L447">            ResultSet rs = stmt.executeQuery(&quot;SELECT type_ID FROM binIndividual WHERE bin_ID = &quot; + binID + &quot;;&quot;);</span>
+<span class="fc" id="L448">            returnValue = rs.getString(&quot;type_ID&quot;);</span>
+            
+<span class="fc" id="L450">            stmt.close();</span>
+<span class="fc" id="L451">            c.close();</span>
+        }
+<span class="nc" id="L453">        catch (SQLException e){</span>
+            //Error catching
+<span class="nc" id="L455">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L456">            System.exit(0);</span>
+<span class="fc" id="L457">        }</span>
+<span class="fc" id="L458">        return returnValue;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

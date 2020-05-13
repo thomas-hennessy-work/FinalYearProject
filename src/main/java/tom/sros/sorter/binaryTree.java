@@ -201,8 +201,6 @@ public class binaryTree {
         Space binSpace = storingBin.getArea();
         List<Box> boxList = new ArrayList<>();
         
-        //boxes = sortBySize(boxes);
-        
         //Adding each box provided to the binary tree
         boxes.forEach((curentBox) -> {
             if(curentBox.getHeight() <= storingBin.getHeight()){
@@ -263,39 +261,6 @@ public class binaryTree {
             }
         }
         return returnValue;
-    }
-    
-    private static List<Box> sortBySize(List<Box> boxesAvaialble){
-        List<Box> returnList = new ArrayList<>();
-        
-        while(!boxesAvaialble.isEmpty()){
-            
-            List<Box> largestBoxes = new ArrayList<>();
-            
-            //Finding the boxes that take the most surface area out of the current tallest boxes
-            boxesAvaialble.forEach((currentBox) -> {
-                if (largestBoxes.isEmpty()){
-                    largestBoxes.add(currentBox);
-                }
-                else if (largestBoxes.get(0).getArea().getArea() < currentBox.getArea().getArea()){
-                    largestBoxes.clear();
-                    largestBoxes.add(currentBox);
-                }
-                else if(largestBoxes.get(0).getArea().getArea() == currentBox.getArea().getArea())
-                    largestBoxes.add(currentBox);
-            });
-            for(Box currentBox : boxesAvaialble){
-                System.out.println("Initial list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
-            }
-            
-            for(Box currentBox : largestBoxes){
-                System.out.println("fianl list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
-            }
-            
-            returnList.addAll(largestBoxes);
-            boxesAvaialble.removeAll(largestBoxes);
-        }
-        return returnList;
     }
     
     private static float roundFloat(float floatToReound){

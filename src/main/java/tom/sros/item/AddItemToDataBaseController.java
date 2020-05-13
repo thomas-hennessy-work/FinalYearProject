@@ -90,7 +90,7 @@ public class AddItemToDataBaseController implements Initializable{
     //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
-        App.setRoot("/tom/sros/logIn/logInScreen");
+        App.setRoot("/tom/sros/login/logInScreen");
     }
     @FXML
     private void home() throws IOException{

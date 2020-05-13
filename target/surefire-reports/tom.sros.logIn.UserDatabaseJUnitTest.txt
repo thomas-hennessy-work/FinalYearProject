@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: tom.sros.logIn.UserDatabaseJUnitTest
+Test set: tom.sros.login.UserDatabaseJUnitTest
 -------------------------------------------------------------------------------
-Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s - in tom.sros.logIn.UserDatabaseJUnitTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.06 s - in tom.sros.login.UserDatabaseJUnitTest
