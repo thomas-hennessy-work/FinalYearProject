@@ -18,8 +18,6 @@ public class AddItemToDataBaseNonManagerController implements Initializable{
     
     String dataBaseName = ("SROSData.db");
     
-    boolean UserType;
-    
     @FXML
     private TextField boxName;
     @FXML
@@ -102,6 +100,7 @@ public class AddItemToDataBaseNonManagerController implements Initializable{
     //method for populating box type table
     private void populateTable(){
         List<Box> boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);
+        boxInfoTable.getItems().clear();
         boxInformation.forEach((currentBox)-> {
             boxInfoTable.getItems().add(currentBox);
         });

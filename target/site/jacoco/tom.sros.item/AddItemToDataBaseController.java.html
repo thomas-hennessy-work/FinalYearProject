@@ -123,33 +123,32 @@ import tom.sros.sorter.Box;
 <span class="nc" id="L123">            valid = false;</span>
 <span class="nc" id="L124">        }</span>
         
+        try{
+<span class="nc" id="L127">            int lengthDecPos = length.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">            if(lengthDecPos != -1 &amp;&amp; (length.length() - lengthDecPos) != 2){</span>
+<span class="nc" id="L129">                valid = false;</span>
+            }
+<span class="nc" id="L131">            Float f = Float.parseFloat(length);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L133">                valid = false;</span>
+            }
+<span class="nc" id="L135">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L136">            valid = false;</span>
+<span class="nc" id="L137">        }</span>
         
         try{
-<span class="nc" id="L128">            int lengthDecPos = length.indexOf(&quot;.&quot;);</span>
-<span class="nc bnc" id="L129" title="All 4 branches missed.">            if(lengthDecPos != -1 &amp;&amp; (length.length() - lengthDecPos) != 2){</span>
-<span class="nc" id="L130">                valid = false;</span>
+<span class="nc" id="L140">            int heightDecPos = height.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L141" title="All 4 branches missed.">            if(heightDecPos != -1 &amp;&amp; (height.length() - heightDecPos) != 2){</span>
+<span class="nc" id="L142">                valid = false;</span>
             }
-<span class="nc" id="L132">            Float f = Float.parseFloat(length);</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">            if(f &lt;= 0){</span>
-<span class="nc" id="L134">                valid = false;</span>
+<span class="nc" id="L144">            Float f = Float.parseFloat(height);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L146">                valid = false;</span>
             }
-<span class="nc" id="L136">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L137">            valid = false;</span>
-<span class="nc" id="L138">        }</span>
-        
-        try{
-<span class="nc" id="L141">            int heightDecPos = height.indexOf(&quot;.&quot;);</span>
-<span class="nc bnc" id="L142" title="All 4 branches missed.">            if(heightDecPos != -1 &amp;&amp; (height.length() - heightDecPos) != 2){</span>
-<span class="nc" id="L143">                valid = false;</span>
-            }
-<span class="nc" id="L145">            Float f = Float.parseFloat(height);</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">            if(f &lt;= 0){</span>
-<span class="nc" id="L147">                valid = false;</span>
-            }
-<span class="nc" id="L149">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L150">            valid = false;</span>
-<span class="nc" id="L151">        }</span>
-<span class="nc" id="L152">        return valid;</span>
+<span class="nc" id="L148">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L149">            valid = false;</span>
+<span class="nc" id="L150">        }</span>
+<span class="nc" id="L151">        return valid;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

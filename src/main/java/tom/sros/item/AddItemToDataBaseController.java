@@ -123,7 +123,6 @@ public class AddItemToDataBaseController implements Initializable{
             valid = false;
         }
         
-        
         try{
             int lengthDecPos = length.indexOf(".");
             if(lengthDecPos != -1 && (length.length() - lengthDecPos) != 2){

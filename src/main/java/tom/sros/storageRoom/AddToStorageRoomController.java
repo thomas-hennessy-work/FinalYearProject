@@ -43,7 +43,6 @@ public class AddToStorageRoomController {
     @FXML
     private TableView orderTable;
     
-    
     /**
      * Gets the boxes in the list and puts them through the sorting algorithm
      */
@@ -77,7 +76,6 @@ public class AddToStorageRoomController {
         //Gather the information in the two text feilds
         String inputID = IDBoxText.getText();
         String Amount = IDBoxAmount.getText();
-        
         
         //Ensure that the ID exists in the item database
         //If they do, pass them as a pair to a list in the backend to be temporeraly stored.

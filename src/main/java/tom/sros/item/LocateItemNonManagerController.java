@@ -24,6 +24,7 @@ public class LocateItemNonManagerController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources){
         populateBoxTable();
+        populateOrderTable();
     }
     
     //Removes a selected box from the storage room
@@ -68,9 +69,14 @@ public class LocateItemNonManagerController implements Initializable{
     
     //Method for filling the box location table
     private void populateBoxTable(){
+        ItemDatabase ITDB = new ItemDatabase();
         List<Box> boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<CustOrder> orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);
+        
         boxInformation.forEach((currentBox)-> {
-            boxTable.getItems().add(currentBox);
+            if(boxIsOrder(currentBox,orderInformation)){
+                boxTable.getItems().add(currentBox);
+            }
         });
     }
     
