@@ -54,16 +54,26 @@ public class newAlgorithm {
     List<Box> boxAvailableSorted = sortBySize(boxesAvailable);
     
     //Removing any bins from the algorithm that have been specified (if any have been specified)
+//    if(removedBins != null){
+//        removedBins.forEach((currentBinRemove) -> {
+//            for(Bin currentBinAvailable: binsAvailable){
+//                if(currentBinRemove.getName().equals(currentBinAvailable.getName())){
+//                    binsAvailable.remove(currentBinRemove);
+//                }
+//            }
+//        });
+//    }
+    
     if(removedBins != null){
-        removedBins.forEach((currentBinRemove) -> {
-            for(Bin currentBinAvailable: binsAvailable){
-                if(currentBinRemove.getName().equals(currentBinAvailable.getName())){
-                    binsAvailable.remove(currentBinRemove);
+        for(int i=0 ; i < binsAvailable.size() ; i ++){
+            for(Bin currentRemovedBin : removedBins){
+                if(currentRemovedBin.getName().equals(binsAvailable.get(i).getName())){
+                    binsAvailable.remove(i);
                 }
             }
-        });
+        }
     }
-    
+
         while(!boxAvailableSorted.isEmpty() && !binsAvailable.isEmpty()){
             List<Bin> largestBins = new ArrayList<>();
             //obtaining a list of the tallest bins available

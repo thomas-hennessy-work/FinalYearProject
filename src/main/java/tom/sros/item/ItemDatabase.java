@@ -300,6 +300,47 @@ public class ItemDatabase {
         return returnList;
     }
     
+        public static List<Box> getBoxLocationReSort(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+        List<Box> returnList = new ArrayList<>();
+        
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT box_ID FROM boxLocation");
+            while(rs.next()){
+                if(!returnList.isEmpty()){
+                    boolean found = false;
+                    for(Box currentBox : returnList){
+                        if(currentBox.getID().equals(rs.getString("box_ID"))){
+                            currentBox.setAmount(currentBox.getAmount() + 1);
+                            found = true;
+                        }
+                    }
+                    if(found == false){
+                            returnList.add(new Box(rs.getString("box_ID"), 1));
+                    }
+//                    returnList.add(new Box(rs.getString("box_ID"), rs.getString("name"), rs.getString("bin_ID"), 
+//                    rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos")));
+                }
+                else{
+                    returnList.add(new Box(rs.getString("box_ID"), 1));
+                }
+            }
+            stmt.close();
+            c.close();
+        }
+        catch (SQLException e){
+        //Error catching
+        System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        System.exit(0);
+        }
+        return returnList;
+    }
+    
     /**
      * Inserts a new box in to the box location table
      * 

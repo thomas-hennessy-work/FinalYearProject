@@ -13,6 +13,7 @@ public class binaryTree {
     //Used so that if a box is not placed (due to a pre-existing one being placed instead),
     //it is sorted again.
     static Boolean unplaced = true;
+    static Boolean placedExisting = false;
     static List<Box> existingBoxes = null;
     static List<EmptySpace> unocupiedSpace = null;
    
@@ -55,6 +56,9 @@ public class binaryTree {
      */
     private void add(Box item, Space binSpace, String dataBaseName){
         root = addBoxRecursive(root, item, binSpace, dataBaseName);
+        if(placedExisting == false){
+            unplaced = false;
+        }
     }
     
     /**
@@ -76,12 +80,14 @@ public class binaryTree {
         //to fit in the space that is already taken, it will not fit in a smaller space. This
         //eliminates unnececery recursion
         //If the current node is null
+        placedExisting = false;
         
         if (currentNode == null){
             //Checking if any pre-existing boxes are located in this position.
             Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getZ());
             EmptySpace placedSpace = findEmptySpace(unocupiedSpace, item.getX(), item.getZ());
             if(placedBox != null){
+                placedExisting = true;
                 return new Node(binSpace, placedBox);
             }
             //If an empty space is located in the current node. Tries to place the new box within the empty space
@@ -155,7 +161,7 @@ public class binaryTree {
             }
         }
         
-        unplaced = false;
+        //unplaced = false;
         return currentNode;
     }
     

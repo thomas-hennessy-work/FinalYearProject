@@ -54,7 +54,7 @@ public class Bin {
         return Length;
     }
     public float getHeight(){
-        return Width;
+        return Height;
     }
     
     public List<Box> getBoxes(){
