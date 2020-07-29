@@ -10,17 +10,18 @@ public class HomeScreenController {
     //in the system.
     @FXML
     private void logOut() throws IOException{
+        App.clearManagerStatus();
         App.setRoot("/tom/sros/login/logInScreen");
-    }
-    
-    @FXML
-    private void userManagmentBtn() throws IOException{
-        App.setRoot("/tom/sros/login/userManagment");
     }
     
     @FXML
     private void addToDBBtn() throws IOException{
         App.setRoot("/tom/sros/item/addItemToDataBase");
+    }
+    
+    @FXML
+    private void userManagmentBtn() throws IOException{
+        App.setRoot("/tom/sros/login/userManagment");
     }
     
     @FXML

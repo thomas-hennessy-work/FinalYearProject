@@ -19,6 +19,7 @@ public class App extends Application {
 
     private static Scene scene;
     String dataBaseName = ("SROSData.db");
+    static Boolean isManager;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -45,5 +46,15 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
+    
+    //Manager status setters and getters
+    public static void setManager(Boolean managerStatus){
+        isManager = managerStatus;
+    }
+    public static Boolean getManager(){
+        return isManager;
+    }
+    public static void clearManagerStatus(){
+        isManager = null;
+    }
 }

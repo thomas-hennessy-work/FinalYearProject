@@ -178,14 +178,19 @@ public class AddToStorageRoomController {
         orderTable.getItems().removeAll(selectedOrders);
     }
     
-    //Logout and home buttons
+    //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
+        App.clearManagerStatus();
         App.setRoot("/tom/sros/login/logInScreen");
     }
     @FXML
     private void home() throws IOException{
-        App.setRoot("/tom/sros/home/homeScreen");
+        if(App.getManager()){
+            App.setRoot("/tom/sros/home/homeScreen");
+        } else {
+            App.setRoot("/tom/sros/home/homeScreenNonManager");
+        }
     }
     
     private boolean amountValidation(String amount){
