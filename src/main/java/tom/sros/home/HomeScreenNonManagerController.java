@@ -21,16 +21,16 @@ public class HomeScreenNonManagerController {
     
     @FXML
     private void addToDBBtn() throws IOException{
-        App.setRoot("/tom/sros/item/addItemToDataBaseNonManager");
+        App.setRoot("/tom/sros/item/addItemToDataBase");
     }
     
     @FXML
     private void addToStrgRoom() throws IOException{
-        App.setRoot("/tom/sros/storageRoom/addToStorageRoomScreenNonManager");
+        App.setRoot("/tom/sros/storageRoom/addToStorageRoomScreen");
     }
     
     @FXML
     private void locateItemScreen() throws IOException{
-        App.setRoot("/tom/sros/item/locateItemNonManager");
+        App.setRoot("/tom/sros/item/locateItem");
     }
 }

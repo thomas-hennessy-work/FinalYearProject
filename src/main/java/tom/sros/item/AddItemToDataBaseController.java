@@ -90,11 +90,16 @@ public class AddItemToDataBaseController implements Initializable{
     //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
+        App.clearManagerStatus();
         App.setRoot("/tom/sros/login/logInScreen");
     }
     @FXML
     private void home() throws IOException{
+        if(App.getManager()){
             App.setRoot("/tom/sros/home/homeScreen");
+        } else {
+            App.setRoot("/tom/sros/home/homeScreenNonManager");
+        }
     }
     
     //method for populating box type table

@@ -8,7 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
 
-import java.text.DecimalFormat;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import tom.sros.home.HomeScreenController;
 
 public class LogInController {
     
@@ -45,10 +47,12 @@ public class LogInController {
         }
         //Manager log in
         else if (loginValue){
+            App.setManager(loginValue);
             App.setRoot("/tom/sros/home/homeScreen");
         }
         //employee log in
         else if(!loginValue){
+            App.setManager(loginValue);
             App.setRoot("/tom/sros/home/homeScreenNonManager");
         }
     }
