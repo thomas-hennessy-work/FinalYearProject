@@ -1,7 +1,9 @@
 package tom.sros.login;
 
+import com.google.common.hash.Hashing;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -60,7 +62,10 @@ public class userManagmentController implements Initializable{
         
         if((UDB.userIDExists(dataBaseName, userIDInput.getText()) == false) && (UDB.userNameExists(dataBaseName, userNameInput.getText()) == false)){
             boolean isManager = radioManager.isSelected();
-            UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, passWordInput.getText());
+            UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, Hashing.sha256().hashString(passWordInput.getText(),StandardCharsets.UTF_8).toString());
+            
+            //Testing the hashing
+            //System.out.println(Hashing.sha256().hashString(passWordInput.getText(),StandardCharsets.UTF_8).toString());
 
             userIDInput.setText("");
             userNameInput.setText("");

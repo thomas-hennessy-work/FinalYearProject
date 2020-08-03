@@ -1,5 +1,7 @@
 package tom.sros.login;
 
+import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -110,9 +112,10 @@ public class UserDatabaseJUnitTest {
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 stmt = c.createStatement();
 
+                String hashedPass = Hashing.sha256().hashString("password",StandardCharsets.UTF_8).toString();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM user WHERE user_ID = '1'"
                         + " AND user_name = 'Default' AND is_manager = true AND"
-                        + " password = 'password'");
+                        + " password = '" + hashedPass + "'");
                 
                 if(!rs.next()){
                     fail("Default user should be created");

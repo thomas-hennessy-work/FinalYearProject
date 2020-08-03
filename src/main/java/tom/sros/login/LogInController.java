@@ -1,16 +1,14 @@
 package tom.sros.login;
 
+import com.google.common.hash.Hashing;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import tom.sros.home.HomeScreenController;
 
 public class LogInController {
     
@@ -37,7 +35,7 @@ public class LogInController {
         //Check if they match any on record accounts
         System.out.println("Check if credentials are valid");
         
-        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn);
+        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, Hashing.sha256().hashString(passWordIn,StandardCharsets.UTF_8).toString());
         
         //Log in check
         //Incorect log in details

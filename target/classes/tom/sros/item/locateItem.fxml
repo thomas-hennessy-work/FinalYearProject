@@ -23,8 +23,8 @@
                         <Font size="26.0" />
                      </font>
                   </Text>
-                  <Button layoutX="447.0" layoutY="21.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
-                  <Button layoutX="518.0" layoutY="21.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <Button layoutX="518.0" layoutY="21.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Button layoutX="447.0" layoutY="21.0" mnemonicParsing="false" text="Home" onAction="#home" />
                   <TableView fx:id="boxTable" layoutX="1.0" layoutY="93.0" prefHeight="280.0" prefWidth="600.0">
                     <columns>
                         <TableColumn prefWidth="61.0" text="Box ID" >
@@ -66,8 +66,8 @@
                         <Font size="26.0" />
                      </font>
                   </Text>
-                  <Button layoutX="462.0" layoutY="19.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
-                  <Button layoutX="534.0" layoutY="19.0" mnemonicParsing="false" text="Home" onAction="#home" />
+                  <Button layoutX="518.0" layoutY="21.0" mnemonicParsing="false" text="Log out" onAction="#logOut" />
+                  <Button layoutX="447.0" layoutY="21.0" mnemonicParsing="false" text="Home" onAction="#home" />
                   <TableView fx:id="orderTable" layoutY="91.0" prefHeight="279.0" prefWidth="600.0">
                      <columns>
                         <TableColumn prefWidth="75.0" text="Order ID" >

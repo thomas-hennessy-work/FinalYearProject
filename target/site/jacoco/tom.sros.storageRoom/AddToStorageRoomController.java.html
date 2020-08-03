@@ -178,42 +178,47 @@ import tom.sros.sorter.CustOrder;
 <span class="nc" id="L178">        orderTable.getItems().removeAll(selectedOrders);</span>
 <span class="nc" id="L179">    }</span>
     
-    //Logout and home buttons
+    //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L184">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
-<span class="nc" id="L185">    }</span>
+<span class="nc" id="L184">        App.clearManagerStatus();</span>
+<span class="nc" id="L185">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
+<span class="nc" id="L186">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L188">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
-<span class="nc" id="L189">    }</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if(App.getManager()){</span>
+<span class="nc" id="L190">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+        } else {
+<span class="nc" id="L192">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
+        }
+<span class="nc" id="L194">    }</span>
     
     private boolean amountValidation(String amount){
-<span class="nc" id="L192">        boolean valid = true;</span>
+<span class="nc" id="L197">        boolean valid = true;</span>
         
         try{
-<span class="nc" id="L195">            int i = Integer.parseInt(amount);</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">            if(i &lt;= 0){</span>
-<span class="nc" id="L197">                valid = false;</span>
+<span class="nc" id="L200">            int i = Integer.parseInt(amount);</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">            if(i &lt;= 0){</span>
+<span class="nc" id="L202">                valid = false;</span>
             }
-<span class="nc" id="L199">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L200">            valid = false;</span>
-<span class="nc" id="L201">        }</span>
-<span class="nc" id="L202">        return valid;</span>
+<span class="nc" id="L204">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L205">            valid = false;</span>
+<span class="nc" id="L206">        }</span>
+<span class="nc" id="L207">        return valid;</span>
     }
     
     private boolean IDValidation(String ID){
-<span class="nc" id="L206">        boolean valid = true;</span>
+<span class="nc" id="L211">        boolean valid = true;</span>
         
         try{
-<span class="nc" id="L209">            int i = Integer.parseInt(ID);</span>
-<span class="nc bnc" id="L210" title="All 2 branches missed.">            if(i &lt;= 0){</span>
-<span class="nc" id="L211">                valid = false;</span>
+<span class="nc" id="L214">            int i = Integer.parseInt(ID);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if(i &lt;= 0){</span>
+<span class="nc" id="L216">                valid = false;</span>
             }
-<span class="nc" id="L213">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L214">            valid = false;</span>
-<span class="nc" id="L215">        }</span>
-<span class="nc" id="L216">        return valid;</span>
+<span class="nc" id="L218">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L219">            valid = false;</span>
+<span class="nc" id="L220">        }</span>
+<span class="nc" id="L221">        return valid;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

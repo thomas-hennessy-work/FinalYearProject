@@ -19,32 +19,43 @@ import tom.sros.storageRoom.BinDataBase;
 
     private static Scene scene;
 <span class="nc" id="L21">    String dataBaseName = (&quot;SROSData.db&quot;);</span>
+    static Boolean isManager;
 
     @Override
     public void start(Stage stage) throws IOException {
-<span class="nc" id="L25">        scene = new Scene(loadFXML(&quot;/tom/sros/login/logInScreen&quot;), 640, 480);</span>
+<span class="nc" id="L26">        scene = new Scene(loadFXML(&quot;/tom/sros/login/logInScreen&quot;), 640, 480);</span>
         
-<span class="nc" id="L27">        stage.setScene(scene);</span>
-<span class="nc" id="L28">        stage.show();</span>
+<span class="nc" id="L28">        stage.setScene(scene);</span>
+<span class="nc" id="L29">        stage.show();</span>
         
-<span class="nc" id="L30">        UserDatabase.main(dataBaseName);</span>
-<span class="nc" id="L31">        ItemDatabase.main(dataBaseName);</span>
-<span class="nc" id="L32">        BinDataBase.main(dataBaseName);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L31">        UserDatabase.main(dataBaseName);</span>
+<span class="nc" id="L32">        ItemDatabase.main(dataBaseName);</span>
+<span class="nc" id="L33">        BinDataBase.main(dataBaseName);</span>
+<span class="nc" id="L34">    }</span>
 
     public static void setRoot(String fxml) throws IOException {
-<span class="nc" id="L36">        scene.setRoot(loadFXML(fxml));</span>
-<span class="nc" id="L37">    }</span>
+<span class="nc" id="L37">        scene.setRoot(loadFXML(fxml));</span>
+<span class="nc" id="L38">    }</span>
 
     private static Parent loadFXML(String fxml) throws IOException {
-<span class="nc" id="L40">        InputStream IS = App.class.getResourceAsStream(fxml + &quot;.fxml&quot;);</span>
-<span class="nc" id="L41">        FXMLLoader fxmlLoader = new FXMLLoader();</span>
-<span class="nc" id="L42">        return fxmlLoader.load(IS);</span>
+<span class="nc" id="L41">        InputStream IS = App.class.getResourceAsStream(fxml + &quot;.fxml&quot;);</span>
+<span class="nc" id="L42">        FXMLLoader fxmlLoader = new FXMLLoader();</span>
+<span class="nc" id="L43">        return fxmlLoader.load(IS);</span>
     }
 
     public static void main(String[] args) {
-<span class="nc" id="L46">        launch();</span>
-<span class="nc" id="L47">    }</span>
-
+<span class="nc" id="L47">        launch();</span>
+<span class="nc" id="L48">    }</span>
+    
+    //Manager status setters and getters
+    public static void setManager(Boolean managerStatus){
+<span class="nc" id="L52">        isManager = managerStatus;</span>
+<span class="nc" id="L53">    }</span>
+    public static Boolean getManager(){
+<span class="nc" id="L55">        return isManager;</span>
+    }
+    public static void clearManagerStatus(){
+<span class="nc" id="L58">        isManager = null;</span>
+<span class="nc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

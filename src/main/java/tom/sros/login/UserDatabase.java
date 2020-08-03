@@ -1,5 +1,7 @@
 package tom.sros.login;
 
+import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,8 +36,9 @@ public class UserDatabase {
             //Creating a default user if no users exist
             if (rs.next() == false){
                 try (Statement stmt1 = c.createStatement()) {
+                    String hashedPass = Hashing.sha256().hashString("password",StandardCharsets.UTF_8).toString();
                     sql = "INSERT INTO user (user_ID,user_name,is_manager,password) " +
-                            "VALUES ('1', 'Default', true, 'password' );";
+                            "VALUES ('1', 'Default', true, '" + hashedPass + "' );";
                     System.out.println("Default user created");
                     stmt1.executeUpdate(sql);
                 }

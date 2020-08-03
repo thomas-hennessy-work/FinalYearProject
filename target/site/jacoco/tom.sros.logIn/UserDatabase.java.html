@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDatabase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.login</a> &gt; <span class="el_source">UserDatabase.java</span></div><h1>UserDatabase.java</h1><pre class="source lang-java linenums">package tom.sros.login;
 
+import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-<span class="fc" id="L7">public class UserDatabase {</span>
+<span class="fc" id="L9">public class UserDatabase {</span>
     
     /**
      * Creates the user table and inserts a default user if no user exists
@@ -17,38 +19,39 @@ import java.util.ArrayList;
            
         try{
             //Conect to the database
-<span class="fc" id="L20">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L22">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
                 
             //Creates user table. If it already exists, it will not run
-<span class="fc" id="L23">            stmt = c.createStatement();</span>
-<span class="fc" id="L24">            String sql = &quot;CREATE TABLE IF NOT EXISTS user &quot; + </span>
+<span class="fc" id="L25">            stmt = c.createStatement();</span>
+<span class="fc" id="L26">            String sql = &quot;CREATE TABLE IF NOT EXISTS user &quot; + </span>
                             &quot;(user_ID   STRING  PRIMARY KEY     NOT NULL,&quot; +
                             &quot;user_name  STRING    NOT NULL, &quot; +
                             &quot;is_manager BOOL    NOT NULL, &quot; +
                             &quot;password   STRING    NOT NULL)&quot;;
-<span class="fc" id="L29">            stmt.executeUpdate(sql);</span>
-<span class="fc" id="L30">            System.out.println(&quot;Table created if not already&quot;);</span>
+<span class="fc" id="L31">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L32">            System.out.println(&quot;Table created if not already&quot;);</span>
                 
                 
-<span class="fc" id="L33">            ResultSet rs = stmt.executeQuery(&quot;SELECT * from user&quot;);         </span>
+<span class="fc" id="L35">            ResultSet rs = stmt.executeQuery(&quot;SELECT * from user&quot;);         </span>
             //Creating a default user if no users exist
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">            if (rs.next() == false){</span>
-<span class="fc" id="L36">                try (Statement stmt1 = c.createStatement()) {</span>
-<span class="fc" id="L37">                    sql = &quot;INSERT INTO user (user_ID,user_name,is_manager,password) &quot; +</span>
-                            &quot;VALUES ('1', 'Default', true, 'password' );&quot;;
-<span class="fc" id="L39">                    System.out.println(&quot;Default user created&quot;);</span>
-<span class="fc" id="L40">                    stmt1.executeUpdate(sql);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            if (rs.next() == false){</span>
+<span class="fc" id="L38">                try (Statement stmt1 = c.createStatement()) {</span>
+<span class="fc" id="L39">                    String hashedPass = Hashing.sha256().hashString(&quot;password&quot;,StandardCharsets.UTF_8).toString();</span>
+<span class="fc" id="L40">                    sql = &quot;INSERT INTO user (user_ID,user_name,is_manager,password) &quot; +</span>
+                            &quot;VALUES ('1', 'Default', true, '&quot; + hashedPass + &quot;' );&quot;;
+<span class="fc" id="L42">                    System.out.println(&quot;Default user created&quot;);</span>
+<span class="fc" id="L43">                    stmt1.executeUpdate(sql);</span>
                 }
             }
-<span class="fc" id="L43">            stmt.close();</span>
-<span class="fc" id="L44">            c.close();</span>
+<span class="fc" id="L46">            stmt.close();</span>
+<span class="fc" id="L47">            c.close();</span>
         }
         //Exception catching
-<span class="nc" id="L47">        catch (SQLException e){</span>
-<span class="nc" id="L48">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L49">            System.exit(0);</span>
-<span class="fc" id="L50">        }</span>
-<span class="fc" id="L51">    }</span>
+<span class="nc" id="L50">        catch (SQLException e){</span>
+<span class="nc" id="L51">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L52">            System.exit(0);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">    }</span>
         
     /**
      * Adds a user to the user table
@@ -65,24 +68,24 @@ import java.util.ArrayList;
             
         try{
             //connecting to database
-<span class="fc" id="L68">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L71">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
                 
             //Insert a new user in to the user database
-<span class="fc" id="L71">            stmt = c.createStatement();</span>
-<span class="fc" id="L72">            String sql = &quot;INSERT INTO user (user_ID,user_name,is_manager,password)&quot;</span>
+<span class="fc" id="L74">            stmt = c.createStatement();</span>
+<span class="fc" id="L75">            String sql = &quot;INSERT INTO user (user_ID,user_name,is_manager,password)&quot;</span>
                     + &quot;VALUES ('&quot; + user_ID + &quot;', '&quot;+ user_name + &quot;', &quot;
                     + is_manager + &quot;, '&quot; + password + &quot;' );&quot;;
-<span class="fc" id="L75">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L78">            stmt.executeUpdate(sql);</span>
                 
-<span class="fc" id="L77">            stmt.close();</span>
-<span class="fc" id="L78">            c.close();</span>
+<span class="fc" id="L80">            stmt.close();</span>
+<span class="fc" id="L81">            c.close();</span>
         }
-<span class="nc" id="L80">        catch (SQLException e) {</span>
+<span class="nc" id="L83">        catch (SQLException e) {</span>
             //Exception catching
-<span class="nc" id="L82">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L83">            System.exit(0);</span>
-<span class="fc" id="L84">       }</span>
-<span class="fc" id="L85">    }</span>
+<span class="nc" id="L85">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L86">            System.exit(0);</span>
+<span class="fc" id="L87">       }</span>
+<span class="fc" id="L88">    }</span>
         
     /**
      * Removes a user from the user table
@@ -96,22 +99,22 @@ import java.util.ArrayList;
             
         try{
             //connecting to database
-<span class="fc" id="L99">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L102">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
                 
             //Delete a user where the ID matches the one given
-<span class="fc" id="L102">            stmt = c.createStatement();</span>
-<span class="fc" id="L103">            String sql = &quot;DELETE FROM user WHERE user_ID = &quot; + ID;</span>
-<span class="fc" id="L104">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L105">            stmt = c.createStatement();</span>
+<span class="fc" id="L106">            String sql = &quot;DELETE FROM user WHERE user_ID = &quot; + ID;</span>
+<span class="fc" id="L107">            stmt.executeUpdate(sql);</span>
                 
-<span class="fc" id="L106">            stmt.close();</span>
-<span class="fc" id="L107">            c.close();</span>
+<span class="fc" id="L109">            stmt.close();</span>
+<span class="fc" id="L110">            c.close();</span>
         }
-<span class="nc" id="L109">        catch (SQLException e) {</span>
+<span class="nc" id="L112">        catch (SQLException e) {</span>
             //Exception catching
-<span class="nc" id="L111">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L112">            System.exit(0);</span>
-<span class="fc" id="L113">        }</span>
-<span class="fc" id="L114">    }</span>
+<span class="nc" id="L114">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L115">            System.exit(0);</span>
+<span class="fc" id="L116">        }</span>
+<span class="fc" id="L117">    }</span>
         
     /**
      * Verifies the credentials of the user logging in
@@ -125,30 +128,30 @@ import java.util.ArrayList;
         Connection c;
         Statement stmt;
            
-<span class="fc" id="L128">        Boolean returnValue = null;</span>
+<span class="fc" id="L131">        Boolean returnValue = null;</span>
             
         try{
             //Connecting to database
-<span class="fc" id="L132">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L135">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
                
             //Gather user information from dataBase
-<span class="fc" id="L135">            stmt = c.createStatement();</span>
-<span class="fc" id="L136">            ResultSet rs = stmt.executeQuery(&quot;SELECT is_manager FROM user WHERE user_name = '&quot; + userName + &quot;' AND password = '&quot; + passWord + &quot;';&quot;);</span>
+<span class="fc" id="L138">            stmt = c.createStatement();</span>
+<span class="fc" id="L139">            ResultSet rs = stmt.executeQuery(&quot;SELECT is_manager FROM user WHERE user_name = '&quot; + userName + &quot;' AND password = '&quot; + passWord + &quot;';&quot;);</span>
              
             //If the user exists, check if they are manager
-<span class="fc bfc" id="L139" title="All 2 branches covered.">            while (rs.next()){</span>
-<span class="fc" id="L140">                returnValue = rs.getBoolean(&quot;is_manager&quot;);</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            while (rs.next()){</span>
+<span class="fc" id="L143">                returnValue = rs.getBoolean(&quot;is_manager&quot;);</span>
             }
-<span class="fc" id="L142">            stmt.close();</span>
-<span class="fc" id="L143">            c.close();</span>
+<span class="fc" id="L145">            stmt.close();</span>
+<span class="fc" id="L146">            c.close();</span>
         }
         //Exception catching
-<span class="nc" id="L146">        catch ( SQLException e ) {</span>
-<span class="nc" id="L147">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
-<span class="nc" id="L148">            System.exit(0);</span>
-<span class="fc" id="L149">        }</span>
+<span class="nc" id="L149">        catch ( SQLException e ) {</span>
+<span class="nc" id="L150">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
+<span class="nc" id="L151">            System.exit(0);</span>
+<span class="fc" id="L152">        }</span>
         //Will return null if the user dose not exist. If they do, the boolean value will indicate if they are a manager
-<span class="fc" id="L151">        return returnValue;</span>
+<span class="fc" id="L154">        return returnValue;</span>
     }
         
      /**
@@ -161,29 +164,29 @@ import java.util.ArrayList;
         Connection c;
         Statement stmt;
             
-<span class="fc" id="L164">        List returnList = new ArrayList&lt;User&gt;();</span>
+<span class="fc" id="L167">        List returnList = new ArrayList&lt;User&gt;();</span>
             
         try{
             //Connecting to database
-<span class="fc" id="L168">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L169">            stmt = c.createStatement();</span>
+<span class="fc" id="L171">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L172">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L171">            ResultSet rs = stmt.executeQuery(&quot;SELECT user_ID, user_name, is_manager FROM user&quot;);</span>
+<span class="fc" id="L174">            ResultSet rs = stmt.executeQuery(&quot;SELECT user_ID, user_name, is_manager FROM user&quot;);</span>
                 
-<span class="fc bfc" id="L173" title="All 2 branches covered.">            while(rs.next()){</span>
-<span class="fc" id="L174">                returnList.add(new User(rs.getString(&quot;user_ID&quot;), rs.getString(&quot;user_name&quot;), rs.getBoolean(&quot;is_manager&quot;)));</span>
-<span class="fc" id="L175">                System.out.println(rs.getBoolean(&quot;is_manager&quot;));</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L177">                returnList.add(new User(rs.getString(&quot;user_ID&quot;), rs.getString(&quot;user_name&quot;), rs.getBoolean(&quot;is_manager&quot;)));</span>
+<span class="fc" id="L178">                System.out.println(rs.getBoolean(&quot;is_manager&quot;));</span>
             }
             
-<span class="fc" id="L178">            stmt.close();</span>
-<span class="fc" id="L179">            c.close();</span>
+<span class="fc" id="L181">            stmt.close();</span>
+<span class="fc" id="L182">            c.close();</span>
         }
         //Exception catching
-<span class="nc" id="L182">        catch ( SQLException e ) {</span>
-<span class="nc" id="L183">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
-<span class="nc" id="L184">            System.exit(0);</span>
-<span class="fc" id="L185">        }</span>
-<span class="fc" id="L186">        return returnList;</span>
+<span class="nc" id="L185">        catch ( SQLException e ) {</span>
+<span class="nc" id="L186">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
+<span class="nc" id="L187">            System.exit(0);</span>
+<span class="fc" id="L188">        }</span>
+<span class="fc" id="L189">        return returnList;</span>
     }
     
     /**
@@ -197,27 +200,27 @@ import java.util.ArrayList;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L200">        Boolean exists = null;</span>
+<span class="fc" id="L203">        Boolean exists = null;</span>
 
         try{
             //Connecting to database
-<span class="fc" id="L204">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L207">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
 
             //Gather user information from dataBase
-<span class="fc" id="L207">            stmt = c.createStatement();</span>
-<span class="fc" id="L208">            ResultSet rs = stmt.executeQuery(&quot;SELECT user_ID FROM user WHERE user_ID = '&quot; + userID + &quot;';&quot;);</span>
+<span class="fc" id="L210">            stmt = c.createStatement();</span>
+<span class="fc" id="L211">            ResultSet rs = stmt.executeQuery(&quot;SELECT user_ID FROM user WHERE user_ID = '&quot; + userID + &quot;';&quot;);</span>
 
-<span class="fc" id="L210">            exists = rs.next();</span>
+<span class="fc" id="L213">            exists = rs.next();</span>
                 
-<span class="fc" id="L212">            stmt.close();</span>
-<span class="fc" id="L213">            c.close();</span>
+<span class="fc" id="L215">            stmt.close();</span>
+<span class="fc" id="L216">            c.close();</span>
         }
         //Exception catching
-<span class="nc" id="L216">        catch ( SQLException e ) {</span>
-<span class="nc" id="L217">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
-<span class="nc" id="L218">            System.exit(0);</span>
-<span class="fc" id="L219">        }</span>
-<span class="fc" id="L220">        return exists;</span>
+<span class="nc" id="L219">        catch ( SQLException e ) {</span>
+<span class="nc" id="L220">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
+<span class="nc" id="L221">            System.exit(0);</span>
+<span class="fc" id="L222">        }</span>
+<span class="fc" id="L223">        return exists;</span>
     }
     
     /**
@@ -231,27 +234,27 @@ import java.util.ArrayList;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L234">        Boolean exists = null;</span>
+<span class="fc" id="L237">        Boolean exists = null;</span>
 
         try{
             //Connecting to database
-<span class="fc" id="L238">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L241">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
 
             //Gather user information from dataBase
-<span class="fc" id="L241">            stmt = c.createStatement();</span>
-<span class="fc" id="L242">            ResultSet rs = stmt.executeQuery(&quot;SELECT user_name FROM user WHERE user_name = '&quot; + userName + &quot;';&quot;);</span>
+<span class="fc" id="L244">            stmt = c.createStatement();</span>
+<span class="fc" id="L245">            ResultSet rs = stmt.executeQuery(&quot;SELECT user_name FROM user WHERE user_name = '&quot; + userName + &quot;';&quot;);</span>
 
-<span class="fc" id="L244">            exists = rs.next();</span>
+<span class="fc" id="L247">            exists = rs.next();</span>
                 
-<span class="fc" id="L246">            stmt.close();</span>
-<span class="fc" id="L247">            c.close();</span>
+<span class="fc" id="L249">            stmt.close();</span>
+<span class="fc" id="L250">            c.close();</span>
         }
         //Exception catching
-<span class="nc" id="L250">        catch ( SQLException e ) {</span>
-<span class="nc" id="L251">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
-<span class="nc" id="L252">            System.exit(0);</span>
-<span class="fc" id="L253">        }</span>
-<span class="fc" id="L254">        return exists;</span>
+<span class="nc" id="L253">        catch ( SQLException e ) {</span>
+<span class="nc" id="L254">            System.err.println( e.getClass().getName() + &quot;: &quot; + e.getMessage() );</span>
+<span class="nc" id="L255">            System.exit(0);</span>
+<span class="fc" id="L256">        }</span>
+<span class="fc" id="L257">        return exists;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

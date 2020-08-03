@@ -90,65 +90,70 @@ import tom.sros.sorter.Box;
     //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L93">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L93">        App.clearManagerStatus();</span>
+<span class="nc" id="L94">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
+<span class="nc" id="L95">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L97">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
-<span class="nc" id="L98">    }</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if(App.getManager()){</span>
+<span class="nc" id="L99">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+        } else {
+<span class="nc" id="L101">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
+        }
+<span class="nc" id="L103">    }</span>
     
     //method for populating box type table
     private void populateTable(){
-<span class="nc" id="L102">        List&lt;Box&gt; boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);</span>
-<span class="nc" id="L103">        boxInfoTable.getItems().clear();</span>
-<span class="nc" id="L104">        boxInformation.forEach((currentBox)-&gt; {</span>
-<span class="nc" id="L105">            boxInfoTable.getItems().add(currentBox);</span>
-<span class="nc" id="L106">        });</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L107">        List&lt;Box&gt; boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);</span>
+<span class="nc" id="L108">        boxInfoTable.getItems().clear();</span>
+<span class="nc" id="L109">        boxInformation.forEach((currentBox)-&gt; {</span>
+<span class="nc" id="L110">            boxInfoTable.getItems().add(currentBox);</span>
+<span class="nc" id="L111">        });</span>
+<span class="nc" id="L112">    }</span>
     
     private boolean dimensionsValidation(String width, String length, String height){
-<span class="nc" id="L110">        boolean valid = true;</span>
+<span class="nc" id="L115">        boolean valid = true;</span>
         
         //Validating dimensions are boolean values and are larger than 0
         try{
-<span class="nc" id="L114">            int widthDecPos = width.indexOf(&quot;.&quot;);</span>
-<span class="nc bnc" id="L115" title="All 4 branches missed.">            if(widthDecPos != -1 &amp;&amp; (width.length() - widthDecPos) != 2){</span>
-<span class="nc" id="L116">                valid = false;</span>
+<span class="nc" id="L119">            int widthDecPos = width.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">            if(widthDecPos != -1 &amp;&amp; (width.length() - widthDecPos) != 2){</span>
+<span class="nc" id="L121">                valid = false;</span>
             }
-<span class="nc" id="L118">            Float f = Float.parseFloat(width);</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">            if(f &lt;= 0){</span>
-<span class="nc" id="L120">                valid = false;</span>
+<span class="nc" id="L123">            Float f = Float.parseFloat(width);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L125">                valid = false;</span>
             }
-<span class="nc" id="L122">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L123">            valid = false;</span>
-<span class="nc" id="L124">        }</span>
+<span class="nc" id="L127">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L128">            valid = false;</span>
+<span class="nc" id="L129">        }</span>
         
         try{
-<span class="nc" id="L127">            int lengthDecPos = length.indexOf(&quot;.&quot;);</span>
-<span class="nc bnc" id="L128" title="All 4 branches missed.">            if(lengthDecPos != -1 &amp;&amp; (length.length() - lengthDecPos) != 2){</span>
-<span class="nc" id="L129">                valid = false;</span>
+<span class="nc" id="L132">            int lengthDecPos = length.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">            if(lengthDecPos != -1 &amp;&amp; (length.length() - lengthDecPos) != 2){</span>
+<span class="nc" id="L134">                valid = false;</span>
             }
-<span class="nc" id="L131">            Float f = Float.parseFloat(length);</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">            if(f &lt;= 0){</span>
-<span class="nc" id="L133">                valid = false;</span>
+<span class="nc" id="L136">            Float f = Float.parseFloat(length);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L138">                valid = false;</span>
             }
-<span class="nc" id="L135">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L136">            valid = false;</span>
-<span class="nc" id="L137">        }</span>
+<span class="nc" id="L140">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L141">            valid = false;</span>
+<span class="nc" id="L142">        }</span>
         
         try{
-<span class="nc" id="L140">            int heightDecPos = height.indexOf(&quot;.&quot;);</span>
-<span class="nc bnc" id="L141" title="All 4 branches missed.">            if(heightDecPos != -1 &amp;&amp; (height.length() - heightDecPos) != 2){</span>
-<span class="nc" id="L142">                valid = false;</span>
+<span class="nc" id="L145">            int heightDecPos = height.indexOf(&quot;.&quot;);</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">            if(heightDecPos != -1 &amp;&amp; (height.length() - heightDecPos) != 2){</span>
+<span class="nc" id="L147">                valid = false;</span>
             }
-<span class="nc" id="L144">            Float f = Float.parseFloat(height);</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">            if(f &lt;= 0){</span>
-<span class="nc" id="L146">                valid = false;</span>
+<span class="nc" id="L149">            Float f = Float.parseFloat(height);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            if(f &lt;= 0){</span>
+<span class="nc" id="L151">                valid = false;</span>
             }
-<span class="nc" id="L148">        } catch (NumberFormatException NFE){</span>
-<span class="nc" id="L149">            valid = false;</span>
-<span class="nc" id="L150">        }</span>
-<span class="nc" id="L151">        return valid;</span>
+<span class="nc" id="L153">        } catch (NumberFormatException NFE){</span>
+<span class="nc" id="L154">            valid = false;</span>
+<span class="nc" id="L155">        }</span>
+<span class="nc" id="L156">        return valid;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

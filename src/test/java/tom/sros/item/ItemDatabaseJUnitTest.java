@@ -442,6 +442,12 @@ public class ItemDatabaseJUnitTest {
         assertEquals(expectedBox3.getZ(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getZ(), "box 3 Z check");
     }
     
+//    @Test
+//    @Order(8)
+//    public void testGetBoxLocationReSort(){
+//        assertEquals();
+//    }
+//    
     @Test
     @Order(8)
     public void testReplaceBoxRemoved(){

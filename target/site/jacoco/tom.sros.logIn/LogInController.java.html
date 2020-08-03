@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LogInController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SROS</a> &gt; <a href="index.source.html" class="el_package">tom.sros.login</a> &gt; <span class="el_source">LogInController.java</span></div><h1>LogInController.java</h1><pre class="source lang-java linenums">package tom.sros.login;
 
+import com.google.common.hash.Hashing;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.App;
-
-import java.text.DecimalFormat;
 
 <span class="nc" id="L13">public class LogInController {</span>
     
@@ -35,7 +35,7 @@ import java.text.DecimalFormat;
         //Check if they match any on record accounts
 <span class="nc" id="L36">        System.out.println(&quot;Check if credentials are valid&quot;);</span>
         
-<span class="nc" id="L38">        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn);</span>
+<span class="nc" id="L38">        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, Hashing.sha256().hashString(passWordIn,StandardCharsets.UTF_8).toString());</span>
         
         //Log in check
         //Incorect log in details
@@ -45,12 +45,14 @@ import java.text.DecimalFormat;
         }
         //Manager log in
 <span class="nc bnc" id="L47" title="All 2 branches missed.">        else if (loginValue){</span>
-<span class="nc" id="L48">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+<span class="nc" id="L48">            App.setManager(loginValue);</span>
+<span class="nc" id="L49">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
         }
         //employee log in
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        else if(!loginValue){</span>
-<span class="nc" id="L52">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        else if(!loginValue){</span>
+<span class="nc" id="L53">            App.setManager(loginValue);</span>
+<span class="nc" id="L54">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
         }
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

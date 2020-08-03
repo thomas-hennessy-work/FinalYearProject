@@ -1,10 +1,8 @@
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\sorter\binaryTree.java
-C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\item\AddItemToDataBaseNonManagerController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\item\ItemDatabase.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\home\HomeScreenNonManagerController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\storageRoom\StorageRoomManagmentController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\item\AddItemToDataBaseController.java
-C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\item\LocateItemNonManagerController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\login\UserDatabase.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\login\User.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\storageRoom\BinDataBase.java
@@ -15,7 +13,6 @@ C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\to
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\login\userManagmentController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\storageRoom\AddToStorageRoomController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\sorter\EmptySpace.java
-C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\storageRoom\AddToStorageRoomNonManagerController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\home\HomeScreenController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\login\LogInController.java
 C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\src\main\java\tom\sros\sorter\Space.java

@@ -57,46 +57,51 @@ import tom.sros.sorter.CustOrder;
 <span class="nc" id="L57">        populateOrderTable();</span>
 <span class="nc" id="L58">    }</span>
     
-    //Logout and home buttons
+    //Home and log out buttons
     @FXML
     private void logOut() throws IOException {
-<span class="nc" id="L63">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L63">        App.clearManagerStatus();</span>
+<span class="nc" id="L64">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
+<span class="nc" id="L65">    }</span>
     @FXML
     private void home() throws IOException{
-<span class="nc" id="L67">        App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(App.getManager()){</span>
+<span class="nc" id="L69">            App.setRoot(&quot;/tom/sros/home/homeScreen&quot;);</span>
+        } else {
+<span class="nc" id="L71">            App.setRoot(&quot;/tom/sros/home/homeScreenNonManager&quot;);</span>
+        }
+<span class="nc" id="L73">    }</span>
     
     //Method for filling the box location table
     private void populateBoxTable(){
-<span class="nc" id="L72">        ItemDatabase ITDB = new ItemDatabase();</span>
-<span class="nc" id="L73">        List&lt;Box&gt; boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);</span>
-<span class="nc" id="L74">        List&lt;CustOrder&gt; orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);</span>
+<span class="nc" id="L77">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L78">        List&lt;Box&gt; boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);</span>
+<span class="nc" id="L79">        List&lt;CustOrder&gt; orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);</span>
         
-<span class="nc" id="L76">        boxInformation.forEach((currentBox)-&gt; {</span>
-<span class="nc bnc" id="L77" title="All 2 branches missed.">            if(boxIsOrder(currentBox,orderInformation)){</span>
-<span class="nc" id="L78">                boxTable.getItems().add(currentBox);</span>
+<span class="nc" id="L81">        boxInformation.forEach((currentBox)-&gt; {</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if(boxIsOrder(currentBox,orderInformation)){</span>
+<span class="nc" id="L83">                boxTable.getItems().add(currentBox);</span>
             }
-<span class="nc" id="L80">        });</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L85">        });</span>
+<span class="nc" id="L86">    }</span>
     
     private void populateOrderTable(){
-<span class="nc" id="L84">        ItemDatabase ITDB = new ItemDatabase();</span>
-<span class="nc" id="L85">        List&lt;CustOrder&gt; orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);</span>
-<span class="nc" id="L86">        orderInformation.forEach((currentOrder) -&gt; {</span>
-<span class="nc" id="L87">            orderTable.getItems().add(currentOrder);</span>
-<span class="nc" id="L88">        });</span>
-<span class="nc" id="L89">    }</span>
+<span class="nc" id="L89">        ItemDatabase ITDB = new ItemDatabase();</span>
+<span class="nc" id="L90">        List&lt;CustOrder&gt; orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);</span>
+<span class="nc" id="L91">        orderInformation.forEach((currentOrder) -&gt; {</span>
+<span class="nc" id="L92">            orderTable.getItems().add(currentOrder);</span>
+<span class="nc" id="L93">        });</span>
+<span class="nc" id="L94">    }</span>
     
     private boolean boxIsOrder(Box reviewedBox, List&lt;CustOrder&gt; orderList){
-<span class="nc" id="L92">        boolean returnValue = true;</span>
+<span class="nc" id="L97">        boolean returnValue = true;</span>
         
-<span class="nc bnc" id="L94" title="All 2 branches missed.">        for(CustOrder currentOrder : orderList){</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (currentOrder.getID().equals(reviewedBox.getID())){</span>
-<span class="nc" id="L96">                returnValue = false;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        for(CustOrder currentOrder : orderList){</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (currentOrder.getID().equals(reviewedBox.getID())){</span>
+<span class="nc" id="L101">                returnValue = false;</span>
             } 
-<span class="nc" id="L98">        }</span>
-<span class="nc" id="L99">        return returnValue;</span>
+<span class="nc" id="L103">        }</span>
+<span class="nc" id="L104">        return returnValue;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -300,6 +300,47 @@ import tom.sros.sorter.newAlgorithm;
 <span class="fc" id="L300">        return returnList;</span>
     }
     
+        public static List&lt;Box&gt; getBoxLocationReSort(String dataBaseName){
+        Connection c;
+        Statement stmt;
+        
+<span class="nc" id="L307">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
+        
+        try{
+<span class="nc" id="L310">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="nc" id="L311">            stmt = c.createStatement();</span>
+            
+<span class="nc" id="L313">            ResultSet rs = stmt.executeQuery(&quot;SELECT box_ID FROM boxLocation&quot;);</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">            while(rs.next()){</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">                if(!returnList.isEmpty()){</span>
+<span class="nc" id="L316">                    boolean found = false;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">                    for(Box currentBox : returnList){</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">                        if(currentBox.getID().equals(rs.getString(&quot;box_ID&quot;))){</span>
+<span class="nc" id="L319">                            currentBox.setAmount(currentBox.getAmount() + 1);</span>
+<span class="nc" id="L320">                            found = true;</span>
+                        }
+<span class="nc" id="L322">                    }</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">                    if(found == false){</span>
+<span class="nc" id="L324">                            returnList.add(new Box(rs.getString(&quot;box_ID&quot;), 1));</span>
+                    }
+//                    returnList.add(new Box(rs.getString(&quot;box_ID&quot;), rs.getString(&quot;name&quot;), rs.getString(&quot;bin_ID&quot;), 
+//                    rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;)));
+<span class="nc" id="L328">                }</span>
+                else{
+<span class="nc" id="L330">                    returnList.add(new Box(rs.getString(&quot;box_ID&quot;), 1));</span>
+                }
+            }
+<span class="nc" id="L333">            stmt.close();</span>
+<span class="nc" id="L334">            c.close();</span>
+        }
+<span class="nc" id="L336">        catch (SQLException e){</span>
+        //Error catching
+<span class="nc" id="L338">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L339">        System.exit(0);</span>
+<span class="nc" id="L340">        }</span>
+<span class="nc" id="L341">        return returnList;</span>
+    }
+    
     /**
      * Inserts a new box in to the box location table
      * 
@@ -311,24 +352,24 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L314">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L315">            stmt = c.createStatement();</span>
+<span class="fc" id="L355">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L356">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L317">            String sql = &quot;INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos) &quot;</span>
-<span class="fc" id="L318">                    + &quot;VALUES ('&quot; + placedBox.getID() + &quot;', '&quot; + placedBox.getBin() + &quot;', '&quot; + placedBox.getY() + &quot;', '&quot;</span>
-<span class="fc" id="L319">                    + placedBox.getX() + &quot;', '&quot; + placedBox.getZ() + &quot;' );&quot;;</span>
-<span class="fc" id="L320">            stmt.executeUpdate(sql);</span>
-<span class="fc" id="L321">            System.out.println(&quot;Box location added to data base&quot;);</span>
+<span class="fc" id="L358">            String sql = &quot;INSERT INTO boxLocation (box_ID, bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos) &quot;</span>
+<span class="fc" id="L359">                    + &quot;VALUES ('&quot; + placedBox.getID() + &quot;', '&quot; + placedBox.getBin() + &quot;', '&quot; + placedBox.getY() + &quot;', '&quot;</span>
+<span class="fc" id="L360">                    + placedBox.getX() + &quot;', '&quot; + placedBox.getZ() + &quot;' );&quot;;</span>
+<span class="fc" id="L361">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L362">            System.out.println(&quot;Box location added to data base&quot;);</span>
             
-<span class="fc" id="L323">            stmt.close();</span>
-<span class="fc" id="L324">            c.close();</span>
+<span class="fc" id="L364">            stmt.close();</span>
+<span class="fc" id="L365">            c.close();</span>
         }
-<span class="nc" id="L326">        catch (SQLException e){</span>
+<span class="nc" id="L367">        catch (SQLException e){</span>
         //Error catching
-<span class="nc" id="L328">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L329">        System.exit(0);</span>
-<span class="fc" id="L330">        }</span>
-<span class="fc" id="L331">    }</span>
+<span class="nc" id="L369">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L370">        System.exit(0);</span>
+<span class="fc" id="L371">        }</span>
+<span class="fc" id="L372">    }</span>
     
     /**
      * Takes a list of orders, runs them through the sorting algorithm and adds
@@ -338,23 +379,23 @@ import tom.sros.sorter.newAlgorithm;
      * @param orderList 
      */
     public void addOrdersToDB(String dataBaseName, List&lt;CustOrder&gt; orderList){
-<span class="fc" id="L341">        newAlgorithm NA = new newAlgorithm();</span>
+<span class="fc" id="L382">        newAlgorithm NA = new newAlgorithm();</span>
 
         //Go through each order
-<span class="fc" id="L344">        orderList.forEach((currentOrder) -&gt; {</span>
+<span class="fc" id="L385">        orderList.forEach((currentOrder) -&gt; {</span>
             
-<span class="fc" id="L346">            List&lt;Box&gt; IDAmountList = new ArrayList();</span>
-<span class="fc" id="L347">            IDAmountList.add(new Box(currentOrder.getID(), 1));</span>
+<span class="fc" id="L387">            List&lt;Box&gt; IDAmountList = new ArrayList();</span>
+<span class="fc" id="L388">            IDAmountList.add(new Box(currentOrder.getID(), 1));</span>
             
-<span class="fc" id="L349">            List&lt;Bin&gt; emptyBin = null;</span>
+<span class="fc" id="L390">            List&lt;Bin&gt; emptyBin = null;</span>
             //Runs algorithm
-<span class="fc" id="L351">            NA.sortAndAddToDB(dataBaseName, IDAmountList, emptyBin);</span>
+<span class="fc" id="L392">            NA.sortAndAddToDB(dataBaseName, IDAmountList, emptyBin);</span>
             //Gathers information about the box that has been placed. Used to link it
             //to the order table
-<span class="fc" id="L354">            currentOrder.setID(getMostRecentSortedBox(dataBaseName));</span>
-<span class="fc" id="L355">            addOrderInformation(dataBaseName, currentOrder);</span>
-<span class="fc" id="L356">        });</span>
-<span class="fc" id="L357">    }</span>
+<span class="fc" id="L395">            currentOrder.setID(getMostRecentSortedBox(dataBaseName));</span>
+<span class="fc" id="L396">            addOrderInformation(dataBaseName, currentOrder);</span>
+<span class="fc" id="L397">        });</span>
+<span class="fc" id="L398">    }</span>
     
     /**
      * Gathers the ID of the most recently added box to the box location table
@@ -366,24 +407,24 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L369">        String returnValue = null;</span>
+<span class="fc" id="L410">        String returnValue = null;</span>
         
         try{
-<span class="fc" id="L372">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L373">            stmt = c.createStatement();</span>
+<span class="fc" id="L413">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L414">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L375">            ResultSet rs = stmt.executeQuery(&quot;SELECT MAX(individual_ID) FROM boxLocation&quot;);</span>
-<span class="fc" id="L376">            returnValue = rs.getString(1);</span>
+<span class="fc" id="L416">            ResultSet rs = stmt.executeQuery(&quot;SELECT MAX(individual_ID) FROM boxLocation&quot;);</span>
+<span class="fc" id="L417">            returnValue = rs.getString(1);</span>
             
-<span class="fc" id="L378">            stmt.close();</span>
-<span class="fc" id="L379">            c.close();</span>
+<span class="fc" id="L419">            stmt.close();</span>
+<span class="fc" id="L420">            c.close();</span>
         }
-<span class="nc" id="L381">        catch (SQLException e){</span>
+<span class="nc" id="L422">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L383">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L384">            System.exit(0);</span>
-<span class="fc" id="L385">        }</span>
-<span class="fc" id="L386">        return returnValue;</span>
+<span class="nc" id="L424">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L425">            System.exit(0);</span>
+<span class="fc" id="L426">        }</span>
+<span class="fc" id="L427">        return returnValue;</span>
     }
     
     /**
@@ -397,22 +438,22 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L400">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L401">            stmt = c.createStatement();</span>
+<span class="fc" id="L441">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L442">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L403">            String sql = &quot;INSERT INTO orderList (box_ID, customer_name, customer_address) &quot;</span>
-<span class="fc" id="L404">                    + &quot;VALUES ('&quot; + orderToAdd.getID() + &quot;', '&quot; + orderToAdd.getCustName() +  &quot;', '&quot; + orderToAdd.getCustAddress() + &quot;' );&quot;;</span>
-<span class="fc" id="L405">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L444">            String sql = &quot;INSERT INTO orderList (box_ID, customer_name, customer_address) &quot;</span>
+<span class="fc" id="L445">                    + &quot;VALUES ('&quot; + orderToAdd.getID() + &quot;', '&quot; + orderToAdd.getCustName() +  &quot;', '&quot; + orderToAdd.getCustAddress() + &quot;' );&quot;;</span>
+<span class="fc" id="L446">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L407">            stmt.close();</span>
-<span class="fc" id="L408">            c.close(); </span>
+<span class="fc" id="L448">            stmt.close();</span>
+<span class="fc" id="L449">            c.close(); </span>
         }
-<span class="nc" id="L410">        catch (SQLException e){</span>
+<span class="nc" id="L451">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L412">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L413">            System.exit(0);</span>
-<span class="fc" id="L414">        }</span>
-<span class="fc" id="L415">    }</span>
+<span class="nc" id="L453">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L454">            System.exit(0);</span>
+<span class="fc" id="L455">        }</span>
+<span class="fc" id="L456">    }</span>
     
     /**
      * Gathers a list of orders stored in the database used for display
@@ -424,30 +465,30 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L427">        List&lt;CustOrder&gt; returnList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L468">        List&lt;CustOrder&gt; returnList = new ArrayList&lt;&gt;();</span>
         
         try{
-<span class="fc" id="L430">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L431">            stmt = c.createStatement();</span>
+<span class="fc" id="L471">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L472">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L433">            ResultSet rs = stmt.executeQuery(&quot;SELECT orderList.order_ID, orderList.box_ID, orderList.customer_name, orderList.customer_address, &quot;</span>
+<span class="fc" id="L474">            ResultSet rs = stmt.executeQuery(&quot;SELECT orderList.order_ID, orderList.box_ID, orderList.customer_name, orderList.customer_address, &quot;</span>
                     + &quot;boxLocation.bin_ID, boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos &quot;
                     + &quot;FROM orderList INNER JOIN boxLocation ON orderList.box_ID = boxLocation.individual_ID;&quot;);
             
-<span class="fc bfc" id="L437" title="All 2 branches covered.">            while(rs.next()){</span>
-<span class="fc" id="L438">                returnList.add(new CustOrder(rs.getString(&quot;box_ID&quot;), rs.getString(&quot;order_ID&quot;), rs.getString(&quot;customer_address&quot;), rs.getString(&quot;customer_name&quot;),</span>
-<span class="fc" id="L439">                rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;), rs.getString(&quot;bin_ID&quot;)));</span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L479">                returnList.add(new CustOrder(rs.getString(&quot;box_ID&quot;), rs.getString(&quot;order_ID&quot;), rs.getString(&quot;customer_address&quot;), rs.getString(&quot;customer_name&quot;),</span>
+<span class="fc" id="L480">                rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;), rs.getString(&quot;bin_ID&quot;)));</span>
             }
             
-<span class="fc" id="L442">            stmt.close();</span>
-<span class="fc" id="L443">            c.close();</span>
+<span class="fc" id="L483">            stmt.close();</span>
+<span class="fc" id="L484">            c.close();</span>
         }
-<span class="nc" id="L445">        catch (SQLException e){</span>
+<span class="nc" id="L486">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L447">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L448">            System.exit(0);</span>
-<span class="fc" id="L449">        }</span>
-<span class="fc" id="L450">        return returnList;</span>
+<span class="nc" id="L488">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L489">            System.exit(0);</span>
+<span class="fc" id="L490">        }</span>
+<span class="fc" id="L491">        return returnList;</span>
     }
     
     /**
@@ -461,30 +502,30 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L464">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L505">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
         
         try{
-<span class="fc" id="L467">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L468">            stmt = c.createStatement();</span>
+<span class="fc" id="L508">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L509">            stmt = c.createStatement();</span>
 
-<span class="fc" id="L470">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, &quot;</span>
+<span class="fc" id="L511">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxType.width, boxType.length, boxType.height, boxLocation.individual_ID, &quot;</span>
                     + &quot;boxLocation.corner_vertical_pos, boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos &quot;
-<span class="fc" id="L472">                    + &quot;FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '&quot; + binLocation.getName() + &quot;';&quot;);</span>
+<span class="fc" id="L513">                    + &quot;FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '&quot; + binLocation.getName() + &quot;';&quot;);</span>
             
-<span class="fc bfc" id="L474" title="All 2 branches covered.">            while(rs.next()){</span>
-<span class="fc" id="L475">                returnList.add(new Box(rs.getString(&quot;individual_ID&quot;), rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;),</span>
-<span class="fc" id="L476">                        rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;)));</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L516">                returnList.add(new Box(rs.getString(&quot;individual_ID&quot;), rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;),</span>
+<span class="fc" id="L517">                        rs.getFloat(&quot;corner_horizontal_pos&quot;), rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;)));</span>
             }
             
-<span class="fc" id="L479">            stmt.close();</span>
-<span class="fc" id="L480">            c.close();</span>
+<span class="fc" id="L520">            stmt.close();</span>
+<span class="fc" id="L521">            c.close();</span>
         }
-<span class="nc" id="L482">        catch (SQLException e){</span>
+<span class="nc" id="L523">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L484">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L485">            System.exit(0);</span>
-<span class="fc" id="L486">        }</span>
-<span class="fc" id="L487">        return returnList;</span>
+<span class="nc" id="L525">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L526">            System.exit(0);</span>
+<span class="fc" id="L527">        }</span>
+<span class="fc" id="L528">        return returnList;</span>
     }
     
     /**
@@ -498,31 +539,31 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L501">        Box returnBox = boxPosition;</span>
+<span class="fc" id="L542">        Box returnBox = boxPosition;</span>
         
         try{
-<span class="fc" id="L504">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L505">            stmt = c.createStatement();</span>
+<span class="fc" id="L545">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L546">            stmt = c.createStatement();</span>
 
-<span class="fc" id="L507">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxType.width, boxType.length, boxType.height FROM boxType &quot;</span>
-<span class="fc" id="L508">                    + &quot;INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '&quot; + boxPosition.getBin() </span>
-<span class="fc" id="L509">                    + &quot;' AND boxLocation.corner_vertical_pos = '&quot; + boxPosition.getY() + &quot;' AND boxLocation.corner_horizontal_pos = '&quot; +  boxPosition.getX() </span>
-<span class="fc" id="L510">                    + &quot;' AND boxLocation.corner_depth_pos = '&quot; + boxPosition.getZ() + &quot;';&quot;);</span>
+<span class="fc" id="L548">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxType.width, boxType.length, boxType.height FROM boxType &quot;</span>
+<span class="fc" id="L549">                    + &quot;INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '&quot; + boxPosition.getBin() </span>
+<span class="fc" id="L550">                    + &quot;' AND boxLocation.corner_vertical_pos = '&quot; + boxPosition.getY() + &quot;' AND boxLocation.corner_horizontal_pos = '&quot; +  boxPosition.getX() </span>
+<span class="fc" id="L551">                    + &quot;' AND boxLocation.corner_depth_pos = '&quot; + boxPosition.getZ() + &quot;';&quot;);</span>
             
-<span class="fc bfc" id="L512" title="All 2 branches covered.">            while(rs.next()){</span>
-<span class="fc" id="L513">                returnBox.setWidth(rs.getFloat(&quot;width&quot;));</span>
-<span class="fc" id="L514">                returnBox.setLength(rs.getFloat(&quot;length&quot;));</span>
-<span class="fc" id="L515">                returnBox.setHeight(rs.getFloat(&quot;height&quot;));</span>
+<span class="fc bfc" id="L553" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L554">                returnBox.setWidth(rs.getFloat(&quot;width&quot;));</span>
+<span class="fc" id="L555">                returnBox.setLength(rs.getFloat(&quot;length&quot;));</span>
+<span class="fc" id="L556">                returnBox.setHeight(rs.getFloat(&quot;height&quot;));</span>
             }
-<span class="fc" id="L517">            stmt.close();</span>
-<span class="fc" id="L518">            c.close();</span>
+<span class="fc" id="L558">            stmt.close();</span>
+<span class="fc" id="L559">            c.close();</span>
         }
-<span class="nc" id="L520">        catch (SQLException e){</span>
+<span class="nc" id="L561">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L522">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L523">            System.exit(0);</span>
-<span class="fc" id="L524">        }</span>
-<span class="fc" id="L525">        return returnBox;</span>
+<span class="nc" id="L563">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L564">            System.exit(0);</span>
+<span class="fc" id="L565">        }</span>
+<span class="fc" id="L566">        return returnBox;</span>
     }
     
     /**
@@ -536,28 +577,28 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L539">        Boolean returnValue = null;</span>
+<span class="fc" id="L580">        Boolean returnValue = null;</span>
         
         try{
-<span class="fc" id="L542">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L543">            stmt = c.createStatement();</span>
+<span class="fc" id="L583">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L584">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L545">            ResultSet rs = stmt.executeQuery(&quot;SELECT individual_ID FROM boxLocation WHERE bin_ID = &quot; + placedBox.getBin() </span>
-<span class="fc" id="L546">                    + &quot; AND corner_vertical_pos = &quot; + placedBox.getY() + &quot; AND corner_horizontal_pos = &quot; + placedBox.getX() </span>
-<span class="fc" id="L547">                    + &quot; AND corner_depth_pos = &quot; + placedBox.getZ());</span>
+<span class="fc" id="L586">            ResultSet rs = stmt.executeQuery(&quot;SELECT individual_ID FROM boxLocation WHERE bin_ID = &quot; + placedBox.getBin() </span>
+<span class="fc" id="L587">                    + &quot; AND corner_vertical_pos = &quot; + placedBox.getY() + &quot; AND corner_horizontal_pos = &quot; + placedBox.getX() </span>
+<span class="fc" id="L588">                    + &quot; AND corner_depth_pos = &quot; + placedBox.getZ());</span>
             
-<span class="fc" id="L549">            returnValue = rs.next();</span>
+<span class="fc" id="L590">            returnValue = rs.next();</span>
             
-<span class="fc" id="L551">            stmt.close();</span>
-<span class="fc" id="L552">            c.close();</span>
+<span class="fc" id="L592">            stmt.close();</span>
+<span class="fc" id="L593">            c.close();</span>
         }
-<span class="nc" id="L554">        catch (SQLException e){</span>
+<span class="nc" id="L595">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L556">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L557">            System.exit(0);</span>
-<span class="fc" id="L558">        }</span>
+<span class="nc" id="L597">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L598">            System.exit(0);</span>
+<span class="fc" id="L599">        }</span>
         
-<span class="fc bfc" id="L560" title="All 2 branches covered.">        return !returnValue;</span>
+<span class="fc bfc" id="L601" title="All 2 branches covered.">        return !returnValue;</span>
     }
 
     /**
@@ -568,20 +609,20 @@ import tom.sros.sorter.newAlgorithm;
      */
     public void removeStoredBox(Box boxToRemoved, String dataBaseName){
         //Creating an empty space object with the same dimensions and possion as the box and adding it
-<span class="fc" id="L571">        Box removedBox = getSpecificExistingBoxDimensions(boxToRemoved, dataBaseName);</span>
-<span class="fc" id="L572">        EmptySpace newSpace = new EmptySpace(removedBox.getWidth(), removedBox.getLength(), removedBox.getHeight(),</span>
-<span class="fc" id="L573">                removedBox.getX(), removedBox.getY(), removedBox.getZ(), removedBox.getBin());</span>
+<span class="fc" id="L612">        Box removedBox = getSpecificExistingBoxDimensions(boxToRemoved, dataBaseName);</span>
+<span class="fc" id="L613">        EmptySpace newSpace = new EmptySpace(removedBox.getWidth(), removedBox.getLength(), removedBox.getHeight(),</span>
+<span class="fc" id="L614">                removedBox.getX(), removedBox.getY(), removedBox.getZ(), removedBox.getBin());</span>
         
         //Adds the empty space, removes the box
-<span class="fc" id="L576">        addEmptySpace(newSpace, dataBaseName);</span>
-<span class="fc" id="L577">        deleteBoxLocation(boxToRemoved, dataBaseName);</span>
-<span class="fc" id="L578">    }</span>
+<span class="fc" id="L617">        addEmptySpace(newSpace, dataBaseName);</span>
+<span class="fc" id="L618">        deleteBoxLocation(boxToRemoved, dataBaseName);</span>
+<span class="fc" id="L619">    }</span>
     
     public void removeStoredOrder(CustOrder orderToRemove, String dataBasename){
-<span class="fc" id="L581">        Box linkedBox = getOrderBox(orderToRemove.getOrderID(), dataBasename);</span>
-<span class="fc" id="L582">        deleteStoredOrder(orderToRemove, dataBasename);</span>
-<span class="fc" id="L583">        removeStoredBox(linkedBox, dataBasename);</span>
-<span class="fc" id="L584">    }</span>
+<span class="fc" id="L622">        Box linkedBox = getOrderBox(orderToRemove.getOrderID(), dataBasename);</span>
+<span class="fc" id="L623">        deleteStoredOrder(orderToRemove, dataBasename);</span>
+<span class="fc" id="L624">        removeStoredBox(linkedBox, dataBasename);</span>
+<span class="fc" id="L625">    }</span>
     
     /**
      * Deletes a specified order from the order table 
@@ -594,21 +635,21 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L597">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
-<span class="fc" id="L598">            stmt = c.createStatement();</span>
+<span class="fc" id="L638">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
+<span class="fc" id="L639">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L600">            String sql = &quot;DELETE FROM orderList WHERE order_ID = &quot; + orderToRemove.getOrderID();</span>
-<span class="fc" id="L601">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L641">            String sql = &quot;DELETE FROM orderList WHERE order_ID = &quot; + orderToRemove.getOrderID();</span>
+<span class="fc" id="L642">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L603">            stmt.close();</span>
-<span class="fc" id="L604">            c.close();</span>
+<span class="fc" id="L644">            stmt.close();</span>
+<span class="fc" id="L645">            c.close();</span>
         }
-<span class="nc" id="L606">        catch (SQLException e){</span>
+<span class="nc" id="L647">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L608">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L609">            System.exit(0);</span>
-<span class="fc" id="L610">        }</span>
-<span class="fc" id="L611">    }</span>
+<span class="nc" id="L649">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L650">            System.exit(0);</span>
+<span class="fc" id="L651">        }</span>
+<span class="fc" id="L652">    }</span>
     
     /**
      * Gathers information regarding boxes linked to a specified order
@@ -621,34 +662,34 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L624">        Box returnBox = new Box();</span>
+<span class="fc" id="L665">        Box returnBox = new Box();</span>
         
         try{
-<span class="fc" id="L627">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
-<span class="fc" id="L628">            stmt = c.createStatement();</span>
+<span class="fc" id="L668">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
+<span class="fc" id="L669">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L630">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxLocation.individual_ID, boxLocation.bin_ID, boxLocation.corner_vertical_pos, &quot;</span>
+<span class="fc" id="L671">            ResultSet rs = stmt.executeQuery(&quot;SELECT boxLocation.individual_ID, boxLocation.bin_ID, boxLocation.corner_vertical_pos, &quot;</span>
                     + &quot;boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxLocation INNER JOIN orderList ON boxLocation.individual_ID = orderList.box_ID &quot;
                     + &quot;WHERE orderList.order_ID = '&quot; + orderID + &quot;';&quot;);
             
-<span class="fc" id="L634">            System.out.println(rs.next());</span>
+<span class="fc" id="L675">            System.out.println(rs.next());</span>
             
-<span class="fc" id="L636">            returnBox.setBin(rs.getString(&quot;bin_ID&quot;));</span>
-<span class="fc" id="L637">            returnBox.setX(rs.getFloat(&quot;corner_horizontal_pos&quot;));</span>
-<span class="fc" id="L638">            returnBox.setY(rs.getFloat(&quot;corner_vertical_pos&quot;));</span>
-<span class="fc" id="L639">            returnBox.setZ(rs.getFloat(&quot;corner_depth_pos&quot;));</span>
-<span class="fc" id="L640">            returnBox.setID(rs.getString(&quot;individual_ID&quot;));</span>
+<span class="fc" id="L677">            returnBox.setBin(rs.getString(&quot;bin_ID&quot;));</span>
+<span class="fc" id="L678">            returnBox.setX(rs.getFloat(&quot;corner_horizontal_pos&quot;));</span>
+<span class="fc" id="L679">            returnBox.setY(rs.getFloat(&quot;corner_vertical_pos&quot;));</span>
+<span class="fc" id="L680">            returnBox.setZ(rs.getFloat(&quot;corner_depth_pos&quot;));</span>
+<span class="fc" id="L681">            returnBox.setID(rs.getString(&quot;individual_ID&quot;));</span>
             
-<span class="fc" id="L642">            stmt.close();</span>
-<span class="fc" id="L643">            c.close();</span>
+<span class="fc" id="L683">            stmt.close();</span>
+<span class="fc" id="L684">            c.close();</span>
         }
-<span class="nc" id="L645">        catch (SQLException e){</span>
+<span class="nc" id="L686">        catch (SQLException e){</span>
         //Error catching
-<span class="nc" id="L647">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L648">        System.exit(0);</span>
-<span class="fc" id="L649">        }</span>
+<span class="nc" id="L688">        System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L689">        System.exit(0);</span>
+<span class="fc" id="L690">        }</span>
         
-<span class="fc" id="L651">        return returnBox;</span>
+<span class="fc" id="L692">        return returnBox;</span>
     }
     
     /**
@@ -662,23 +703,23 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L665">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L666">            stmt = c.createStatement();</span>
+<span class="fc" id="L706">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L707">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L668">            String sql = &quot;INSERT INTO emptySpace (bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, height) &quot;</span>
-<span class="fc" id="L669">                    + &quot;VALUES ('&quot; + newSpace.getBin() + &quot;', '&quot; + newSpace.getY() +  &quot;', '&quot; + newSpace.getX() + &quot;', '&quot; + newSpace.getZ() +</span>
-<span class="fc" id="L670">                    &quot;', '&quot; + newSpace.getWidth() + &quot;', '&quot; + newSpace.getLength() + &quot;', '&quot; + newSpace.getHeight() + &quot;' );&quot;;</span>
-<span class="fc" id="L671">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L709">            String sql = &quot;INSERT INTO emptySpace (bin_ID, corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, height) &quot;</span>
+<span class="fc" id="L710">                    + &quot;VALUES ('&quot; + newSpace.getBin() + &quot;', '&quot; + newSpace.getY() +  &quot;', '&quot; + newSpace.getX() + &quot;', '&quot; + newSpace.getZ() +</span>
+<span class="fc" id="L711">                    &quot;', '&quot; + newSpace.getWidth() + &quot;', '&quot; + newSpace.getLength() + &quot;', '&quot; + newSpace.getHeight() + &quot;' );&quot;;</span>
+<span class="fc" id="L712">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L673">            stmt.close();</span>
-<span class="fc" id="L674">            c.close();</span>
+<span class="fc" id="L714">            stmt.close();</span>
+<span class="fc" id="L715">            c.close();</span>
         }
-<span class="nc" id="L676">        catch (SQLException e){</span>
+<span class="nc" id="L717">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L678">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L679">            System.exit(0);</span>
-<span class="fc" id="L680">        }</span>
-<span class="fc" id="L681">    }</span>
+<span class="nc" id="L719">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L720">            System.exit(0);</span>
+<span class="fc" id="L721">        }</span>
+<span class="fc" id="L722">    }</span>
     
     /**
      * Retreves the empty spaces in a specified bin
@@ -691,27 +732,27 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L694">        List&lt;EmptySpace&gt; returnList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L735">        List&lt;EmptySpace&gt; returnList = new ArrayList&lt;&gt;();</span>
         
         try{
-<span class="fc" id="L697">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L698">            stmt = c.createStatement();</span>
+<span class="fc" id="L738">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L739">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L700">            ResultSet rs = stmt.executeQuery(&quot;SELECT corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, &quot;</span>
+<span class="fc" id="L741">            ResultSet rs = stmt.executeQuery(&quot;SELECT corner_vertical_pos, corner_horizontal_pos, corner_depth_pos, width, length, &quot;</span>
                     + &quot;height FROM emptySpace WHERE bin_ID = &quot; + binID);
-<span class="fc bfc" id="L702" title="All 2 branches covered.">            while(rs.next()){</span>
-<span class="fc" id="L703">                returnList.add(new EmptySpace(rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;), rs.getFloat(&quot;corner_horizontal_pos&quot;), </span>
-<span class="fc" id="L704">                        rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;), binID));</span>
+<span class="fc bfc" id="L743" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L744">                returnList.add(new EmptySpace(rs.getFloat(&quot;width&quot;), rs.getFloat(&quot;length&quot;), rs.getFloat(&quot;height&quot;), rs.getFloat(&quot;corner_horizontal_pos&quot;), </span>
+<span class="fc" id="L745">                        rs.getFloat(&quot;corner_vertical_pos&quot;), rs.getFloat(&quot;corner_depth_pos&quot;), binID));</span>
             }
-<span class="fc" id="L706">            stmt.close();</span>
-<span class="fc" id="L707">            c.close();</span>
+<span class="fc" id="L747">            stmt.close();</span>
+<span class="fc" id="L748">            c.close();</span>
         }
-<span class="nc" id="L709">        catch (SQLException e){</span>
+<span class="nc" id="L750">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L711">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L712">            System.exit(0);</span>
-<span class="fc" id="L713">        }</span>
-<span class="fc" id="L714">        return returnList;</span>
+<span class="nc" id="L752">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L753">            System.exit(0);</span>
+<span class="fc" id="L754">        }</span>
+<span class="fc" id="L755">        return returnList;</span>
     }
     
     /**
@@ -725,22 +766,22 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L728">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L729">            stmt = c.createStatement();</span>
+<span class="fc" id="L769">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L770">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L731">            String sql = &quot;DELETE FROM emptySpace WHERE bin_ID = &quot; + spaceToRemove.getBin() + &quot; AND corner_horizontal_pos = &quot; </span>
-<span class="fc" id="L732">                    + spaceToRemove.getX() + &quot; AND corner_vertical_pos = &quot; + spaceToRemove.getY() + &quot; AND corner_depth_pos = &quot; + spaceToRemove.getZ();</span>
-<span class="fc" id="L733">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L772">            String sql = &quot;DELETE FROM emptySpace WHERE bin_ID = &quot; + spaceToRemove.getBin() + &quot; AND corner_horizontal_pos = &quot; </span>
+<span class="fc" id="L773">                    + spaceToRemove.getX() + &quot; AND corner_vertical_pos = &quot; + spaceToRemove.getY() + &quot; AND corner_depth_pos = &quot; + spaceToRemove.getZ();</span>
+<span class="fc" id="L774">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L735">            stmt.close();</span>
-<span class="fc" id="L736">            c.close();</span>
+<span class="fc" id="L776">            stmt.close();</span>
+<span class="fc" id="L777">            c.close();</span>
         }
-<span class="nc" id="L738">        catch (SQLException e){</span>
+<span class="nc" id="L779">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L740">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L741">            System.exit(0);</span>
-<span class="fc" id="L742">        }</span>
-<span class="fc" id="L743">    }</span>
+<span class="nc" id="L781">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L782">            System.exit(0);</span>
+<span class="fc" id="L783">        }</span>
+<span class="fc" id="L784">    }</span>
     
     /**
      * Removes a specific box from the box location table
@@ -753,21 +794,21 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L756">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L757">            stmt = c.createStatement();</span>
+<span class="fc" id="L797">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L798">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L759">            String sql = &quot;DELETE FROM boxLocation WHERE individual_ID = &quot; + boxToRemove.getID();</span>
-<span class="fc" id="L760">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L800">            String sql = &quot;DELETE FROM boxLocation WHERE individual_ID = &quot; + boxToRemove.getID();</span>
+<span class="fc" id="L801">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L762">            stmt.close();</span>
-<span class="fc" id="L763">            c.close();</span>
+<span class="fc" id="L803">            stmt.close();</span>
+<span class="fc" id="L804">            c.close();</span>
         }
-<span class="nc" id="L765">        catch (SQLException e){</span>
+<span class="nc" id="L806">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L767">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L768">            System.exit(0);</span>
-<span class="fc" id="L769">        }</span>
-<span class="fc" id="L770">    }</span>
+<span class="nc" id="L808">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L809">            System.exit(0);</span>
+<span class="fc" id="L810">        }</span>
+<span class="fc" id="L811">    }</span>
     
     /**Takes the new box and the old empty space, places the box in the storage room, removes
      * the original empty space object and creates two new empty spaces for the new item. The new empty space object
@@ -779,39 +820,39 @@ import tom.sros.sorter.newAlgorithm;
      * @return list of the new empty space objects
      */
     public List&lt;EmptySpace&gt; fillEmptySpace(EmptySpace spaceFilled, Box itemFillingSpace, String dataBaseName){
-<span class="fc" id="L782">        List&lt;EmptySpace&gt; newEmptySpaces = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L823">        List&lt;EmptySpace&gt; newEmptySpaces = new ArrayList&lt;&gt;();</span>
         
         //Calculate the area of the new empty spaces
-<span class="fc" id="L785">        Space bellowArea = spaceFilled.getArea().areaBellow(spaceFilled.getArea(), itemFillingSpace.getArea());</span>
-<span class="fc" id="L786">        Space rightArea = spaceFilled.getArea().areaRight(spaceFilled.getArea(), itemFillingSpace.getArea());</span>
+<span class="fc" id="L826">        Space bellowArea = spaceFilled.getArea().areaBellow(spaceFilled.getArea(), itemFillingSpace.getArea());</span>
+<span class="fc" id="L827">        Space rightArea = spaceFilled.getArea().areaRight(spaceFilled.getArea(), itemFillingSpace.getArea());</span>
         
-<span class="fc" id="L788">        float BellowX = spaceFilled.getX();</span>
-<span class="fc" id="L789">        float BellowZ = spaceFilled.getLength() + spaceFilled.getZ();</span>
-<span class="fc" id="L790">        float BellowY = spaceFilled.getY();</span>
+<span class="fc" id="L829">        float BellowX = spaceFilled.getX();</span>
+<span class="fc" id="L830">        float BellowZ = spaceFilled.getLength() + spaceFilled.getZ();</span>
+<span class="fc" id="L831">        float BellowY = spaceFilled.getY();</span>
         
-<span class="fc" id="L792">        float RightX = spaceFilled.getWidth() + spaceFilled.getX();</span>
-<span class="fc" id="L793">        float RightZ = spaceFilled.getZ();</span>
-<span class="fc" id="L794">        float RightY = spaceFilled.getY();</span>
+<span class="fc" id="L833">        float RightX = spaceFilled.getWidth() + spaceFilled.getX();</span>
+<span class="fc" id="L834">        float RightZ = spaceFilled.getZ();</span>
+<span class="fc" id="L835">        float RightY = spaceFilled.getY();</span>
         
         //Creating new space objects using the calculations above
-<span class="fc" id="L797">        EmptySpace bellowEmpty = new EmptySpace(bellowArea.getWidth(), bellowArea.getLength(), spaceFilled.getHeight(), BellowX, BellowY, BellowZ, spaceFilled.getBin());</span>
-<span class="fc" id="L798">        EmptySpace rightEmpty = new EmptySpace(rightArea.getWidth(), rightArea.getLength(), spaceFilled.getHeight(), RightX, RightY, RightZ, spaceFilled.getBin());</span>
+<span class="fc" id="L838">        EmptySpace bellowEmpty = new EmptySpace(bellowArea.getWidth(), bellowArea.getLength(), spaceFilled.getHeight(), BellowX, BellowY, BellowZ, spaceFilled.getBin());</span>
+<span class="fc" id="L839">        EmptySpace rightEmpty = new EmptySpace(rightArea.getWidth(), rightArea.getLength(), spaceFilled.getHeight(), RightX, RightY, RightZ, spaceFilled.getBin());</span>
 
         //Adding new empty spaces to the database and to the return value
         //Only creates the empty space if they have an area (e.g. no width or length of 0)
-<span class="pc bpc" id="L802" title="2 of 4 branches missed.">        if((bellowEmpty.getWidth() &gt; 0) &amp;&amp; (bellowEmpty.getLength() &gt; 0)){</span>
-<span class="nc" id="L803">            addEmptySpace(bellowEmpty, dataBaseName);</span>
-<span class="nc" id="L804">            newEmptySpaces.add(bellowEmpty);</span>
+<span class="pc bpc" id="L843" title="2 of 4 branches missed.">        if((bellowEmpty.getWidth() &gt; 0) &amp;&amp; (bellowEmpty.getLength() &gt; 0)){</span>
+<span class="nc" id="L844">            addEmptySpace(bellowEmpty, dataBaseName);</span>
+<span class="nc" id="L845">            newEmptySpaces.add(bellowEmpty);</span>
         }
-<span class="pc bpc" id="L806" title="3 of 4 branches missed.">        if((rightEmpty.getWidth() &gt; 0) &amp;&amp; (rightEmpty.getLength() &gt; 0)){</span>
-<span class="nc" id="L807">            addEmptySpace(rightEmpty, dataBaseName);</span>
-<span class="nc" id="L808">            newEmptySpaces.add(rightEmpty);</span>
+<span class="pc bpc" id="L847" title="3 of 4 branches missed.">        if((rightEmpty.getWidth() &gt; 0) &amp;&amp; (rightEmpty.getLength() &gt; 0)){</span>
+<span class="nc" id="L848">            addEmptySpace(rightEmpty, dataBaseName);</span>
+<span class="nc" id="L849">            newEmptySpaces.add(rightEmpty);</span>
         }
         
         //Removing the empty space that has been filled
-<span class="fc" id="L812">        removeEmptySpace(spaceFilled, dataBaseName);</span>
+<span class="fc" id="L853">        removeEmptySpace(spaceFilled, dataBaseName);</span>
                 
-<span class="fc" id="L814">        return newEmptySpaces;</span>
+<span class="fc" id="L855">        return newEmptySpaces;</span>
     }
     
     /**
@@ -825,24 +866,24 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L828">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L829">            stmt = c.createStatement();</span>
+<span class="fc" id="L869">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L870">            stmt = c.createStatement();</span>
             
-<span class="fc bfc" id="L831" title="All 2 branches covered.">            for(Box currentBox: unsortedBoxes){</span>
-<span class="fc" id="L832">                String sql = &quot;INSERT INTO unSortedBoxes (box_ID) &quot;</span>
-<span class="fc" id="L833">                            + &quot;VALUES ('&quot; + currentBox.getID()  + &quot;' );&quot;;</span>
-<span class="fc" id="L834">                stmt.executeUpdate(sql);</span>
-<span class="fc" id="L835">            }</span>
+<span class="fc bfc" id="L872" title="All 2 branches covered.">            for(Box currentBox: unsortedBoxes){</span>
+<span class="fc" id="L873">                String sql = &quot;INSERT INTO unSortedBoxes (box_ID) &quot;</span>
+<span class="fc" id="L874">                            + &quot;VALUES ('&quot; + currentBox.getID()  + &quot;' );&quot;;</span>
+<span class="fc" id="L875">                stmt.executeUpdate(sql);</span>
+<span class="fc" id="L876">            }</span>
             
-<span class="fc" id="L837">            stmt.close();</span>
-<span class="fc" id="L838">            c.close();</span>
+<span class="fc" id="L878">            stmt.close();</span>
+<span class="fc" id="L879">            c.close();</span>
         }
-<span class="nc" id="L840">        catch (SQLException e){</span>
+<span class="nc" id="L881">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L842">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L843">            System.exit(0);</span>
-<span class="fc" id="L844">        }</span>
-<span class="fc" id="L845">    }</span>
+<span class="nc" id="L883">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L884">            System.exit(0);</span>
+<span class="fc" id="L885">        }</span>
+<span class="fc" id="L886">    }</span>
     
     /**
      * Deletes all stored information in the box location and empty space tables
@@ -854,27 +895,27 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L857">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L858">            stmt = c.createStatement();</span>
+<span class="fc" id="L898">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L899">            stmt = c.createStatement();</span>
             
             //drops both tables relating to box information
-<span class="fc" id="L861">            String sql = (&quot;DELETE FROM boxLocation&quot;);</span>
-<span class="fc" id="L862">            stmt.executeUpdate(sql);</span>
-<span class="fc" id="L863">            sql = (&quot;DELETE FROM emptySpace&quot;);</span>
-<span class="fc" id="L864">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L902">            String sql = (&quot;DELETE FROM boxLocation&quot;);</span>
+<span class="fc" id="L903">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L904">            sql = (&quot;DELETE FROM emptySpace&quot;);</span>
+<span class="fc" id="L905">            stmt.executeUpdate(sql);</span>
             
             //runs the main method, recreating the tables
-<span class="fc" id="L867">            main(dataBaseName);</span>
+<span class="fc" id="L908">            main(dataBaseName);</span>
             
-<span class="fc" id="L869">            stmt.close();</span>
-<span class="fc" id="L870">            c.close();</span>
+<span class="fc" id="L910">            stmt.close();</span>
+<span class="fc" id="L911">            c.close();</span>
         }
-<span class="nc" id="L872">        catch (SQLException e){</span>
+<span class="nc" id="L913">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L874">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L875">            System.exit(0);</span>
-<span class="fc" id="L876">        }</span>
-<span class="fc" id="L877">    }</span>
+<span class="nc" id="L915">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L916">            System.exit(0);</span>
+<span class="fc" id="L917">        }</span>
+<span class="fc" id="L918">    }</span>
     
     /**
      * Gathers the display information about unsorted boxes
@@ -886,34 +927,34 @@ import tom.sros.sorter.newAlgorithm;
         Connection c;
         Statement stmt;
         
-<span class="fc" id="L889">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L930">        List&lt;Box&gt; returnList = new ArrayList&lt;&gt;();</span>
         
         try{
-<span class="fc" id="L892">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
-<span class="fc" id="L893">            stmt = c.createStatement();</span>
+<span class="fc" id="L933">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBaseName);</span>
+<span class="fc" id="L934">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L895">            ResultSet rs = stmt.executeQuery(&quot;SELECT * FROM unSortedBoxes&quot;);</span>
-<span class="fc bfc" id="L896" title="All 2 branches covered.">            while(rs.next()){</span>
-<span class="fc" id="L897">                boolean found = false;</span>
-<span class="fc bfc" id="L898" title="All 2 branches covered.">                for(Box currentBox : returnList){</span>
-<span class="fc bfc" id="L899" title="All 2 branches covered.">                    if(currentBox.getID().equals(rs.getString(&quot;box_ID&quot;))){</span>
-<span class="fc" id="L900">                        currentBox.setAmount(currentBox.getAmount() + 1);</span>
-<span class="fc" id="L901">                        found = true;</span>
+<span class="fc" id="L936">            ResultSet rs = stmt.executeQuery(&quot;SELECT * FROM unSortedBoxes&quot;);</span>
+<span class="fc bfc" id="L937" title="All 2 branches covered.">            while(rs.next()){</span>
+<span class="fc" id="L938">                boolean found = false;</span>
+<span class="fc bfc" id="L939" title="All 2 branches covered.">                for(Box currentBox : returnList){</span>
+<span class="fc bfc" id="L940" title="All 2 branches covered.">                    if(currentBox.getID().equals(rs.getString(&quot;box_ID&quot;))){</span>
+<span class="fc" id="L941">                        currentBox.setAmount(currentBox.getAmount() + 1);</span>
+<span class="fc" id="L942">                        found = true;</span>
                     }
-<span class="fc" id="L903">                }</span>
-<span class="fc bfc" id="L904" title="All 2 branches covered.">                if(found == false){</span>
-<span class="fc" id="L905">                    returnList.add(new Box(rs.getString(&quot;box_ID&quot;), 1));</span>
+<span class="fc" id="L944">                }</span>
+<span class="fc bfc" id="L945" title="All 2 branches covered.">                if(found == false){</span>
+<span class="fc" id="L946">                    returnList.add(new Box(rs.getString(&quot;box_ID&quot;), 1));</span>
                 }
-<span class="fc" id="L907">            }</span>
-<span class="fc" id="L908">            stmt.close();</span>
-<span class="fc" id="L909">            c.close();</span>
+<span class="fc" id="L948">            }</span>
+<span class="fc" id="L949">            stmt.close();</span>
+<span class="fc" id="L950">            c.close();</span>
         }
-<span class="nc" id="L911">        catch (SQLException e){</span>
+<span class="nc" id="L952">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L913">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L914">            System.exit(0);</span>
-<span class="fc" id="L915">        }</span>
-<span class="fc" id="L916">        return returnList;</span>
+<span class="nc" id="L954">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L955">            System.exit(0);</span>
+<span class="fc" id="L956">        }</span>
+<span class="fc" id="L957">        return returnList;</span>
     }
     
     /**
@@ -926,20 +967,20 @@ import tom.sros.sorter.newAlgorithm;
         Statement stmt;
         
         try{
-<span class="fc" id="L929">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
-<span class="fc" id="L930">            stmt = c.createStatement();</span>
+<span class="fc" id="L970">            c = DriverManager.getConnection(&quot;jdbc:sqlite:&quot; + dataBasename);</span>
+<span class="fc" id="L971">            stmt = c.createStatement();</span>
             
-<span class="fc" id="L932">            String sql = &quot;DELETE FROM unSortedBoxes;&quot;;</span>
-<span class="fc" id="L933">            stmt.executeUpdate(sql);</span>
+<span class="fc" id="L973">            String sql = &quot;DELETE FROM unSortedBoxes;&quot;;</span>
+<span class="fc" id="L974">            stmt.executeUpdate(sql);</span>
             
-<span class="fc" id="L935">            stmt.close();</span>
-<span class="fc" id="L936">            c.close();</span>
+<span class="fc" id="L976">            stmt.close();</span>
+<span class="fc" id="L977">            c.close();</span>
         }
-<span class="nc" id="L938">        catch (SQLException e){</span>
+<span class="nc" id="L979">        catch (SQLException e){</span>
             //Error catching
-<span class="nc" id="L940">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L941">            System.exit(0);</span>
-<span class="fc" id="L942">        }</span>
-<span class="fc" id="L943">    }</span>
+<span class="nc" id="L981">            System.err.println(e.getClass().getName() + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L982">            System.exit(0);</span>
+<span class="fc" id="L983">        }</span>
+<span class="fc" id="L984">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

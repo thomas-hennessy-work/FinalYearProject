@@ -10,32 +10,33 @@ import tom.sros.App;
     //in the system.
     @FXML
     private void logOut() throws IOException{
-<span class="nc" id="L13">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
-<span class="nc" id="L14">    }</span>
-    
-    @FXML
-    private void userManagmentBtn() throws IOException{
-<span class="nc" id="L18">        App.setRoot(&quot;/tom/sros/login/userManagment&quot;);</span>
-<span class="nc" id="L19">    }</span>
+<span class="nc" id="L13">        App.clearManagerStatus();</span>
+<span class="nc" id="L14">        App.setRoot(&quot;/tom/sros/login/logInScreen&quot;);</span>
+<span class="nc" id="L15">    }</span>
     
     @FXML
     private void addToDBBtn() throws IOException{
-<span class="nc" id="L23">        App.setRoot(&quot;/tom/sros/item/addItemToDataBase&quot;);</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L19">        App.setRoot(&quot;/tom/sros/item/addItemToDataBase&quot;);</span>
+<span class="nc" id="L20">    }</span>
+    
+    @FXML
+    private void userManagmentBtn() throws IOException{
+<span class="nc" id="L24">        App.setRoot(&quot;/tom/sros/login/userManagment&quot;);</span>
+<span class="nc" id="L25">    }</span>
     
     @FXML
     private void addToStrgRoom() throws IOException{
-<span class="nc" id="L28">        App.setRoot(&quot;/tom/sros/storageRoom/addToStorageRoomScreen&quot;);</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L29">        App.setRoot(&quot;/tom/sros/storageRoom/addToStorageRoomScreen&quot;);</span>
+<span class="nc" id="L30">    }</span>
     
     @FXML
     private void strgRoomMgmnt() throws IOException{
-<span class="nc" id="L33">        App.setRoot(&quot;/tom/sros/storageRoom/storageRoomManagment&quot;);</span>
-<span class="nc" id="L34">    }</span>
+<span class="nc" id="L34">        App.setRoot(&quot;/tom/sros/storageRoom/storageRoomManagment&quot;);</span>
+<span class="nc" id="L35">    }</span>
     
     @FXML
     private void locateItemScreen() throws IOException{
-<span class="nc" id="L38">        App.setRoot(&quot;/tom/sros/item/locateItem&quot;);</span>
-<span class="nc" id="L39">    }</span>
+<span class="nc" id="L39">        App.setRoot(&quot;/tom/sros/item/locateItem&quot;);</span>
+<span class="nc" id="L40">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
