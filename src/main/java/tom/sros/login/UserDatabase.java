@@ -24,7 +24,7 @@ public class UserDatabase {
             //Creates user table. If it already exists, it will not run
             stmt = c.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS user " + 
-                            "(user_ID   STRING  PRIMARY KEY     NOT NULL," +
+                            "(user_ID   INTEGER  PRIMARY KEY     AUTOINCREMENT," +
                             "user_name  STRING    NOT NULL, " +
                             "is_manager BOOL    NOT NULL, " +
                             "password   STRING    NOT NULL)";
@@ -37,8 +37,8 @@ public class UserDatabase {
             if (rs.next() == false){
                 try (Statement stmt1 = c.createStatement()) {
                     String hashedPass = Hashing.sha256().hashString("password",StandardCharsets.UTF_8).toString();
-                    sql = "INSERT INTO user (user_ID,user_name,is_manager,password) " +
-                            "VALUES ('1', 'Default', true, '" + hashedPass + "' );";
+                    sql = "INSERT INTO user (user_name,is_manager,password) " +
+                            "VALUES ('Default', true, '" + hashedPass + "' );";
                     System.out.println("Default user created");
                     stmt1.executeUpdate(sql);
                 }
@@ -57,12 +57,11 @@ public class UserDatabase {
      * Adds a user to the user table
      * 
      * @param dataBaseName
-     * @param user_ID
      * @param user_name
      * @param is_manager
      * @param password 
      */
-    public void populate(String dataBaseName, String user_ID, String user_name, Boolean is_manager, String password){
+    public void populate(String dataBaseName, String user_name, Boolean is_manager, String password){
         Connection c;
         Statement stmt;
             
@@ -72,8 +71,8 @@ public class UserDatabase {
                 
             //Insert a new user in to the user database
             stmt = c.createStatement();
-            String sql = "INSERT INTO user (user_ID,user_name,is_manager,password)"
-                    + "VALUES ('" + user_ID + "', '"+ user_name + "', "
+            String sql = "INSERT INTO user (user_name,is_manager,password)"
+                    + "VALUES ('" + user_name + "', "
                     + is_manager + ", '" + password + "' );";
             stmt.executeUpdate(sql);
                 
@@ -187,40 +186,6 @@ public class UserDatabase {
             System.exit(0);
         }
         return returnList;
-    }
-    
-    /**
-     * Identifies if a user exists or not
-     * 
-     * @param dataBaseName
-     * @param userID
-     * @return true if user exists, false if they do not
-     */    
-    public boolean userIDExists(String dataBaseName, String userID){
-        Connection c;
-        Statement stmt;
-        
-        Boolean exists = null;
-
-        try{
-            //Connecting to database
-            c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
-
-            //Gather user information from dataBase
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT user_ID FROM user WHERE user_ID = '" + userID + "';");
-
-            exists = rs.next();
-                
-            stmt.close();
-            c.close();
-        }
-        //Exception catching
-        catch ( SQLException e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        return exists;
     }
     
     /**

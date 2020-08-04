@@ -25,8 +25,6 @@ public class userManagmentController implements Initializable{
     ObservableList<String> items = FXCollections.observableArrayList();
     
     @FXML
-    private TextField userIDInput;
-    @FXML
     private TextField userNameInput;
     @FXML
     private TextField passWordInput;
@@ -57,25 +55,20 @@ public class userManagmentController implements Initializable{
     @FXML
     private void createUser() throws IOException {
         UserDatabase UDB = new UserDatabase();
-        JFrame userIDWarning = new JFrame();
         JFrame userNameWarning = new JFrame();
         
-        if((UDB.userIDExists(dataBaseName, userIDInput.getText()) == false) && (UDB.userNameExists(dataBaseName, userNameInput.getText()) == false)){
+        if(UDB.userNameExists(dataBaseName, userNameInput.getText()) == false){
             boolean isManager = radioManager.isSelected();
-            UDB.populate(dataBaseName, userIDInput.getText(), userNameInput.getText(), isManager, Hashing.sha256().hashString(passWordInput.getText(),StandardCharsets.UTF_8).toString());
+            UDB.populate(dataBaseName, userNameInput.getText(), isManager, Hashing.sha256().hashString(passWordInput.getText(),StandardCharsets.UTF_8).toString());
             
             //Testing the hashing
             //System.out.println(Hashing.sha256().hashString(passWordInput.getText(),StandardCharsets.UTF_8).toString());
 
-            userIDInput.setText("");
             userNameInput.setText("");
             passWordInput.setText("");
 
             userTable.getItems().clear();
             populateTable();
-        } else if(UDB.userIDExists(dataBaseName, userIDInput.getText()) == true) {
-            JOptionPane.showMessageDialog(userIDWarning, "User with that ID already exists.", "ID exists", 2);
-            userIDInput.setText("");
         } else if(UDB.userNameExists(dataBaseName, userNameInput.getText()) == true){
             JOptionPane.showMessageDialog(userNameWarning, "User with that user name already exists.", "Name esists", 2);
             userNameInput.setText("");

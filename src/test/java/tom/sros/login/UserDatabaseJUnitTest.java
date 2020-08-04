@@ -137,8 +137,8 @@ public class UserDatabaseJUnitTest {
         System.out.println("testPopulate running");
         
         UserDatabase UDB = new UserDatabase();
-        UDB.populate(dataBaseName, "15", "Tom", false, "populate");
-        UDB.populate(dataBaseName, "8", "Professor Yang", true, "supervisor");
+        UDB.populate(dataBaseName,"Tom", false, "populate");
+        UDB.populate(dataBaseName, "Professor Yang", true, "supervisor");
         
         Connection c;
         Statement stmt;
@@ -235,12 +235,5 @@ public class UserDatabaseJUnitTest {
     public void testUserNameExists(){
         assertEquals(false, UDB.userNameExists(dataBaseName, user1.getUserName()));
         assertEquals(true, UDB.userNameExists(dataBaseName, user2.getUserName()));
-    }
-    
-    @Test
-    @Order(7)
-    public void testUserIDExists(){
-        assertEquals(false, UDB.userIDExists(dataBaseName, user1.getID()));
-        assertEquals(true, UDB.userIDExists(dataBaseName, user2.getID()));
     }
 }

@@ -28,14 +28,14 @@ public class LogInController {
     public void logInButton() throws IOException{
         //Gather text box inputs
         String userNameIn = userNameText.getText();
-        String passWordIn = passWordText.getText();
+        String passWordIn = Hashing.sha256().hashString(passWordText.getText(),StandardCharsets.UTF_8).toString();
         
         JFrame passwordWarning = new JFrame();
         
         //Check if they match any on record accounts
         System.out.println("Check if credentials are valid");
         
-        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, Hashing.sha256().hashString(passWordIn,StandardCharsets.UTF_8).toString());
+        Boolean loginValue = UserDatabase.logInCheck(dataBaseName, userNameIn, passWordIn);
         
         //Log in check
         //Incorect log in details

@@ -442,12 +442,6 @@ public class ItemDatabaseJUnitTest {
         assertEquals(expectedBox3.getZ(), ItemDatabase.getBoxLocationDisplay(dataBaseName).get(1).getZ(), "box 3 Z check");
     }
     
-//    @Test
-//    @Order(8)
-//    public void testGetBoxLocationReSort(){
-//        assertEquals();
-//    }
-//    
     @Test
     @Order(8)
     public void testReplaceBoxRemoved(){
@@ -742,6 +736,15 @@ public class ItemDatabaseJUnitTest {
         assertEquals(2, ITDB.getExistingBoxes(bin1, dataBaseName).size(), "There should be two boxes in the list");
         assertEquals(1, ITDB.getExistingBoxes(bin2, dataBaseName).size(), "There should be two boxes in the list");
         assertEquals(0, ITDB.getExistingBoxes(bin3, dataBaseName).size(), "There should be two boxes in the list");
+    }
+    
+    @Test
+    @Order(16)
+    public void testGetBoxLocationReSort(){
+        assertEquals("2", ItemDatabase.getBoxLocationReSort(dataBaseName).get(0).getID());
+        assertEquals(1, ItemDatabase.getBoxLocationReSort(dataBaseName).get(0).getAmount());
+        assertEquals("4", ItemDatabase.getBoxLocationReSort(dataBaseName).get(1).getID());
+        assertEquals(2, ItemDatabase.getBoxLocationReSort(dataBaseName).get(1).getAmount());
     }
     
     @Test
