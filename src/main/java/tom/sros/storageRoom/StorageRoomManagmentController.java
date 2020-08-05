@@ -1,6 +1,5 @@
 package tom.sros.storageRoom;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +8,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
-import tom.sros.App;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import tom.sros.home.NonHomeScreen;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.newAlgorithm;
 
-public class StorageRoomManagmentController implements Initializable{
+public class StorageRoomManagmentController extends NonHomeScreen implements Initializable{
     String dataBaseName = ("SROSData.db");
     
     @FXML
@@ -209,16 +208,6 @@ public class StorageRoomManagmentController implements Initializable{
         
         unsortedTable.getItems().clear();
         populateUnsortedTable();
-    }
-    
-    //Logout and home buttons
-    @FXML
-    private void logOut() throws IOException {
-        App.setRoot("/tom/sros/login/logInScreen");
-    }
-    @FXML
-    private void home() throws IOException{
-        App.setRoot("/tom/sros/home/homeScreen");
     }
     
     /**

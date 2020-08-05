@@ -15,8 +15,9 @@ import tom.sros.App;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import tom.sros.home.NonHomeScreen;
 
-public class userManagmentController implements Initializable{
+public class userManagmentController extends NonHomeScreen implements Initializable{
     
     String dataBaseName = ("SROSData.db");
     
@@ -88,16 +89,6 @@ public class userManagmentController implements Initializable{
         
         userTable.getItems().clear();
         populateTable();
-    }
-
-    //Log out and home button
-    @FXML
-    private void logOut() throws IOException {
-        App.setRoot("/tom/sros/login/logInScreen");
-    }
-    @FXML
-    private void home() throws IOException{
-        App.setRoot("/tom/sros/home/homeScreen");
     }
     
     //Method for populating table

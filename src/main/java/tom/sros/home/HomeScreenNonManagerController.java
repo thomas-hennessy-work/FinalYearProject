@@ -4,14 +4,8 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import tom.sros.App;
 
-public class HomeScreenNonManagerController {
-    
-    boolean UserType;
-    
-    public void userTypeData(boolean userType){
-        UserType = userType;
-    }
-    
+//Methods are inherited by manager home screen, as they both use the same buttons
+public class HomeScreenNonManagerController{    
     //Functions used in conjunction with FXML buttons to navigate to other pages
     //in the system.
     @FXML

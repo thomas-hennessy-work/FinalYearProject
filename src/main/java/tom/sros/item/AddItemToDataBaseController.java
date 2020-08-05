@@ -11,10 +11,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import tom.sros.App;
+import tom.sros.home.NonHomeScreen;
 import tom.sros.sorter.Box;
 
-public class AddItemToDataBaseController implements Initializable{
+public class AddItemToDataBaseController extends NonHomeScreen implements Initializable{
     
     String dataBaseName = ("SROSData.db");
     
@@ -84,21 +84,6 @@ public class AddItemToDataBaseController implements Initializable{
         }
         else {
             JOptionPane.showMessageDialog(inputNameWarning, "No name input. A name for the box is requiered", "Empty name", 1);
-        }
-    }
-    
-    //Home and log out buttons
-    @FXML
-    private void logOut() throws IOException {
-        App.clearManagerStatus();
-        App.setRoot("/tom/sros/login/logInScreen");
-    }
-    @FXML
-    private void home() throws IOException{
-        if(App.getManager()){
-            App.setRoot("/tom/sros/home/homeScreen");
-        } else {
-            App.setRoot("/tom/sros/home/homeScreenNonManager");
         }
     }
     

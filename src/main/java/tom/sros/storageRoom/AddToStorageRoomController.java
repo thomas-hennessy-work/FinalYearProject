@@ -10,13 +10,13 @@ import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import tom.sros.App;
+import tom.sros.home.NonHomeScreen;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.CustOrder;
 
-public class AddToStorageRoomController {
+public class AddToStorageRoomController extends NonHomeScreen{
     
     String dataBaseName = ("SROSData.db");
     
@@ -176,21 +176,6 @@ public class AddToStorageRoomController {
         });
         
         orderTable.getItems().removeAll(selectedOrders);
-    }
-    
-    //Home and log out buttons
-    @FXML
-    private void logOut() throws IOException {
-        App.clearManagerStatus();
-        App.setRoot("/tom/sros/login/logInScreen");
-    }
-    @FXML
-    private void home() throws IOException{
-        if(App.getManager()){
-            App.setRoot("/tom/sros/home/homeScreen");
-        } else {
-            App.setRoot("/tom/sros/home/homeScreenNonManager");
-        }
     }
     
     private boolean amountValidation(String amount){

@@ -1,6 +1,5 @@
 package tom.sros.item;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -8,11 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
-import tom.sros.App;
+import tom.sros.home.NonHomeScreen;
 import tom.sros.sorter.Box;
 import tom.sros.sorter.CustOrder;
 
-public class LocateItemController implements Initializable{
+public class LocateItemController extends NonHomeScreen implements Initializable{
     String dataBaseName = ("SROSData.db");
     
     @FXML
@@ -55,21 +54,6 @@ public class LocateItemController implements Initializable{
         
         orderTable.getItems().clear();
         populateOrderTable();
-    }
-    
-    //Home and log out buttons
-    @FXML
-    private void logOut() throws IOException {
-        App.clearManagerStatus();
-        App.setRoot("/tom/sros/login/logInScreen");
-    }
-    @FXML
-    private void home() throws IOException{
-        if(App.getManager()){
-            App.setRoot("/tom/sros/home/homeScreen");
-        } else {
-            App.setRoot("/tom/sros/home/homeScreenNonManager");
-        }
     }
     
     //Method for filling the box location table
