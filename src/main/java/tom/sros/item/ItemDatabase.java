@@ -12,7 +12,7 @@ import tom.sros.sorter.Box;
 import tom.sros.sorter.EmptySpace;
 import tom.sros.sorter.CustOrder;
 import tom.sros.sorter.Space;
-import tom.sros.sorter.newAlgorithm;
+import tom.sros.sorter.binaryTreeAlgorithm;
 
 public class ItemDatabase {
     
@@ -379,7 +379,7 @@ public class ItemDatabase {
      * @param orderList 
      */
     public void addOrdersToDB(String dataBaseName, List<CustOrder> orderList){
-        newAlgorithm NA = new newAlgorithm();
+        binaryTreeAlgorithm BTA = new binaryTreeAlgorithm();
 
         //Go through each order
         orderList.forEach((currentOrder) -> {
@@ -389,7 +389,7 @@ public class ItemDatabase {
             
             List<Bin> emptyBin = null;
             //Runs algorithm
-            NA.sortAndAddToDB(dataBaseName, IDAmountList, emptyBin);
+            BTA.sortAndAddToDB(dataBaseName, IDAmountList, emptyBin);
             //Gathers information about the box that has been placed. Used to link it
             //to the order table
             currentOrder.setID(getMostRecentSortedBox(dataBaseName));

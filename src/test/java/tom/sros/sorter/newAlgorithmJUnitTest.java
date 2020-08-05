@@ -24,7 +24,7 @@ public class newAlgorithmJUnitTest {
     static String dataBaseName = ("SROSTestData.db");
     static ItemDatabase ITDB = new ItemDatabase();
     static BinDataBase BDB = new BinDataBase();
-    static newAlgorithm NA = new newAlgorithm();
+    static binaryTreeAlgorithm NA = new binaryTreeAlgorithm();
     
     static Bin binType1 = new Bin("1", (float)10, (float)10, (float)10);
     

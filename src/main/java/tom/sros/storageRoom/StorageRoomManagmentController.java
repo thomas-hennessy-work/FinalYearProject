@@ -15,7 +15,7 @@ import tom.sros.home.NonHomeScreen;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
 import tom.sros.sorter.Box;
-import tom.sros.sorter.newAlgorithm;
+import tom.sros.sorter.binaryTreeAlgorithm;
 
 public class StorageRoomManagmentController extends NonHomeScreen implements Initializable{
     String dataBaseName = ("SROSData.db");
@@ -179,7 +179,7 @@ public class StorageRoomManagmentController extends NonHomeScreen implements Ini
      */
     @FXML
     private void reSortBins(){
-        newAlgorithm NA = new newAlgorithm();
+        binaryTreeAlgorithm BTA = new binaryTreeAlgorithm();
         ItemDatabase ITDB = new ItemDatabase();
         
         //Obtains the information about all boxes
@@ -187,7 +187,7 @@ public class StorageRoomManagmentController extends NonHomeScreen implements Ini
         ITDB.clearBoxLocationData(dataBaseName);
         
         //Puts all boxes through the sorting algorithm, minus the bins specified
-        NA.sortAndAddToDB(dataBaseName, allBoxes, toRemoveList);
+        BTA.sortAndAddToDB(dataBaseName, allBoxes, toRemoveList);
         
         //Removes any bins from the database that were specified
         toRemoveList.forEach((currentBin) -> {
@@ -198,13 +198,13 @@ public class StorageRoomManagmentController extends NonHomeScreen implements Ini
     @FXML
     private void addUnsortedBoxes(){
         ItemDatabase ITDB = new ItemDatabase();
-        newAlgorithm NA = new newAlgorithm();
+        binaryTreeAlgorithm BTA = new binaryTreeAlgorithm();
         
         List<Box> boxUnsortedList = ITDB.getUnsortedBoxDisplay(dataBaseName);
         List<Bin> emptyLisy = new ArrayList<>();
         
         ITDB.emptyUnsortedTable(dataBaseName);
-        NA.sortAndAddToDB(dataBaseName, boxUnsortedList, emptyLisy);
+        BTA.sortAndAddToDB(dataBaseName, boxUnsortedList, emptyLisy);
         
         unsortedTable.getItems().clear();
         populateUnsortedTable();

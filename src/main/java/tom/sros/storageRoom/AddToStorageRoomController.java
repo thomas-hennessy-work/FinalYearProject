@@ -1,6 +1,6 @@
 package tom.sros.storageRoom;
 
-import tom.sros.sorter.newAlgorithm;
+import tom.sros.sorter.binaryTreeAlgorithm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +49,12 @@ public class AddToStorageRoomController extends NonHomeScreen{
     @FXML
     private void sortBoxes() throws IOException{
         //Sorting the list of items given to the system
-        newAlgorithm NA = new newAlgorithm();
+        binaryTreeAlgorithm BTA = new binaryTreeAlgorithm();
         System.out.println("Adding item to storage room");
         
         //Sorting and adding boxes to the storage room database
         List<Bin> emptyBin = null;
-        NA.sortAndAddToDB(dataBaseName, BoxIDs, emptyBin);
+        BTA.sortAndAddToDB(dataBaseName, BoxIDs, emptyBin);
         
         //Clearing the stored list of items
         BoxIDs.clear();

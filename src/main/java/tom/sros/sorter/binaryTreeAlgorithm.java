@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import tom.sros.storageRoom.BinDataBase;
 import tom.sros.item.ItemDatabase;
 
-public class newAlgorithm {
+public class binaryTreeAlgorithm {
     
     /**
      * Finds the information related to the box types
