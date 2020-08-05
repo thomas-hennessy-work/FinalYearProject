@@ -1,6 +1,6 @@
 package tom.sros.sorter;
 
-public class CustOrder extends Box{
+public class CustOrder extends BoxIndividual{
     
     String CustAddress;
     String CustName;
