@@ -9,16 +9,16 @@ public class BoxType {
     float Width;
     float Length;
     float Height;
-
+    
     String Contents;
     String Notes;
-
+    
     int Amount;
-
+    
     //Constructors
     public BoxType(){
     }
-
+    
     public BoxType(String id, float width, float length, float height){
         ID = id;
         Width = width;
@@ -89,7 +89,6 @@ public class BoxType {
         return Amount;
     }
 
-
     //Set methods
     public void setID(String id){
         ID = id;
@@ -116,3 +115,4 @@ public class BoxType {
         return new Space(Width, Length);
     }
 }
+

@@ -5,7 +5,7 @@ public class BoxIndividual extends BoxType {
     float X;
     float Y;
     float Z;
-
+    
     String Location;
 
     //Constructors
@@ -69,7 +69,7 @@ public class BoxIndividual extends BoxType {
     public void setZ(float z){
         Z = z;
     }
-
+    
     public void setBin(String location){
         Location = location;
     }
