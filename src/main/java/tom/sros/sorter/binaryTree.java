@@ -166,7 +166,7 @@ public class binaryTree {
     }
     
     /**
-     * Depth fisrt search pre-order. Searches through all the nodes from root for the placed items
+     * Depth first search pre-order. Searches through all the nodes from root for the placed items
      * 
      * @param node
      * @return list of nodes with boxes stored in them
