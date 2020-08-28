@@ -14,7 +14,7 @@ public class Bin {
     float Height;
     
     //boxes stored in the bin
-    List<Box> StoredBoxes = new ArrayList<>();
+    List<BoxType> StoredBoxes = new ArrayList<>();
     boolean Occupied;
     
     //Amount of bins, used when adding multiple to the database
@@ -57,7 +57,7 @@ public class Bin {
         return Height;
     }
     
-    public List<Box> getBoxes(){
+    public List<BoxType> getBoxes(){
         return StoredBoxes;
     }
     public int getAmount(){
@@ -71,7 +71,7 @@ public class Bin {
     
     //Box methods
 
-    public void addBox(Box item){
+    public void addBox(BoxType item){
         StoredBoxes.add(item);
         Occupied = !StoredBoxes.isEmpty();
     }

@@ -1,13 +1,11 @@
 tom\sros\storageRoom\AddToStorageRoomController.class
 tom\sros\sorter\EmptySpace.class
-tom\sros\sorter\newAlgorithm.class
 tom\sros\login\userManagmentController.class
 tom\sros\sorter\CustOrder.class
 tom\sros\login\UserDatabase.class
 tom\sros\storageRoom\StorageRoomManagmentController.class
 tom\sros\home\HomeScreenNonManagerController.class
 tom\sros\storageRoom\BinDataBase.class
-tom\sros\sorter\Box.class
 tom\sros\home\HomeScreenController.class
 tom\sros\sorter\Bin.class
 tom\sros\App.class

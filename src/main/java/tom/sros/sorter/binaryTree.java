@@ -14,19 +14,19 @@ public class binaryTree {
     //it is sorted again.
     static Boolean unplaced = true;
     static Boolean placedExisting = false;
-    static List<Box> existingBoxes = null;
+    static List<BoxIndividual> existingBoxes = null;
     static List<EmptySpace> unocupiedSpace = null;
    
 
     class Node{
         Space binArea;
-        Box storedBox;
+        BoxIndividual storedBox;
         EmptySpace unusedSpace;
         Node below;
         Node right;
        
         //Node constructors
-        Node(Space binArea, Box item){
+        Node(Space binArea, BoxIndividual item){
             this.binArea = binArea;
             storedBox = item;
             unusedSpace = null;
@@ -38,7 +38,7 @@ public class binaryTree {
         private Space getBinArea(){
             return binArea;
         }
-        private Box getPlacedBox(){
+        private BoxIndividual getPlacedBox(){
             return storedBox;
         }
         private EmptySpace getEmptySpace(){
@@ -54,7 +54,7 @@ public class binaryTree {
      * @param binSpace
      * @param dataBaseName 
      */
-    private void add(Box item, Space binSpace, String dataBaseName){
+    private void add(BoxIndividual item, Space binSpace, String dataBaseName){
         root = addBoxRecursive(root, item, binSpace, dataBaseName);
         if(placedExisting == false){
             unplaced = false;
@@ -74,7 +74,7 @@ public class binaryTree {
      * @param dataBaseName
      * @return Node with location information and whit is placed in that location, this could be either a box, an empty space or nothing.
      */
-    private Node addBoxRecursive(Node currentNode, Box item, Space binSpace, String dataBaseName){      
+    private Node addBoxRecursive(Node currentNode, BoxIndividual item, Space binSpace, String dataBaseName){      
         //The box checks if it is able to fit in the boxes bellow, even if they fit. This
         //is due to the space constantly becoming smaller as boxes are added. If it is unable
         //to fit in the space that is already taken, it will not fit in a smaller space. This
@@ -84,7 +84,7 @@ public class binaryTree {
         
         if (currentNode == null){
             //Checking if any pre-existing boxes are located in this position.
-            Box placedBox = findPlacedBox(existingBoxes, item.getX(), item.getZ());
+            BoxIndividual placedBox = findPlacedBox(existingBoxes, item.getX(), item.getZ());
             EmptySpace placedSpace = findEmptySpace(unocupiedSpace, item.getX(), item.getZ());
             if(placedBox != null){
                 placedExisting = true;
@@ -191,7 +191,7 @@ public class binaryTree {
      * @param dataBaseName
      * @return List of boxes with their bin locations and positions
      */
-    public static List<Box> sort2DBP(Bin storingBin, List<Box> boxes, String dataBaseName){
+    public static List<BoxIndividual> sort2DBP(Bin storingBin, List<BoxIndividual> boxes, String dataBaseName){
         //Creating the binary tree
         binaryTree binTree = new binaryTree();
         binTree.currentBin = storingBin;
@@ -205,13 +205,13 @@ public class binaryTree {
         
         //Gathering information about the bin that will be storing the boxes and the boxes that will be placed
         Space binSpace = storingBin.getArea();
-        List<Box> boxList = new ArrayList<>();
+        List<BoxIndividual> boxList = new ArrayList<>();
         
         //Adding each box provided to the binary tree
         boxes.forEach((curentBox) -> {
             if(curentBox.getHeight() <= storingBin.getHeight()){
                 while(unplaced == true){
-                        binTree.add(curentBox, binSpace, dataBaseName);
+                    binTree.add(curentBox, binSpace, dataBaseName);
                 }
                 unplaced = true;
             }
@@ -239,10 +239,10 @@ public class binaryTree {
      * @param z
      * @return The box (if there is one) stored in that location
      */
-    private static Box findPlacedBox(List<Box> placedBoxes, float x, float z){
-        Box returnValue = null;
+    private static BoxIndividual findPlacedBox(List<BoxIndividual> placedBoxes, float x, float z){
+        BoxIndividual returnValue = null;
         
-        for(Box currentPlacedBox: placedBoxes){
+        for(BoxIndividual currentPlacedBox: placedBoxes){
             if((currentPlacedBox.getX() == x) && (currentPlacedBox.getZ() == z)){
                 returnValue = currentPlacedBox;
             }

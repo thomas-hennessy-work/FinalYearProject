@@ -1,4 +1,56 @@
 -------------------------------------------------------------------------------
 Test set: tom.sros.item.ItemDatabaseJUnitTest
 -------------------------------------------------------------------------------
-Tests run: 81, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.58 s - in tom.sros.item.ItemDatabaseJUnitTest
+Tests run: 81, Failures: 7, Errors: 6, Skipped: 0, Time elapsed: 0.576 s <<< FAILURE! - in tom.sros.item.ItemDatabaseJUnitTest
+testAddLocation  Time elapsed: 0.02 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: ID 3 not inserted
+	at tom.sros.item.ItemDatabaseJUnitTest.testAddLocation(ItemDatabaseJUnitTest.java:393)
+
+testGetBoxLocationDisplayName  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayName(ItemDatabaseJUnitTest.java:414)
+
+testGetBoxLocationDisplayXPos  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayXPos(ItemDatabaseJUnitTest.java:428)
+
+testGetBoxLocationDisplayYPos  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayYPos(ItemDatabaseJUnitTest.java:435)
+
+testGetBoxLocationDisplayZPos  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayZPos(ItemDatabaseJUnitTest.java:442)
+
+testGetBoxLocationDisplayBin  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayBin(ItemDatabaseJUnitTest.java:421)
+
+testGetBoxLocationDisplayID  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayID(ItemDatabaseJUnitTest.java:407)
+
+testGetBoxLocationReSort  Time elapsed: 0.003 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <2> but was: <3>
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationReSort(ItemDatabaseJUnitTest.java:739)
+
+TestgetExistingBoxesHeight  Time elapsed: 0.002 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Box 2 height should match ==> expected: <8.9> but was: <5.0>
+	at tom.sros.item.ItemDatabaseJUnitTest.TestgetExistingBoxesHeight(ItemDatabaseJUnitTest.java:766)
+
+TestgetExistingBoxesLength  Time elapsed: 0.001 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Box 2 length should match ==> expected: <6.7> but was: <13.2>
+	at tom.sros.item.ItemDatabaseJUnitTest.TestgetExistingBoxesLength(ItemDatabaseJUnitTest.java:760)
+
+TestgetExistingBoxesWidth  Time elapsed: 0.002 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Box 2 width should match ==> expected: <15.0> but was: <8.0>
+	at tom.sros.item.ItemDatabaseJUnitTest.TestgetExistingBoxesWidth(ItemDatabaseJUnitTest.java:754)
+
+testGetOrderBoxID  Time elapsed: 0.002 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: X positions should match ==> expected: <2> but was: <3>
+	at tom.sros.item.ItemDatabaseJUnitTest.testGetOrderBoxID(ItemDatabaseJUnitTest.java:843)
+
+testAddGetUnsortedID  Time elapsed: 0.013 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: ID should match ==> expected: <3> but was: <2>
+	at tom.sros.item.ItemDatabaseJUnitTest.testAddGetUnsortedID(ItemDatabaseJUnitTest.java:888)
+

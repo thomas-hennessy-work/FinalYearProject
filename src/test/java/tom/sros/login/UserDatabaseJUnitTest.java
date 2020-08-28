@@ -26,8 +26,8 @@ public class UserDatabaseJUnitTest {
     static String dataBaseName = ("SROSTestData.db");
     
     static User defaultUser = new User("1", "Default", true);
-    static User user1 = new User("15", "Tom", false);
-    static User user2 = new User("8", "Professor Yang", true);
+    static User user1 = new User("2", "Tom", false);
+    static User user2 = new User("3", "Professor Yang", true);
     
     public UserDatabaseJUnitTest() {
     }
@@ -148,7 +148,7 @@ public class UserDatabaseJUnitTest {
                 c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
                 stmt = c.createStatement();
                 
-                ResultSet rs = stmt.executeQuery("SELECT * FROM user WHERE user_ID = '15'"
+                ResultSet rs = stmt.executeQuery("SELECT * FROM user WHERE user_ID = '2'"
                         + " AND user_name = 'Tom' AND is_manager = false AND"
                         + " password = 'populate'");
                 

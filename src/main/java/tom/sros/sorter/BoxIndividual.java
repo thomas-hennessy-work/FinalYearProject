@@ -39,9 +39,16 @@ public class BoxIndividual extends BoxType {
         Y = y;
         Z = z;
     }
+    
+    public BoxIndividual(String id, float width, float length, float height){
+        super(id, width, length, height);
+    }
 
     public BoxIndividual(String id){
         super(id);
+    }
+    
+    public BoxIndividual(){
     }
 
     //get methods

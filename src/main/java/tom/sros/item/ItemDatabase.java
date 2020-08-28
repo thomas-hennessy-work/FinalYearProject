@@ -8,7 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import tom.sros.sorter.Bin;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxIndividual;
+import tom.sros.sorter.BoxType;
 import tom.sros.sorter.EmptySpace;
 import tom.sros.sorter.CustOrder;
 import tom.sros.sorter.Space;
@@ -206,11 +207,11 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return The boxes dimensions
      */
-    public Box getBoxTypeInformation (String boxID, String dataBaseName){
+    public BoxIndividual getBoxTypeInformation (String boxID, String dataBaseName){
         Connection c;
         Statement stmt;
         
-        Box returnBox = new Box(boxID);
+        BoxIndividual returnBox = new BoxIndividual(boxID);
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -239,11 +240,11 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return a list of box types and information about the box types
      */
-    public static List<Box> getDisplayBoxTypeInformation(String dataBaseName){
+    public static List<BoxType> getDisplayBoxTypeInformation(String dataBaseName){
         Connection c;
         Statement stmt;
         
-        List<Box> returnBoxList = new ArrayList<>();
+        List<BoxType> returnBoxList = new ArrayList<>();
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -252,7 +253,7 @@ public class ItemDatabase {
             ResultSet rs = stmt.executeQuery("SELECT box_ID, name, contents, width, length, height, notes FROM boxType");
             
             while(rs.next()){
-                returnBoxList.add(new Box(rs.getString("box_ID"), rs.getString("name"), rs.getFloat("width"), rs.getFloat("length"), 
+                returnBoxList.add(new BoxType(rs.getString("box_ID"), rs.getString("name"), rs.getFloat("width"), rs.getFloat("length"), 
                 rs.getFloat("height"), rs.getString("contents"), rs.getString("notes")));
             }
             
@@ -273,11 +274,11 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return list of information about box locations
      */
-    public static List<Box> getBoxLocationDisplay(String dataBaseName){
+    public static List<BoxIndividual> getBoxLocationDisplay(String dataBaseName){
         Connection c;
         Statement stmt;
         
-        List<Box> returnList = new ArrayList<>();
+        List<BoxIndividual> returnList = new ArrayList<>();
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -286,7 +287,7 @@ public class ItemDatabase {
             ResultSet rs = stmt.executeQuery("SELECT boxLocation.individual_ID, boxType.name, boxLocation.bin_ID, boxLocation.corner_vertical_pos, "
                     + "boxLocation.corner_horizontal_pos, boxLocation.corner_depth_pos FROM boxLocation INNER JOIN boxType ON boxLocation.box_ID = boxType.box_ID");
             while(rs.next()){
-                returnList.add(new Box(rs.getString("individual_ID"), rs.getString("name"), rs.getString("bin_ID"), 
+                returnList.add(new BoxIndividual(rs.getString("individual_ID"), rs.getString("name"), rs.getString("bin_ID"), 
                 rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos")));
             }
             stmt.close();
@@ -300,11 +301,12 @@ public class ItemDatabase {
         return returnList;
     }
     
-        public static List<Box> getBoxLocationReSort(String dataBaseName){
+    //Returns the boxes that need re-sorting
+        public static List<BoxType> getBoxLocationReSort(String dataBaseName){
         Connection c;
         Statement stmt;
         
-        List<Box> returnList = new ArrayList<>();
+        List<BoxType> returnList = new ArrayList<>();
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -314,20 +316,20 @@ public class ItemDatabase {
             while(rs.next()){
                 if(!returnList.isEmpty()){
                     boolean found = false;
-                    for(Box currentBox : returnList){
+                    for(BoxType currentBox : returnList){
                         if(currentBox.getID().equals(rs.getString("box_ID"))){
                             currentBox.setAmount(currentBox.getAmount() + 1);
                             found = true;
                         }
                     }
                     if(found == false){
-                            returnList.add(new Box(rs.getString("box_ID"), 1));
+                            returnList.add(new BoxType(rs.getString("box_ID"), 1));
                     }
 //                    returnList.add(new Box(rs.getString("box_ID"), rs.getString("name"), rs.getString("bin_ID"), 
 //                    rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos")));
                 }
                 else{
-                    returnList.add(new Box(rs.getString("box_ID"), 1));
+                    returnList.add(new BoxType(rs.getString("box_ID"), 1));
                 }
             }
             stmt.close();
@@ -347,7 +349,7 @@ public class ItemDatabase {
      * @param placedBox
      * @param dataBaseName 
      */
-    public void addBoxLocation(Box placedBox, String dataBaseName){
+    public void addBoxLocation(BoxIndividual placedBox, String dataBaseName){
         Connection c;
         Statement stmt;
         
@@ -384,8 +386,8 @@ public class ItemDatabase {
         //Go through each order
         orderList.forEach((currentOrder) -> {
             
-            List<Box> IDAmountList = new ArrayList();
-            IDAmountList.add(new Box(currentOrder.getID(), 1));
+            List<BoxType> IDAmountList = new ArrayList();
+            IDAmountList.add(new BoxType(currentOrder.getID(), 1));
             
             List<Bin> emptyBin = null;
             //Runs algorithm
@@ -498,11 +500,11 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return list of boxes and their locations
      */
-    public List<Box> getExistingBoxes(Bin binLocation, String dataBaseName){
+    public List<BoxIndividual> getExistingBoxes(Bin binLocation, String dataBaseName){
         Connection c;
         Statement stmt;
         
-        List<Box> returnList = new ArrayList<>();
+        List<BoxIndividual> returnList = new ArrayList<>();
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -513,7 +515,7 @@ public class ItemDatabase {
                     + "FROM boxType INNER JOIN boxLocation ON boxType.box_ID = boxLocation.box_ID WHERE boxLocation.bin_ID = '" + binLocation.getName() + "';");
             
             while(rs.next()){
-                returnList.add(new Box(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"),
+                returnList.add(new BoxIndividual(rs.getString("individual_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height"),
                         rs.getFloat("corner_horizontal_pos"), rs.getFloat("corner_vertical_pos"), rs.getFloat("corner_depth_pos")));
             }
             
@@ -535,11 +537,11 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return box dimensions
      */
-    public Box getSpecificExistingBoxDimensions(Box boxPosition, String dataBaseName){
+    public BoxIndividual getSpecificExistingBoxDimensions(BoxIndividual boxPosition, String dataBaseName){
         Connection c;
         Statement stmt;
         
-        Box returnBox = boxPosition;
+        BoxIndividual returnBox = boxPosition;
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -573,7 +575,7 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return true if there is a box in that location, false if there is not
      */
-    public boolean blockRepeatingBoxEntry(Box placedBox, String dataBaseName){
+    public boolean blockRepeatingBoxEntry(BoxIndividual placedBox, String dataBaseName){
         Connection c;
         Statement stmt;
         
@@ -607,9 +609,9 @@ public class ItemDatabase {
      * @param boxToRemoved
      * @param dataBaseName 
      */
-    public void removeStoredBox(Box boxToRemoved, String dataBaseName){
+    public void removeStoredBox(BoxIndividual boxToRemoved, String dataBaseName){
         //Creating an empty space object with the same dimensions and possion as the box and adding it
-        Box removedBox = getSpecificExistingBoxDimensions(boxToRemoved, dataBaseName);
+        BoxIndividual removedBox = getSpecificExistingBoxDimensions(boxToRemoved, dataBaseName);
         EmptySpace newSpace = new EmptySpace(removedBox.getWidth(), removedBox.getLength(), removedBox.getHeight(),
                 removedBox.getX(), removedBox.getY(), removedBox.getZ(), removedBox.getBin());
         
@@ -619,7 +621,7 @@ public class ItemDatabase {
     }
     
     public void removeStoredOrder(CustOrder orderToRemove, String dataBasename){
-        Box linkedBox = getOrderBox(orderToRemove.getOrderID(), dataBasename);
+        BoxIndividual linkedBox = getOrderBox(orderToRemove.getOrderID(), dataBasename);
         deleteStoredOrder(orderToRemove, dataBasename);
         removeStoredBox(linkedBox, dataBasename);
     }
@@ -658,11 +660,11 @@ public class ItemDatabase {
      * @param dataBasename
      * @return Box and its associated information that is linked to an order
      */
-    public Box getOrderBox(String orderID, String dataBasename){
+    public BoxIndividual getOrderBox(String orderID, String dataBasename){
         Connection c;
         Statement stmt;
         
-        Box returnBox = new Box();
+        BoxIndividual returnBox = new BoxIndividual();
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBasename);
@@ -789,7 +791,7 @@ public class ItemDatabase {
      * @param boxToRemove
      * @param dataBaseName 
      */
-    public void deleteBoxLocation(Box boxToRemove, String dataBaseName){
+    public void deleteBoxLocation(BoxIndividual boxToRemove, String dataBaseName){
         Connection c;
         Statement stmt;
         
@@ -819,7 +821,7 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return list of the new empty space objects
      */
-    public List<EmptySpace> fillEmptySpace(EmptySpace spaceFilled, Box itemFillingSpace, String dataBaseName){
+    public List<EmptySpace> fillEmptySpace(EmptySpace spaceFilled, BoxIndividual itemFillingSpace, String dataBaseName){
         List<EmptySpace> newEmptySpaces = new ArrayList<>();
         
         //Calculate the area of the new empty spaces
@@ -861,7 +863,7 @@ public class ItemDatabase {
      * @param unsortedBoxes
      * @param dataBaseName 
      */
-    public void addUnsorted(List<Box> unsortedBoxes, String dataBaseName){
+    public void addUnsorted(List<BoxIndividual> unsortedBoxes, String dataBaseName){
         Connection c;
         Statement stmt;
         
@@ -869,7 +871,7 @@ public class ItemDatabase {
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
             stmt = c.createStatement();
             
-            for(Box currentBox: unsortedBoxes){
+            for(BoxIndividual currentBox: unsortedBoxes){
                 String sql = "INSERT INTO unSortedBoxes (box_ID) "
                             + "VALUES ('" + currentBox.getID()  + "' );";
                 stmt.executeUpdate(sql);
@@ -923,11 +925,11 @@ public class ItemDatabase {
      * @param dataBaseName
      * @return amount and type of unsorted boxes
      */
-    public List<Box> getUnsortedBoxDisplay(String dataBaseName){
+    public List<BoxType> getUnsortedBoxDisplay(String dataBaseName){
         Connection c;
         Statement stmt;
         
-        List<Box> returnList = new ArrayList<>();
+        List<BoxType> returnList = new ArrayList<>();
         
         try{
             c = DriverManager.getConnection("jdbc:sqlite:" + dataBaseName);
@@ -936,14 +938,14 @@ public class ItemDatabase {
             ResultSet rs = stmt.executeQuery("SELECT * FROM unSortedBoxes");
             while(rs.next()){
                 boolean found = false;
-                for(Box currentBox : returnList){
+                for(BoxType currentBox : returnList){
                     if(currentBox.getID().equals(rs.getString("box_ID"))){
                         currentBox.setAmount(currentBox.getAmount() + 1);
                         found = true;
                     }
                 }
                 if(found == false){
-                    returnList.add(new Box(rs.getString("box_ID"), 1));
+                    returnList.add(new BoxType(rs.getString("box_ID"), 1));
                 }
             }
             stmt.close();

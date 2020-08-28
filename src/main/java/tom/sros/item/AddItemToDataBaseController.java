@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tom.sros.home.NonHomeScreen;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxType;
 
 public class AddItemToDataBaseController extends NonHomeScreen implements Initializable{
     
@@ -89,7 +89,7 @@ public class AddItemToDataBaseController extends NonHomeScreen implements Initia
     
     //method for populating box type table
     private void populateTable(){
-        List<Box> boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);
+        List<BoxType> boxInformation = ItemDatabase.getDisplayBoxTypeInformation(dataBaseName);
         boxInfoTable.getItems().clear();
         boxInformation.forEach((currentBox)-> {
             boxInfoTable.getItems().add(currentBox);

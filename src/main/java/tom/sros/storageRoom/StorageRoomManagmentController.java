@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import tom.sros.home.NonHomeScreen;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxType;
 import tom.sros.sorter.binaryTreeAlgorithm;
 
 public class StorageRoomManagmentController extends NonHomeScreen implements Initializable{
@@ -183,7 +183,7 @@ public class StorageRoomManagmentController extends NonHomeScreen implements Ini
         ItemDatabase ITDB = new ItemDatabase();
         
         //Obtains the information about all boxes
-        List<Box> allBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxType> allBoxes = ItemDatabase.getBoxLocationReSort(dataBaseName);
         ITDB.clearBoxLocationData(dataBaseName);
         
         //Puts all boxes through the sorting algorithm, minus the bins specified
@@ -200,7 +200,7 @@ public class StorageRoomManagmentController extends NonHomeScreen implements Ini
         ItemDatabase ITDB = new ItemDatabase();
         binaryTreeAlgorithm BTA = new binaryTreeAlgorithm();
         
-        List<Box> boxUnsortedList = ITDB.getUnsortedBoxDisplay(dataBaseName);
+        List<BoxType> boxUnsortedList = ITDB.getUnsortedBoxDisplay(dataBaseName);
         List<Bin> emptyLisy = new ArrayList<>();
         
         ITDB.emptyUnsortedTable(dataBaseName);
@@ -222,7 +222,7 @@ public class StorageRoomManagmentController extends NonHomeScreen implements Ini
     
     private void populateUnsortedTable(){
         ItemDatabase ITDB = new ItemDatabase();
-        List<Box> boxInfoList =  ITDB.getUnsortedBoxDisplay(dataBaseName);
+        List<BoxType> boxInfoList =  ITDB.getUnsortedBoxDisplay(dataBaseName);
         boxInfoList.forEach((currentBox) -> {
             unsortedTable.getItems().add(currentBox);
         });

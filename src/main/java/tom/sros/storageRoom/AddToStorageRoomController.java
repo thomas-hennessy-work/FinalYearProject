@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import tom.sros.home.NonHomeScreen;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxType;
 import tom.sros.sorter.CustOrder;
 
 public class AddToStorageRoomController extends NonHomeScreen{
@@ -23,7 +23,7 @@ public class AddToStorageRoomController extends NonHomeScreen{
     boolean UserType;
     
     //Lists used to store box ID's as they are input
-    List<Box> BoxIDs = new ArrayList<>();
+    List<BoxType> BoxIDs = new ArrayList<>();
     List<CustOrder> OrderList = new ArrayList<>();
     
     @FXML
@@ -82,7 +82,7 @@ public class AddToStorageRoomController extends NonHomeScreen{
         if(IDValidation(inputID)){
             if(IDB.IDCheckBoxType(dataBaseName,inputID) && amountValidation(Amount)){
                 int inputAmount = Integer.parseInt(IDBoxAmount.getText());
-                Box inputBox = new Box(inputID, inputAmount);
+                BoxType inputBox = new BoxType(inputID, inputAmount);
                 BoxIDs.add(inputBox);
                 itemTable.getItems().add(inputBox);
 
@@ -107,7 +107,7 @@ public class AddToStorageRoomController extends NonHomeScreen{
     @FXML
     private void removeBox(){
         TableViewSelectionModel boxesSelection = itemTable.getSelectionModel();
-        List<Box> selectedBoxes = boxesSelection.getSelectedItems();
+        List<BoxType> selectedBoxes = boxesSelection.getSelectedItems();
         
         selectedBoxes.forEach((currentBox) -> {
             BoxIDs.remove(currentBox);

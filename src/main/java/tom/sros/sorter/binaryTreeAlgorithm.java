@@ -16,14 +16,14 @@ public class binaryTreeAlgorithm {
      * @param IDAmountList
      * @return List of boxes with their dimensions
      */
-   public List<Box> asignBoxInformation(String dataBaseName, List<Box> IDAmountList){       
-       List<Box> Boxes = new ArrayList<>();
-       List<Box> returnBoxes = new ArrayList<>();
+   public List<BoxIndividual> asignBoxInformation(String dataBaseName, List<BoxType> IDAmountList){       
+       List<BoxIndividual> Boxes = new ArrayList<>();
+       List<BoxIndividual> returnBoxes = new ArrayList<>();
            
        //Creating a list ofn boxes with no information
        IDAmountList.forEach((currentBox) -> {
           for(int i = 0 ; i < (int)currentBox.getAmount(); i++){
-              Boxes.add(new Box((String) currentBox.getID()));
+              Boxes.add(new BoxIndividual((String) currentBox.getID()));
            }
         });
            
@@ -43,36 +43,25 @@ public class binaryTreeAlgorithm {
     * @param IDAmountList
     * @param removedBins 
     */
-    public void sortAndAddToDB(String dataBaseName, List<Box> IDAmountList, List<Bin> removedBins){
+    public void sortAndAddToDB(String dataBaseName, List<BoxType> IDAmountList, List<Bin> removedBins){
     
-    List<Box> freshSortBoxes;
+        List<BoxIndividual> freshSortBoxes;
 
-    //obtaining bin information
-    List<Bin> binsAvailable = BinDataBase.getBinInfo(dataBaseName);
-    //obtaining box information
-    List<Box> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
-    List<Box> boxAvailableSorted = sortBySize(boxesAvailable);
-    
-    //Removing any bins from the algorithm that have been specified (if any have been specified)
-//    if(removedBins != null){
-//        removedBins.forEach((currentBinRemove) -> {
-//            for(Bin currentBinAvailable: binsAvailable){
-//                if(currentBinRemove.getName().equals(currentBinAvailable.getName())){
-//                    binsAvailable.remove(currentBinRemove);
-//                }
-//            }
-//        });
-//    }
-    
-    if(removedBins != null){
-        for(int i=0 ; i < binsAvailable.size() ; i ++){
-            for(Bin currentRemovedBin : removedBins){
-                if(currentRemovedBin.getName().equals(binsAvailable.get(i).getName())){
-                    binsAvailable.remove(i);
+        //obtaining bin information
+        List<Bin> binsAvailable = BinDataBase.getBinInfo(dataBaseName);
+        //obtaining box information
+        List<BoxIndividual> boxesAvailable = asignBoxInformation(dataBaseName, IDAmountList);
+        List<BoxIndividual> boxAvailableSorted = sortBySize(boxesAvailable);
+
+        if(removedBins != null){
+            for(int i=0 ; i < binsAvailable.size() ; i ++){
+                for(Bin currentRemovedBin : removedBins){
+                    if(currentRemovedBin.getName().equals(binsAvailable.get(i).getName())){
+                        binsAvailable.remove(i);
+                    }
                 }
             }
         }
-    }
 
         while(!boxAvailableSorted.isEmpty() && !binsAvailable.isEmpty()){
             List<Bin> largestBins = new ArrayList<>();
@@ -95,7 +84,7 @@ public class binaryTreeAlgorithm {
                 
                 freshSortBoxes = binaryTree.sort2DBP(currentBin, boxAvailableSorted, dataBaseName);
                 
-                for(Box currentBox: freshSortBoxes){
+                for(BoxIndividual currentBox: freshSortBoxes){
                    //Remove any boxes that have been sorted from the unsorted list
                    if(IDB.blockRepeatingBoxEntry(currentBox, dataBaseName)){
                    IDB.addBoxLocation(currentBox, dataBaseName);
@@ -117,17 +106,17 @@ public class binaryTreeAlgorithm {
         }
     }
     
-    private static List<Box> sortBySize(List<Box> boxesAvaialble){
-        List<Box> tempList = boxesAvaialble;
-        List<Box> returnList = new ArrayList<>();
+    private static List<BoxIndividual> sortBySize(List<BoxIndividual> boxesAvaialble){
+        List<BoxIndividual> tempList = boxesAvaialble;
+        List<BoxIndividual> returnList = new ArrayList<>();
         
-        for(Box currentBox : tempList){
+        for(BoxType currentBox : tempList){
             System.out.println("Initial list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
         }
         
         while(!tempList.isEmpty()){
             
-            List<Box> largestBoxes = new ArrayList<>();
+            List<BoxIndividual> largestBoxes = new ArrayList<>();
             
             //Finding the boxes that take the most surface area out of the current tallest boxes
             tempList.forEach((currentBox) -> {
@@ -142,14 +131,12 @@ public class binaryTreeAlgorithm {
                     largestBoxes.add(currentBox);
             });
             
-            
-            
             returnList.addAll(largestBoxes);
             tempList.removeAll(largestBoxes);
         }
-        for(Box currentBox : returnList){
-                System.out.println("fianl list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
-            }
+        returnList.forEach((currentBox) -> {
+            System.out.println("fianl list box Width: " + currentBox.getWidth() + " Length: " + currentBox.getLength());
+       });
         return returnList;
     }
 }

@@ -19,7 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import tom.sros.item.ItemDatabase;
 import tom.sros.sorter.Bin;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxIndividual;
+import tom.sros.sorter.BoxType;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BinDataBaseJUnitTest {
@@ -36,11 +37,11 @@ public class BinDataBaseJUnitTest {
     Bin binIndi2 = new Bin("2", (float)10, (float)10, (float)10);
     Bin binIndi3 = new Bin("3", (float)13.4, (float)8, (float)9);
     
-    Box boxType1 = new Box("1", "Mice", (float)5, (float)5, (float)5, "10 mice", "do not drop");
+    BoxType boxType1 = new BoxType("1", "Mice", (float)5, (float)5, (float)5, "10 mice", "do not drop");
     
-    Box boxIndi1 = new Box("1", "1", (float)0, (float)0, (float)0);
-    Box boxIndi2 = new Box("1", "1", (float)5, (float)0, (float)0);
-    Box boxIndi3 = new Box("1", "2", (float)0, (float)0, (float)0);
+    BoxIndividual boxIndi1 = new BoxIndividual("1", "1", (float)0, (float)0, (float)0);
+    BoxIndividual boxIndi2 = new BoxIndividual("1", "1", (float)5, (float)0, (float)0);
+    BoxIndividual boxIndi3 = new BoxIndividual("1", "2", (float)0, (float)0, (float)0);
     
     public BinDataBaseJUnitTest() {
     }

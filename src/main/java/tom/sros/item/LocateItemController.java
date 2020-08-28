@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import tom.sros.home.NonHomeScreen;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxIndividual;
 import tom.sros.sorter.CustOrder;
 
 public class LocateItemController extends NonHomeScreen implements Initializable{
@@ -30,7 +30,7 @@ public class LocateItemController extends NonHomeScreen implements Initializable
     @FXML
     private void removeBox(){
         TableViewSelectionModel boxesSelection = boxTable.getSelectionModel();
-        List<Box> selectedBoxes = boxesSelection.getSelectedItems();
+        List<BoxIndividual> selectedBoxes = boxesSelection.getSelectedItems();
         ItemDatabase ITDB = new ItemDatabase();
         
         selectedBoxes.forEach((currentSelectedBox) -> {
@@ -59,7 +59,7 @@ public class LocateItemController extends NonHomeScreen implements Initializable
     //Method for filling the box location table
     private void populateBoxTable(){
         ItemDatabase ITDB = new ItemDatabase();
-        List<Box> boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> boxInformation = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         List<CustOrder> orderInformation = ITDB.getOrderInformationDisplay(dataBaseName);
         
         boxInformation.forEach((currentBox)-> {
@@ -77,7 +77,7 @@ public class LocateItemController extends NonHomeScreen implements Initializable
         });
     }
     
-    private boolean boxIsOrder(Box reviewedBox, List<CustOrder> orderList){
+    private boolean boxIsOrder(BoxIndividual reviewedBox, List<CustOrder> orderList){
         boolean returnValue = true;
         
         for(CustOrder currentOrder : orderList){

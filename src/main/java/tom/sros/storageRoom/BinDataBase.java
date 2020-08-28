@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import tom.sros.sorter.Box;
+import tom.sros.sorter.BoxType;
 
 public class BinDataBase {
     
@@ -196,7 +196,7 @@ public class BinDataBase {
             ResultSet rs = stmt.executeQuery("SELECT boxLocation.box_ID, boxType.width, boxType.length, boxType.height FROM boxLocation "
                     + "INNER JOIN boxType ON boxLocation.box_ID = boxType.box_ID WHERE boxLocation.bin_ID = '" + bin.getName() + "';");
             while(rs.next()){
-                bin.addBox(new Box(rs.getString("box_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height")));
+                bin.addBox(new BoxType(rs.getString("box_ID"), rs.getFloat("width"), rs.getFloat("length"), rs.getFloat("height")));
             }
             
             stmt.close();

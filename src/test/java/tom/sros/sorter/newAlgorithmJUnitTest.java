@@ -28,9 +28,9 @@ public class newAlgorithmJUnitTest {
     
     static Bin binType1 = new Bin("1", (float)10, (float)10, (float)10);
     
-    static Box boxType1 = new Box("1", "Mice", (float)5, (float)5, (float)5, "10 mice", "do not drop");
+    static BoxType boxType1 = new BoxType("1", "Mice", (float)5, (float)5, (float)5, "10 mice", "do not drop");
 
-    static Box addBox1 = new Box("1", 4);
+    static BoxType addBox1 = new BoxType("1", 4);
     
     static CustOrder order1 = new CustOrder("1", "DMU", "Thomas");
     static CustOrder order2 = new CustOrder("1", "Leicester", "Patrick");
@@ -97,7 +97,7 @@ public class newAlgorithmJUnitTest {
     
     public void addPerfectFit(){
         List<Bin> emptyList = new ArrayList<>();
-        List<Box> addBoxes = new ArrayList<>();
+        List<BoxType> addBoxes = new ArrayList<>();
         
         addBoxes.add(addBox1);
         
@@ -108,7 +108,7 @@ public class newAlgorithmJUnitTest {
     @Order(1)
     public void testPerfectFitX(){
         addPerfectFit();
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals((float) 5, returnedBoxes.get(0).getX(), "X location should match");
         assertEquals((float) 0, returnedBoxes.get(1).getX(), "X location should match");
@@ -119,7 +119,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(2)
     public void testPerfectFitY(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals((float) 0, returnedBoxes.get(0).getY(), "Y location should be 0");
         assertEquals((float) 0, returnedBoxes.get(1).getY(), "Y location should be 0");
@@ -130,7 +130,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(2)
     public void testPerfectFitZ(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals((float) 5, returnedBoxes.get(0).getZ(), "Z location should match");
         assertEquals((float) 5, returnedBoxes.get(1).getZ(), "Z location should match");
@@ -141,7 +141,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(2)
     public void testPerfectFitID(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals("1", returnedBoxes.get(0).getID(), "ID should match");
         assertEquals("2", returnedBoxes.get(1).getID(), "ID should match");
@@ -152,9 +152,9 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(3)
     public void testRemoveItem(){
-         List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+         List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
          ITDB.removeStoredBox(returnedBoxes.get(1), dataBaseName);
-         List<Box> returnedBoxesUpdated = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+         List<BoxIndividual> returnedBoxesUpdated = ItemDatabase.getBoxLocationDisplay(dataBaseName);
          
          if(returnedBoxesUpdated.size() != 3){
              fail("Box should have been removed");
@@ -170,7 +170,7 @@ public class newAlgorithmJUnitTest {
     @Order(4)
     public void testReAddBoxes(){
         List<Bin> emptyList = new ArrayList<>();
-        List<Box> addBoxes = new ArrayList<>();
+        List<BoxType> addBoxes = new ArrayList<>();
         
         addBox1.setAmount(2);
         addBoxes.add(addBox1);
@@ -182,7 +182,7 @@ public class newAlgorithmJUnitTest {
             fail("The empty space should have been removed");
         }
          
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         if(returnedBoxes.size() != 5){
             fail("Not all boxes have been added");
         }
@@ -191,7 +191,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(5)
     public void testBoxesReAddedX(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals((float)0, returnedBoxes.get(3).getX());
         assertEquals((float)0, returnedBoxes.get(4).getX());
@@ -200,7 +200,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(5)
     public void testBoxesReAddedY(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals((float)0, returnedBoxes.get(3).getY());
         assertEquals((float)0, returnedBoxes.get(4).getY());
@@ -209,7 +209,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(5)
     public void testBoxesReAddedZ(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals((float)5, returnedBoxes.get(3).getZ());
         assertEquals((float)0, returnedBoxes.get(4).getZ());
@@ -218,7 +218,7 @@ public class newAlgorithmJUnitTest {
     @Test
     @Order(5)
     public void testBoxesReAddedBin(){
-        List<Box> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
+        List<BoxIndividual> returnedBoxes = ItemDatabase.getBoxLocationDisplay(dataBaseName);
         
         assertEquals("1", returnedBoxes.get(3).getBin());
         assertEquals("2", returnedBoxes.get(4).getBin());
@@ -341,7 +341,7 @@ public class newAlgorithmJUnitTest {
     public void testUnsortedBoxList(){
         addBox1.setAmount(11);
         List<Bin> emptyList = new ArrayList<>();
-        List<Box> addBoxes = new ArrayList<>();
+        List<BoxType> addBoxes = new ArrayList<>();
         
         addBoxes.add(addBox1);
         
