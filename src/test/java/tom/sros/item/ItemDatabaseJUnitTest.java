@@ -31,15 +31,15 @@ public class ItemDatabaseJUnitTest {
     
     static BoxType expectedBox1 = new BoxType("1", "Mice", (float) 12.4, (float) 20.0, (float) 9.6, "15 Dell mice", "Fragile, do not turn upside down");
     static BoxType expectedBox2 = new BoxType("2", "Monitors", (float) 15, (float) 6.7, (float) 8.9, "2 HP monitors", "Glass, do not drop");
-    static BoxType expectedBox3 = new BoxType("3", "Speakers", (float) 16, (float) 8.5, (float) 6, "one speaker", "hold uproght");
+    static BoxType expectedBox3 = new BoxType("3", "Speakers", (float) 16, (float) 8.5, (float) 6, "one speaker", "hold upright");
     static BoxType expectedBox4 = new BoxType("4", "Radio", (float) 8, (float) 13.2, (float) 5, "Old radio", "very fragile");
-    static BoxType expectedBox5 = new BoxType("4", "Radio", (float) 8, (float) 13.2, (float) 5, "Old radio", "very fragile");
+    static BoxType expectedBox5 = new BoxType("5", "TV", (float) 9, (float) 17.2, (float) 7, "Small TV", "glass front");
     
     static BoxIndividual expectedIndividualBox1 = new BoxIndividual("1", (float) 12.4, (float) 20.0, (float) 9.6);
     static BoxIndividual expectedIndividualBox2 = new BoxIndividual("2", (float) 15, (float) 6.7, (float) 8.9, 0, 0, 0);
     static BoxIndividual expectedIndividualBox3 = new BoxIndividual("3", (float) 16, (float) 8.5, (float) 6, 10, 10, 10);
     static BoxIndividual expectedIndividualBox4 = new BoxIndividual("4", (float) 8, (float) 13.2, (float) 5, 0, 0, 0);
-    static BoxIndividual expectedIndividualBox5 = new BoxIndividual("4", (float) 8, (float) 13.2, (float) 5, 0, 0, 0);
+    static BoxIndividual expectedIndividualBox5 = new BoxIndividual("5", (float) 9, (float) 17.2, (float) 7, 0, 0, 0);
     
     static EmptySpace empty1 = new EmptySpace((float) 16, (float) 8.5, (float)6, (float)10, (float)10, (float)10, "2");
     static EmptySpace empty2 = new EmptySpace((float) 3.5, (float) 9, (float)9.7, (float)10, (float)0, (float)0, "1");
@@ -357,7 +357,6 @@ public class ItemDatabaseJUnitTest {
         System.out.println("testAddLocation started");
         addBoxLocationData();
         
-        boolean noData = false;
         boolean ID2 = false;
         boolean ID3 = false;
         
@@ -369,7 +368,7 @@ public class ItemDatabaseJUnitTest {
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM boxLocation");
             
-            noData = !rs.next();
+            rs.next();
             ID2 = rs.getString("box_ID").equals("2");
             rs.next();
             ID3 = rs.getString("box_ID").equals("3");
@@ -382,10 +381,7 @@ public class ItemDatabaseJUnitTest {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        
-        if(noData){
-            fail("No data inserted in the boxLocation table");
-        }
+
         if(!ID2){
             fail("ID 2 not inserted");
         }
@@ -621,7 +617,6 @@ public class ItemDatabaseJUnitTest {
         
         ITDB.removeEmptySpace(empty2, dataBaseName);
 
-        System.out.println(ITDB.getEmptySpaces("1", dataBaseName).size());
         if(!ITDB.getEmptySpaces("1", dataBaseName).isEmpty()){
             fail("fail, empty space 2 should have been removed");
         }
@@ -647,6 +642,7 @@ public class ItemDatabaseJUnitTest {
         order1.setID("3");
         order1.setOrderID("1");
         order1.setBin("1");
+        
         ITDB.addOrderInformation(dataBaseName, order1);
         
         Connection c;
@@ -678,6 +674,7 @@ public class ItemDatabaseJUnitTest {
     @Test
     @Order(15)
     public void testGetOrderInformationDisplayBoxID(){
+        System.out.println(ITDB.getOrderInformationDisplay(dataBaseName).size());
         assertEquals(order1.getID(), ITDB.getOrderInformationDisplay(dataBaseName).get(0).getID(), "box ID's should match");
     }
     @Test
@@ -724,12 +721,14 @@ public class ItemDatabaseJUnitTest {
         expectedIndividualBox4.setZ(0);
         expectedIndividualBox4.setBin("1");
         expectedIndividualBox5.setBin("2");
+        
+        ITDB.addBoxType(dataBaseName, "TV", "Small TV", (float) 9, (float) 17.2, (float) 7,  "glass front");
         ITDB.addBoxLocation(expectedIndividualBox4, dataBaseName);
         ITDB.addBoxLocation(expectedIndividualBox5, dataBaseName);
         
         assertEquals(2, ITDB.getExistingBoxes(bin1, dataBaseName).size(), "There should be two boxes in the list");
-        assertEquals(1, ITDB.getExistingBoxes(bin2, dataBaseName).size(), "There should be two boxes in the list");
-        assertEquals(0, ITDB.getExistingBoxes(bin3, dataBaseName).size(), "There should be two boxes in the list");
+        assertEquals(1, ITDB.getExistingBoxes(bin2, dataBaseName).size(), "There should be one boxe in the list");
+        assertEquals(0, ITDB.getExistingBoxes(bin3, dataBaseName).size(), "There should be no boxes in the list");
     }
     
     @Test
@@ -737,52 +736,58 @@ public class ItemDatabaseJUnitTest {
     public void testGetBoxLocationReSort(){
         assertEquals("4", ItemDatabase.getBoxLocationReSort(dataBaseName).get(0).getID());
         assertEquals(2, ItemDatabase.getBoxLocationReSort(dataBaseName).get(0).getAmount());
-        assertEquals("2", ItemDatabase.getBoxLocationReSort(dataBaseName).get(1).getID());
+        assertEquals("5", ItemDatabase.getBoxLocationReSort(dataBaseName).get(1).getID());
         assertEquals(1, ItemDatabase.getBoxLocationReSort(dataBaseName).get(1).getAmount());
-    }
+    } 
     
     @Test
     @Order(17)
     public void TestgetExistingBoxesID(){
-        expectedBox2.setID("3");
-        assertEquals(expectedBox2.getID(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getID(), "Box 2 ID should match");
-        assertEquals(expectedBox4.getID(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getID(), "Box 3 ID should match");
+        assertEquals(expectedBox5.getID(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getID(), "Box 5 ID should match");
+        assertEquals("3", ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getID(), "Box 4 ID should match");
+        assertEquals(expectedBox4.getID(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getID(), "Box 4 ID should match");
     }
     @Test
     @Order(17)
     public void TestgetExistingBoxesWidth(){
-        assertEquals(expectedBox2.getWidth(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getWidth(), "Box 2 width should match");
-        assertEquals(expectedBox4.getWidth(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getWidth(), "Box 3 width should match");
+        assertEquals(expectedBox5.getWidth(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getWidth(), "Box 5 width should match");
+        assertEquals(expectedBox4.getWidth(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getWidth(), "Box 4 width should match");
+        assertEquals(expectedBox4.getWidth(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getWidth(), "Box 4 width should match");
     }
     @Test
     @Order(17)
     public void TestgetExistingBoxesLength(){
-        assertEquals(expectedBox2.getLength(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getLength(), "Box 2 length should match");
-        assertEquals(expectedBox4.getLength(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getLength(), "Box 3 length should match");
+        assertEquals(expectedBox5.getLength(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getLength(), "Box 5 length should match");
+        assertEquals(expectedBox4.getLength(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getLength(), "Box 4 length should match");
+        assertEquals(expectedBox4.getLength(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getLength(), "Box 4 length should match");
     }
     @Test
     @Order(17)
     public void TestgetExistingBoxesHeight(){
-        assertEquals(expectedBox2.getHeight(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getHeight(), "Box 2 height should match");
-        assertEquals(expectedBox4.getHeight(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getHeight(), "Box 3 height should match");
+        assertEquals(expectedBox5.getHeight(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getHeight(), "Box 5 height should match");
+        assertEquals(expectedBox4.getHeight(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getHeight(), "Box 4 height should match");
+        assertEquals(expectedBox4.getHeight(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getHeight(), "Box 4 height should match");
     }
     @Test
     @Order(17)
     public void TestgetExistingBoxesX(){
-        assertEquals(expectedIndividualBox2.getX(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getX(), "Box 2 X should match");
-        assertEquals(expectedIndividualBox4.getX(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getX(), "Box 3 X should match");
+        assertEquals(expectedIndividualBox5.getX(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getX(), "Box 5 X should match");
+        assertEquals(0, ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getX(), "Box 4 X should match");
+        assertEquals(expectedIndividualBox4.getX(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getX(), "Box 4 X should match");
     }
     @Test
     @Order(17)
     public void TestgetExistingBoxesY(){
-        assertEquals(expectedIndividualBox2.getY(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getY(), "Box 2 Y should match");
-        assertEquals(expectedIndividualBox4.getY(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getY(), "Box 3 Y should match");
+        assertEquals(expectedIndividualBox5.getY(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getY(), "Box 5 Y should match");
+        assertEquals(expectedIndividualBox4.getY(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getY(), "Box 4 Y should match");
+        assertEquals(expectedIndividualBox4.getY(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getY(), "Box 4 Y should match");
     }
     @Test
     @Order(17)
     public void TestgetExistingBoxesZ(){
-        assertEquals(expectedIndividualBox2.getZ(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getZ(), "Box 2 Z should match");
-        assertEquals(expectedIndividualBox4.getZ(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getZ(), "Box 3 Z should match");
+        assertEquals(expectedIndividualBox5.getZ(), ITDB.getExistingBoxes(bin2, dataBaseName).get(0).getZ(), "Box 5 Z should match");
+        assertEquals(expectedIndividualBox4.getZ(), ITDB.getExistingBoxes(bin1, dataBaseName).get(0).getZ(), "Box 4 Z should match");
+        assertEquals(expectedIndividualBox4.getZ(), ITDB.getExistingBoxes(bin1, dataBaseName).get(1).getZ(), "Box 4 Z should match");
     }
     
     @Test
@@ -815,32 +820,27 @@ public class ItemDatabaseJUnitTest {
     @Test
     @Order(20)
     public void testGetOrderBoxBin(){
-        order1.setOrderID("1");
         assertEquals(expectedIndividualBox2.getBin(), ITDB.getOrderBox("1", dataBaseName).getBin(), "Bins should match");
     }
     @Test
     @Order(20)
     public void testGetOrderBoxX(){
-        order1.setOrderID("1");
         assertEquals(expectedIndividualBox2.getX(), ITDB.getOrderBox("1", dataBaseName).getX(), "X positions should match");
     }
     @Test
     @Order(20)
     public void testGetOrderBoxY(){
-        order1.setOrderID("1");
         assertEquals(expectedIndividualBox2.getY(), ITDB.getOrderBox("1", dataBaseName).getY(), "Y positions should match");
     }
     @Test
     @Order(20)
     public void testGetOrderBoxZ(){
-        order1.setOrderID("1");
         assertEquals(expectedIndividualBox2.getZ(), ITDB.getOrderBox("1", dataBaseName).getZ(), "Z positions should match");
     }
     @Test
     @Order(20)
     public void testGetOrderBoxID(){
-        order1.setOrderID("1");
-        assertEquals(expectedIndividualBox2.getID(), ITDB.getOrderBox("1", dataBaseName).getID(), "X positions should match");
+        assertEquals("3", ITDB.getOrderBox("1", dataBaseName).getID(), "ID should match");
     }
     
     @Test

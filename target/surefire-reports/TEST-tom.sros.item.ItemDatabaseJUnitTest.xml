@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.item.ItemDatabaseJUnitTest" time="0.576" tests="81" errors="6" skipped="0" failures="7">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tom.sros.item.ItemDatabaseJUnitTest" time="0.602" tests="81" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="13"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-13.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire14295037072808680417\surefirebooter17009111185619069682.jar C:\Users\thoma\AppData\Local\Temp\surefire14295037072808680417 2020-08-28T14-40-07_080-jvmRun1 surefire12286103414255126351tmp surefire_012902341573244710077tmp"/>
+    <property name="sun.java.command" value="C:\Users\thoma\AppData\Local\Temp\surefire752452542571588438\surefirebooter10685587701035692650.jar C:\Users\thoma\AppData\Local\Temp\surefire752452542571588438 2020-08-31T14-20-38_004-jvmRun1 surefire1643419833617136860tmp surefire_010745980182965233653tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="tom.sros.item.ItemDatabaseJUnitTest"/>
     <property name="surefire.test.class.path" value="C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\test-classes;C:\Users\thoma\Documents\NetBeansProjects\SROS\FinalYearProject\target\classes;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-controls\13\javafx-controls-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-graphics\13\javafx-graphics-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-base\13\javafx-base-13-win.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13.jar;C:\Users\thoma\.m2\repository\org\openjfx\javafx-fxml\13\javafx-fxml-13-win.jar;C:\Users\thoma\.m2\repository\org\xerial\sqlite-jdbc\3.28.0\sqlite-jdbc-3.28.0.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\thoma\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\thoma\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\thoma\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\thoma\.m2\repository\com\google\guava\guava\29.0-jre\guava-29.0-jre.jar;C:\Users\thoma\.m2\repository\com\google\guava\failureaccess\1.0.1\failureaccess-1.0.1.jar;C:\Users\thoma\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\thoma\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\thoma\.m2\repository\org\checkerframework\checker-qual\2.11.1\checker-qual-2.11.1.jar;C:\Users\thoma\.m2\repository\com\google\errorprone\error_prone_annotations\2.3.4\error_prone_annotations-2.3.4.jar;C:\Users\thoma\.m2\repository\com\google\j2objc\j2objc-annotations\1.3\j2objc-annotations-1.3.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire14295037072808680417\surefirebooter17009111185619069682.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\thoma\AppData\Local\Temp\surefire752452542571588438\surefirebooter10685587701035692650.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="13.0.1+9"/>
@@ -60,140 +60,82 @@
   <testcase name="unSortedBoxesTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.01"/>
   <testcase name="boxLocationTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="boxTypeTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="orderListTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="orderListTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="emptySpaceTableExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testNameInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
-  <testcase name="testHeightInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testContentsInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testNameInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
+  <testcase name="testHeightInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testContentsInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testLengthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testIdInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testNotesInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testWidthInsert" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetBoxTypeInformationHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxTypeInformationLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxTypeInformationWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetDisplayBoxTypeInformationContentses" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationNotes" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxTypeInformationLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testGetBoxTypeInformationWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetDisplayBoxTypeInformationContentses" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="testGetDisplayBoxTypeInformationNotes" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetDisplayBoxTypeInformationNamess" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationWidths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetDisplayBoxTypeInformationWidths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
   <testcase name="testGetDisplayBoxTypeInformationIDs" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationLengths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetDisplayBoxTypeInformationHeights" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
-  <testcase name="testNonRemovedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testIDCheckMatch" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testIDCheckFail" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testRemoveBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
-  <testcase name="testAddLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.02">
-    <failure message="ID 3 not inserted" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: ID 3 not inserted
-	at tom.sros.item.ItemDatabaseJUnitTest.testAddLocation(ItemDatabaseJUnitTest.java:393)
-</failure>
-    <system-out><![CDATA[testAddLocation started
-Box location added to data base
-Box location added to data base
-]]></system-out>
-  </testcase>
-  <testcase name="testGetBoxLocationDisplayName" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <error message="Index 1 out of bounds for length 1" type="java.lang.IndexOutOfBoundsException">java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayName(ItemDatabaseJUnitTest.java:414)
-</error>
-  </testcase>
-  <testcase name="testGetBoxLocationDisplayXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <error message="Index 1 out of bounds for length 1" type="java.lang.IndexOutOfBoundsException">java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayXPos(ItemDatabaseJUnitTest.java:428)
-</error>
-  </testcase>
-  <testcase name="testGetBoxLocationDisplayYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003">
-    <error message="Index 1 out of bounds for length 1" type="java.lang.IndexOutOfBoundsException">java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayYPos(ItemDatabaseJUnitTest.java:435)
-</error>
-  </testcase>
-  <testcase name="testGetBoxLocationDisplayZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <error message="Index 1 out of bounds for length 1" type="java.lang.IndexOutOfBoundsException">java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayZPos(ItemDatabaseJUnitTest.java:442)
-</error>
-  </testcase>
-  <testcase name="testGetMostRecentSortedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetBoxLocationDisplayBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <error message="Index 1 out of bounds for length 1" type="java.lang.IndexOutOfBoundsException">java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayBin(ItemDatabaseJUnitTest.java:421)
-</error>
-  </testcase>
-  <testcase name="testGetBoxLocationDisplayID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003">
-    <error message="Index 1 out of bounds for length 1" type="java.lang.IndexOutOfBoundsException">java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationDisplayID(ItemDatabaseJUnitTest.java:407)
-</error>
-  </testcase>
-  <testcase name="testReplaceBoxRemoved" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.018"/>
-  <testcase name="testReplaceEmptSpaceAdded" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testAddEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
+  <testcase name="testGetDisplayBoxTypeInformationLengths" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="testGetDisplayBoxTypeInformationHeights" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testNonRemovedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testIDCheckMatch" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testIDCheckFail" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testRemoveBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
+  <testcase name="testAddLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.014"/>
+  <testcase name="testGetBoxLocationDisplayName" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxLocationDisplayXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxLocationDisplayYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxLocationDisplayZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetMostRecentSortedBox" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testGetBoxLocationDisplayBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetBoxLocationDisplayID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testReplaceBoxRemoved" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.019"/>
+  <testcase name="testReplaceEmptSpaceAdded" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testAddEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
   <testcase name="testAddGetEmptySpacesBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testAddGetEmptySpacesHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testAddGetEmptySpacesLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testAddGetEmptySpacesWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testAddGetEmptySpacesWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testAddGetEmptySpacesXPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testAddGetEmptySpacesYPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testAddGetEmptySpacesZPos" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testDeleteBoxLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
-  <testcase name="testRemoveAndGetEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
+  <testcase name="testDeleteBoxLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
+  <testcase name="testRemoveAndGetEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
   <testcase name="tesgetRemovedEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.008"/>
-  <testcase name="testAddOrderInformation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.014"/>
+  <testcase name="testAddOrderInformation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.018"/>
   <testcase name="testGetOrderInformationDisplayName" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetOrderInformationDisplayBoxID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetOrderInformationDisplayBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testGetOrderInformationDisplayBoxID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="testGetOrderInformationDisplayBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetOrderInformationDisplayX" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetOrderInformationDisplayY" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetOrderInformationDisplayZ" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testGetOrderInformationDisplayZ" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetOrderInformationDisplayOrderID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetOrderInformationDisplayAddress" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetExistingBoxes" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.011"/>
-  <testcase name="testGetBoxLocationReSort" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003">
-    <failure message="expected: &lt;2&gt; but was: &lt;3&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <2> but was: <3>
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetBoxLocationReSort(ItemDatabaseJUnitTest.java:739)
-]]></failure>
-  </testcase>
-  <testcase name="TestgetExistingBoxesHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <failure message="Box 2 height should match ==&gt; expected: &lt;8.9&gt; but was: &lt;5.0&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Box 2 height should match ==> expected: <8.9> but was: <5.0>
-	at tom.sros.item.ItemDatabaseJUnitTest.TestgetExistingBoxesHeight(ItemDatabaseJUnitTest.java:766)
-]]></failure>
-  </testcase>
-  <testcase name="TestgetExistingBoxesLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001">
-    <failure message="Box 2 length should match ==&gt; expected: &lt;6.7&gt; but was: &lt;13.2&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Box 2 length should match ==> expected: <6.7> but was: <13.2>
-	at tom.sros.item.ItemDatabaseJUnitTest.TestgetExistingBoxesLength(ItemDatabaseJUnitTest.java:760)
-]]></failure>
-  </testcase>
-  <testcase name="TestgetExistingBoxesX" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="TestgetExistingBoxesY" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="TestgetExistingBoxesZ" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="TestgetExistingBoxesWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <failure message="Box 2 width should match ==&gt; expected: &lt;15.0&gt; but was: &lt;8.0&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Box 2 width should match ==> expected: <15.0> but was: <8.0>
-	at tom.sros.item.ItemDatabaseJUnitTest.TestgetExistingBoxesWidth(ItemDatabaseJUnitTest.java:754)
-]]></failure>
-  </testcase>
-  <testcase name="TestgetExistingBoxesID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetSpecificExistingBoxDimensionsHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testGetExistingBoxes" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.017"/>
+  <testcase name="testGetBoxLocationReSort" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
+  <testcase name="TestgetExistingBoxesHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="TestgetExistingBoxesLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
+  <testcase name="TestgetExistingBoxesX" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="TestgetExistingBoxesY" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
+  <testcase name="TestgetExistingBoxesZ" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="TestgetExistingBoxesWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.004"/>
+  <testcase name="TestgetExistingBoxesID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.003"/>
+  <testcase name="testGetSpecificExistingBoxDimensionsHeight" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
   <testcase name="testGetSpecificExistingBoxDimensionsLength" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetSpecificExistingBoxDimensionsWidth" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="blockRepeatingBoxEntryNotExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="blockRepeatingBoxEntryExists" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testGetOrderBoxID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002">
-    <failure message="X positions should match ==&gt; expected: &lt;2&gt; but was: &lt;3&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: X positions should match ==> expected: <2> but was: <3>
-	at tom.sros.item.ItemDatabaseJUnitTest.testGetOrderBoxID(ItemDatabaseJUnitTest.java:843)
-]]></failure>
-    <system-out><![CDATA[true
-]]></system-out>
-  </testcase>
+  <testcase name="blockRepeatingBoxEntryNotExist" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="blockRepeatingBoxEntryExists" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
+  <testcase name="testGetOrderBoxID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetOrderBoxBin" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetOrderBoxX" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetOrderBoxX" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testGetOrderBoxY" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testGetOrderBoxZ" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
+  <testcase name="testGetOrderBoxZ" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
   <testcase name="testDeleteStoredOrder" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.006"/>
-  <testcase name="testAddGetUnsortedID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.013">
-    <failure message="ID should match ==&gt; expected: &lt;3&gt; but was: &lt;2&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: ID should match ==> expected: <3> but was: <2>
-	at tom.sros.item.ItemDatabaseJUnitTest.testAddGetUnsortedID(ItemDatabaseJUnitTest.java:888)
-]]></failure>
-  </testcase>
+  <testcase name="testAddGetUnsortedID" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.015"/>
   <testcase name="testGetUnsortedBoxDisplay" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.002"/>
-  <testcase name="testClearBoxLocationDataEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.013"/>
+  <testcase name="testClearBoxLocationDataEmptySpace" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.017"/>
   <testcase name="testClearBoxLocationDataLocation" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.001"/>
-  <testcase name="testEmptyUnsortedTable" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.005"/>
+  <testcase name="testEmptyUnsortedTable" classname="tom.sros.item.ItemDatabaseJUnitTest" time="0.007"/>
 </testsuite>
